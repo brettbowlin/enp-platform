@@ -4,8 +4,8 @@ Contributors: ModernTribe, borkweb, barry.hughes, bordoni, brianjessee, aguseo, 
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, modern tribe, tribe, widget
 Donate link: http://m.tri.be/29
 Requires at least: 4.9
-Stable tag: 5.0.3.1
-Tested up to: 5.4
+Stable tag: 5.1.2
+Tested up to: 5.4.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -219,6 +219,57 @@ Previous versions of The Events Calendar are not cross-compatible with 5.X add-o
 Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
+
+= [5.1.2] 2020-05-27 =
+
+* Tweak - Prevent undefined errors when using tribe_get_events and forcing a cache refresh.
+* Fix - Prevent `E_ERROR` for `Tribe__Events__Meta__Save` construct when dealing with revisions, which some WP Engine customers were seeing.
+* Language - 0 new strings added, 49 updated, 0 fuzzied, and 0 obsoleted
+
+= [5.1.1] 2020-05-11 =
+
+* Feature - Move all the featured event icons to templates. [TEC-3441]
+* Feature - Added a helper method `Tribe__Plugins::is_active( 'slug' )` to check if a given plugin is active.
+* Feature - Add entry points through filters to be able to add content after the opening html tag or before the closing html tag. [TCMN-65]
+* Tweak - Deprecated the `Tribe__Events__Main::get_i18n_strings_for_domains()` and `Tribe__Events__Main::get_i18n_strings()` methods; use the methods with the same name and signature provided by the `tribe( 'tec.18n' )` object [TEC-3404]
+* Tweak - Add new filter `tribe_aggregator_manage_record_column_source_html` to customize the source column content HTML used on the Event Aggregator Import "History" tab.
+* Tweak - Modify language variables to improve translations readability on Updated Views navigation previous and next buttons. [props @justlevine]
+* Tweak - Add new filter `tribe_aggregator_manage_record_column_source_html` to customize the source column content HTML used on the Event Aggregator Import "History" tab.
+* Fix - Enqueue Customizer stylesheets properly via `tribe_customizer_inline_stylesheets` in Common. [TEC-3401]
+* Fix - Not being able to create events because capabilities were not set on activation or update of the plugin. [TEC-3350]
+* Fix - Adjust templates to show time zone in event details when "Show time zone" is checked. [TEC-2979]
+* Fix - Correct bad defaults from `Template->attr()` and ensure that the timezone info is correctly hydrated in the case of an unchanged block. [TEC-2964]
+* Fix - Show the correct counts on the Event Aggregator Import "History" tab for non-Event content types being imported.
+* Fix - Prevent creation of empty venue when removing a Venue inside of the Events using the Classic editor that had a US state selected. [TEC-3416]
+* Fix - Event Aggregator imported events when using default status or categories from the Settings Page will now be imported correctly. [TEC-3445]
+* Fix - A localization support that would mangle Views URLs when WPML plugin is active alongside Views v2 [TEC-3404]
+* Fix - Prevent problems with `func_get_args()` usage around template inclusion for legacy template files [TEC-3104]
+* Tweak - Extended support for namespaced classes in the Autoloader.
+* Tweak - Make Customizer stylesheet enqueue filterable via `tribe_customizer_inline_stylesheets`. [TEC-3401]
+* Tweak - Normalize namespaced prefixes with trailing backslash when registering them in the Autoloader. [VE-14]
+* Language - 2 new strings added, 243 updated, 0 fuzzied, and 1 obsoleted
+
+= [5.1.0] 2020-04-23 =
+
+* Feature - Add a "fast forward" link to Month and Day views when there are no events to show. [TEC-3400]
+* Feature - Add `tribe_events_views_v2_use_ff_link` and `tribe_events_views_v2_{$this->slug}_use_ff_link` filters to allow control of the link. [TEC-3400]
+* Feature - Add Recent Past Events Views. [TEC-3385]
+* Tweak - Improved on meta data handling of for Blocks editor.
+* Tweak - Deprecate Select2 3.5.4 in favor of SelectWoo
+* Tweak - Load plugin text domain on the new `tribe_load_text_domains` action hook, which fires on `init` instead of on the `plugins_loaded` hook. [TEC-3406]
+* Tweak - Add a constant `TRIBE_CACHE_VIEWS` to turn off views HTML caching.
+* Fix - Theme navigation warning around `post_date = '0'` no longer happens when using Page template for Updated Views [TEC-3434]
+* Fix - Selecting other Page templates from Settings > Display now loads the correct template properly, to display events.
+* Fix - Preventing redirects from updated Views V2 to be too broad and end up catching requests from other Plugins, reported by GravityView team on Gravity Forms bug with imports.
+* Fix - Prevent PHP errors from happening during bulk activation or deactivation of the plugin [TCMN-53]
+* Fix - Correct iCal link on month view for months other than the current one [TEC-3267]
+* Fix - Correct a few incorrect and/or typoed text domains [TEC-3390]
+* Fix - Ensure we pass search keywords when changing views and in the top-bar nav [TEC-3282]
+* Fix - Prevent Blocks editor from throwing browser alert when leaving the page without any changes applied to the edited post.
+* Fix - Several strings have been adjusted for consistency and better translatability [BTRIA-307]
+* Hook - Add the `tribe_events_blocks_editor_is_on` filter; returning a falsy value from this filter will prevent the Blocks Editor to ever be active on Events; else the settings from Events > Settings will apply [TEC-3349]
+* Tweak - Add some filters for better control of link targets, standardize the way we create those links [TEC-3402]
+* Language - 4 new strings added, 286 updated, 1 fuzzied, and 2 obsoleted
 
 = [5.0.3.1] 2020-03-23 =
 

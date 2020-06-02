@@ -10,8 +10,6 @@
  */
 class Ga_Sharethis {
 
-	const GA_SHARETHIS_ALERTS_ERROR = 'Trending content alerts are temporarily unavailable, please try again later or contact support@sharethis.com';
-
 	public static function get_body( $data ) {
 		$body = $data->getBody();
 		return json_decode( $body );
@@ -28,6 +26,7 @@ class Ga_Sharethis {
 			$query_params		 = array(
 				'domain' => $domain,
 				'is_wordpress' => true,
+				'onboarding_product' => 'ga',
 				);
 			$response			 = $api_client->call( 'ga_api_create_sharethis_property', array(
 				$query_params
@@ -85,19 +84,6 @@ class Ga_Sharethis {
 			return true;
 		}
 		return false;
-	}
-
-	public static function load_sharethis_trending_alerts( $api_client ) {
-		if ( Ga_Helper::should_load_trending_alerts() ) {
-			$query_params	 = array(
-				'id'	 => get_option( Ga_Admin::GA_SHARETHIS_PROPERTY_ID ),
-				'secret' => get_option( Ga_Admin::GA_SHARETHIS_PROPERTY_SECRET )
-			);
-			$response		 = $api_client->call( 'ga_api_sharethis_get_trending_alerts', array(
-				$query_params
-			) );
-			return self::get_alerts( $response );
-		}
 	}
 
 	public static function get_alerts( $response ) {

@@ -56,8 +56,6 @@ class Ga_Admin_Controller extends Ga_Controller_Core {
 		} else {
 			$msg = Ga_Helper::create_url_msg( _( 'Invalid request.' ), Ga_Admin::NOTICE_ERROR );
 		}
-
-		wp_redirect( admin_url( Ga_Helper::create_url( Ga_Helper::GA_TRENDING_PAGE_URL, array( 'ga_msg' => $msg ) ) ) );
 	}
 
 	/**

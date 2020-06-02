@@ -17,7 +17,6 @@ class Ga_Admin {
 	const GA_SHARETHIS_PROPERTY_SECRET                  = 'googleanalytics_sherethis_property_secret';
 	const GA_SHARETHIS_VERIFICATION_RESULT              = 'googleanalytics_sherethis_verification_result';
 	const MIN_WP_VERSION                                = '3.8';
-	const GA_SHARETHIS_TRENDING_CONTENT_PLUGIN_VERSION  = '2.1';
 	const GA_SHARETHIS_API_ALIAS                        = 'sharethis';
 	const GA_DISABLE_ALL_FEATURES                       = 'googleanalytics_disable_all_features';
 	const GA_HEARTBEAT_API_CACHE_UPDATE                 = false;
@@ -203,40 +202,7 @@ class Ga_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_menu_page( 'Google Analytics', 'Google Analytics', 'manage_options', 'googleanalytics', 'Ga_Admin::statistics_page_googleanalytics', 'dashicons-chart-line', 1000 );
 			add_submenu_page( 'googleanalytics', 'Google Analytics', __( 'Dashboard' ), 'manage_options', 'googleanalytics', 'Ga_Admin::statistics_page_googleanalytics' );
-			add_submenu_page( 'googleanalytics', 'Google Analytics', __( 'Trending Content' ), 'manage_options', 'googleanalytics/trending', 'Ga_Admin::trending_page_googleanalytics' );
 			add_submenu_page( 'googleanalytics', 'Google Analytics', __( 'Settings' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics' );
-		}
-	}
-
-	/**
-	 * Prepares and displays plugin's trending content page.
-	 */
-	public static function trending_page_googleanalytics() {
-
-		if ( ! Ga_Helper::is_wp_version_valid() || ! Ga_Helper::is_php_version_valid() ) {
-			return false;
-		}
-		$data = Ga_Sharethis::create_sharethis_options( self::api_client( self::GA_SHARETHIS_API_ALIAS ) );
-
-		Ga_Sharethis::sharethis_installation_verification( self::api_client( self::GA_SHARETHIS_API_ALIAS ) );
-
-		$alerts = Ga_Sharethis::load_sharethis_trending_alerts( self::api_client( self::GA_SHARETHIS_API_ALIAS ) );
-		// Handle invitation result
-		$data = Ga_Helper::handle_url_message( $data );
-		if ( Ga_Helper::is_wp_old() ) {
-			self::display_api_errors( self::GA_SHARETHIS_API_ALIAS );
-		}
-		Ga_View_Core::load(
-			'trending',
-			array(
-				'data'    => $data,
-				'alerts'  => $alerts,
-				'tooltip' => Ga_Helper::get_tooltip(),
-				'errors'  => self::api_client( self::GA_SHARETHIS_API_ALIAS )->get_errors(),
-			)
-		);
-		if ( ! Ga_Helper::is_wp_old() ) {
-			self::display_api_errors( self::GA_SHARETHIS_API_ALIAS );
 		}
 	}
 
@@ -311,6 +277,8 @@ class Ga_Admin {
 			$data['auth_button'] = self::get_auth_button( 'auth' );
 		}
 		$data['debug_modal'] = self::get_debug_modal();
+		$data['debug_info']  = Ga_SupportLogger::$debug_info;
+
 		if ( ! empty( $_GET['err'] ) ) { // WPCS: CSRF ok.
 			switch ( $_GET['err'] ) { // WPCS: CSRF ok.
 				case 1:
@@ -473,10 +441,6 @@ class Ga_Admin {
 			Ga_View_Core::load( 'ga_notice', [ 'url' => $url ] );
 		}
 
-		if ( ! empty( $_GET['settings-updated'] ) && Ga_Helper::is_plugin_page() ) { // WPCS: CSRF ok.
-			echo wp_kses_post( Ga_Helper::ga_wp_notice( __( 'Settings saved' ), 'success' ) );
-		}
-
 		if ( Ga_Helper::get_option( self::GA_DISABLE_ALL_FEATURES ) ) {
 			echo wp_kses_post(
 				Ga_Helper::ga_wp_notice(
@@ -533,6 +497,7 @@ class Ga_Admin {
 		add_action( 'admin_enqueue_scripts', 'Ga_Admin::enqueue_scripts' );
 		add_action( 'wp_dashboard_setup', 'Ga_Admin::add_dashboard_device_widget' );
 		add_action( 'wp_ajax_ga_ajax_data_change', 'Ga_Admin::ga_ajax_data_change' );
+		add_action( 'wp_ajax_ga_ajax_hide_review', 'Ga_Admin::ga_ajax_hide_review' );
 		add_action( 'admin_notices', 'Ga_Admin::admin_notice_googleanalytics' );
 		add_action( 'heartbeat_tick', 'Ga_Admin::run_heartbeat_jobs' );
 		add_action( 'wp_ajax_googleanalytics_send_debug_email', 'Ga_SupportLogger::send_email' );
@@ -666,6 +631,7 @@ class Ga_Admin {
 						}
 
 						$tmp['webProperties'][] = array(
+							'internalWebPropertyId' => $property['internalWebPropertyId'],
 							'webPropertyId' => $property['id'],
 							'name'          => $property['name'],
 							'profiles'      => $profiles,
@@ -720,7 +686,8 @@ class Ga_Admin {
 	public static function generate_stats_data() {
 		$selected = Ga_Helper::get_selected_account_data( true );
 
-		$query_params = Ga_Stats::get_query( 'main_chart', $selected['view_id'] );
+		$query_params = isset( $_GET['th'] ) ? Ga_Stats::get_query( 'main_chart', $selected['view_id'], '30daysAgo' ) : Ga_Stats::get_query( 'main_chart', $selected['view_id'] );
+
 		$stats_data   = self::api_client()->call(
 			'ga_api_data',
 			[ $query_params ]
@@ -740,7 +707,7 @@ class Ga_Admin {
 		unset( $chart['date'] );
 		$labels  = array(
 			'thisWeek' => date( 'M d, Y', strtotime( '-6 day', $last_chart_date ) ) . ' - ' . date( 'M d, Y', $last_chart_date ),
-			'lastWeek' => date( 'M d, Y', strtotime( '-13 day', $last_chart_date ) ) . ' - ' . date( 'M d, Y', strtotime( '-7 day', $last_chart_date ) ),
+			'thisMonth' => date( 'M d, Y', strtotime( '-29 day', $last_chart_date ) ) . ' - ' . date( 'M d, Y', $last_chart_date ),
 		);
 		$sources = ! empty( $sources_data ) ? Ga_Stats::get_sources( $sources_data->getData() ) : array();
 
@@ -775,8 +742,18 @@ class Ga_Admin {
 
 		return Ga_View_Core::load(
 			'ga_debug_modal',
-			[ 'debug_info' => Ga_SupportLogger::$debug_info ],
+			[ 'debug_info' => Ga_SupportLogger::$debug_info, 'debug_help_message' => Ga_SupportLogger::$debug_help_message ],
 			true
 		);
+	}
+
+	public static function ga_ajax_hide_review( $post ) {
+		$error = 0;
+
+		if ( Ga_Controller_Core::verify_nonce( 'ga_ajax_data_change' ) ) {
+			update_option('googleanalytics-hide-review', true);
+		}
+
+		wp_send_json_success('hidden');
 	}
 }

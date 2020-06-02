@@ -73,18 +73,6 @@ class Ga_Lib_Sharethis_Api_Client extends Ga_Lib_Api_Client {
 		return new Ga_Lib_Api_Response( $response );
 	}
 
-	private function ga_api_sharethis_get_trending_alerts( $query_params ) {
-		$url	 = $this->add_protocol( add_query_arg( $query_params, self::GA_SHARETHIS_ENDPOINT . '/notifications' ) );
-		$request = Ga_Lib_Api_Request::get_instance(self::USE_CACHE);
-		try {
-			$response = $request->make_request( $url, null, true );
-		} catch ( Ga_Lib_Api_Request_Exception $e ) {
-			throw new Ga_Lib_Sharethis_Api_Client_Alerts_Exception( $e->getMessage() );
-		}
-
-		return new Ga_Lib_Api_Response( $response );
-	}
-
 	private function ga_api_sharethis_user_invite( $query_params ) {
 		$request = Ga_Lib_Api_Request::get_instance(self::USE_CACHE);
 		try {

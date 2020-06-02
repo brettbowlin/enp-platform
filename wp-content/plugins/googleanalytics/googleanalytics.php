@@ -4,7 +4,7 @@
  * Plugin Name: Google Analytics
  * Plugin URI: http://wordpress.org/extend/plugins/googleanalytics/
  * Description: Use Google Analytics on your WordPress site without touching any code, and view visitor reports right in your WordPress admin dashboard!
- * Version: 2.2.5
+ * Version: 2.3.6
  * Author: ShareThis
  * Author URI: http://sharethis.com
  */

@@ -92,6 +92,14 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	protected $_supportsAnimation = true;
 
 	/**
+	 * Which library does this this chart implement?
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $_library = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0.0
@@ -124,6 +132,8 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 			'1' => esc_html__( 'Yes', 'visualizer' ),
 			'0' => esc_html__( 'No', 'visualizer' ),
 		);
+
+		$this->hooks();
 	}
 
 	/**
@@ -150,6 +160,29 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	}
 
 	/**
+	 * Add the correct description for the manual configuration box.
+	 */
+	protected function _renderManualConfigDescription() {
+		self::_renderSectionStart();
+			self::_renderSectionDescription( '<span class="viz-gvlink">' . sprintf( __( 'Configure the graph by providing configuration variables right from the %1$sGoogle Visualization API%2$s. You can refer to to some examples %3$shere%4$s.', 'visualizer' ), '<a href="https://developers.google.com/chart/interactive/docs/gallery/?#configuration-options" target="_blank">', '</a>', '<a href="https://docs.themeisle.com/article/728-manual-configuration" target="_blank">', '</a>' ) . '</span>' );
+	}
+
+	/**
+	 * Add the correct example for the manual configuration box.
+	 */
+	protected function _renderManualConfigExample() {
+		return '{
+			"vAxis": {
+				"ticks": [5, 10, 15, 20],
+				"titleTextStyle": {
+					"color": "red"
+				},
+				"textPosition": "in"
+			}
+		}';
+	}
+
+	/**
 	 * Renders chart advanced settings group.
 	 *
 	 * @access protected
@@ -157,33 +190,21 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	protected function _renderAdvancedSettings() {
 		self::_renderGroupStart( esc_html__( 'Frontend Actions', 'visualizer' ) );
 			self::_renderSectionStart();
-				self::_renderSectionDescription( esc_html__( 'Configure frontend actions here.', 'visualizer' ) );
+				self::_renderSectionDescription( esc_html__( 'Configure frontend actions that need to be shown.', 'visualizer' ) );
 			self::_renderSectionEnd();
 
 			$this->_renderActionSettings();
 		self::_renderGroupEnd();
 
 		self::_renderGroupStart( esc_html__( 'Manual Configuration', 'visualizer' ) );
-			self::_renderSectionStart();
-				self::_renderSectionDescription( __( 'Configure the graph by providing configuration variables right from the', 'visualizer' ) . ' <a href="https://developers.google.com/chart/interactive/docs/reference" target="_blank">Google Visualization</a> API.' );
-
-			$example    = '
-{
-	"vAxis": {
-		"ticks": [5, 10, 15, 20],
-		"titleTextStyle": {
-			"color": "red"
-		},
-		"textPosition": "in"
-	}
-}';
-
+			$this->_renderManualConfigDescription();
 			self::_renderTextAreaItem(
 				esc_html__( 'Configuration', 'visualizer' ),
 				'manual',
 				$this->manual,
 				sprintf(
-					esc_html__( 'One per line in valid JSON (key:value) format e.g. %s', 'visualizer' ), '<br><code>' . $example . '</code>'
+					esc_html__( 'One per line in valid JSON (key:value) format e.g. %s', 'visualizer' ),
+					'<br><code>' . $this->_renderManualConfigExample() . '</code>'
 				),
 				'',
 				array( 'rows' => 5 )
@@ -202,29 +223,31 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	protected function _renderActionSettings() {
 		global $wp_version;
 		$disable_actions    = version_compare( $wp_version, '4.7.0', '<' );
-		self::_renderSectionStart( esc_html__( 'Actions', 'visualizer' ), false );
+		// default open this section when not testing through cypress because cypress expects to click and open each section
+		// and may not like finding a section is already open.
+		self::_renderSectionStart( esc_html__( 'Actions', 'visualizer' ), ! defined( 'TI_CYPRESS_TESTING' ) );
 			self::_renderCheckboxItem(
 				esc_html__( 'Print', 'visualizer' ),
 				'actions[]',
-				isset( $this->actions ) && in_array( 'print', $this->actions ) ? true : false,
+				isset( $this->actions ) && in_array( 'print', $this->actions, true ) ? true : false,
 				'print',
-				$disable_actions ? '<span class="viz-section-error">' . esc_html__( 'Upgrade to at least WordPress 4.7 to use this.', 'visualizer' ) . '</span>' : esc_html__( 'To enable printing the data.', 'visualizer' ),
+				$disable_actions ? '<span class="viz-section-error">' . esc_html__( 'Upgrade to at least WordPress 4.7 to use this.', 'visualizer' ) . '</span>' : esc_html__( 'To enable printing the chart/data.', 'visualizer' ),
 				$disable_actions
 			);
 			self::_renderCheckboxItem(
 				esc_html__( 'CSV', 'visualizer' ),
 				'actions[]',
-				isset( $this->actions ) && in_array( 'csv;application/csv', $this->actions ) ? true : false,
+				isset( $this->actions ) && in_array( 'csv;application/csv', $this->actions, true ) ? true : false,
 				'csv;application/csv',
 				$disable_actions ? '<span class="viz-section-error">' . esc_html__( 'Upgrade to at least WordPress 4.7 to use this.', 'visualizer' ) . '</span>' : esc_html__( 'To enable downloading the data as a CSV.', 'visualizer' ),
 				$disable_actions
 			);
 
-			$disabled   = ! ( class_exists( 'PHPExcel' ) && extension_loaded( 'zip' ) && extension_loaded( 'xml' ) && version_compare( PHP_VERSION, '5.2.0', '>' ) );
+			$disabled   = ! self::is_excel_enabled();
 			self::_renderCheckboxItem(
 				esc_html__( 'Excel', 'visualizer' ),
 				'actions[]',
-				isset( $this->actions ) && in_array( 'xls;application/vnd.ms-excel', $this->actions ) ? true : false,
+				isset( $this->actions ) && in_array( 'xls;application/vnd.ms-excel', $this->actions, true ) ? true : false,
 				'xls;application/vnd.ms-excel',
 				$disable_actions ? '<span class="viz-section-error">' . esc_html__( 'Upgrade to at least WordPress 4.7 to use this.', 'visualizer' ) . '</span>' : ( $disabled ? '<span class="viz-section-error">' . esc_html__( 'Enable the ZIP and XML extensions to use this setting.', 'visualizer' ) . '</span>' : esc_html__( 'To enable downloading the data as an Excel spreadsheet.', 'visualizer' ) ),
 				$disable_actions || $disabled
@@ -232,12 +255,29 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 			self::_renderCheckboxItem(
 				esc_html__( 'Copy', 'visualizer' ),
 				'actions[]',
-				isset( $this->actions ) && in_array( 'copy', $this->actions ) ? true : false,
+				isset( $this->actions ) && in_array( 'copy', $this->actions, true ) ? true : false,
 				'copy',
 				$disable_actions ? '<span class="viz-section-error">' . esc_html__( 'Upgrade to at least WordPress 4.7 to use this.', 'visualizer' ) . '</span>' : esc_html__( 'To enable copying the data to the clipboard.', 'visualizer' ),
 				$disable_actions
 			);
 		self::_renderSectionEnd();
+	}
+
+	/**
+	 * Checks if the Excel module can be enabled.
+	 */
+	private static function is_excel_enabled() {
+		$vendor_file = VISUALIZER_ABSPATH . '/vendor/autoload.php';
+		if ( is_readable( $vendor_file ) ) {
+			include_once( $vendor_file );
+		}
+
+		if ( version_compare( phpversion(), '5.6.0', '<' ) ) {
+			do_action( 'themeisle_log_event', Visualizer_Plugin::NAME, sprintf( 'PHP version %s not supported', phpversion() ), 'error', __FILE__, __LINE__ );
+			return false;
+		}
+
+		return class_exists( 'PhpOffice\PhpSpreadsheet\Spreadsheet' ) && extension_loaded( 'zip' ) && extension_loaded( 'xml' ) && extension_loaded( 'fileinfo' );
 	}
 
 	/**
@@ -322,6 +362,8 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 
 			$this->_renderAnimationSettings();
 
+			do_action( 'visualizer_chart_settings', get_class( $this ), $this->_data, 'general', array( 'generic' => true ) );
+
 		self::_renderGroupEnd();
 	}
 
@@ -340,7 +382,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 		self::_renderCheckboxItem(
 			esc_html__( 'Animate on startup', 'visualizer' ),
 			'animation[startup]',
-			$this->animation['startup'],
+			isset( $this->animation['startup'] ) ? $this->animation['startup'] : 0,
 			true,
 			esc_html__( 'Determines if the chart will animate on the initial draw.', 'visualizer' )
 		);
@@ -409,8 +451,8 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	 * @access protected
 	 */
 	protected function _renderViewSettings() {
-		self::_renderGroupStart( esc_html__( 'Layout & Chart Area', 'visualizer' ) );
-			self::_renderSectionStart( esc_html__( 'Layout', 'visualizer' ), false );
+		self::_renderGroupStart( esc_html__( 'Chart Size & Placement', 'visualizer' ) );
+			self::_renderSectionStart( esc_html__( 'Chart Size/Layout', 'visualizer' ), false );
 				self::_renderSectionDescription( esc_html__( 'Configure the total size of the chart. Two formats are supported: a number, or a number followed by %. A simple number is a value in pixels; a number followed by % is a percentage.', 'visualizer' ) );
 
 				echo '<div class="viz-section-item">';
@@ -429,7 +471,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 					echo '</table>';
 
 					echo '<p class="viz-section-description">';
-						esc_html_e( 'Determines the total width and height of the chart.', 'visualizer' );
+						esc_html_e( 'Determines the total width and height of the chart. This will only show in the front-end.', 'visualizer' );
 					echo '</p>';
 				echo '</div>';
 
@@ -468,7 +510,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 				echo '</div>';
 			self::_renderSectionEnd();
 
-			self::_renderSectionStart( esc_html__( 'Chart Area', 'visualizer' ), false );
+			self::_renderSectionStart( esc_html__( 'Placement', 'visualizer' ), false );
 				self::_renderSectionDescription( esc_html__( 'Configure the placement and size of the chart area (where the chart itself is drawn, excluding axis and legends). Two formats are supported: a number, or a number followed by %. A simple number is a value in pixels; a number followed by % is a percentage.', 'visualizer' ) );
 
 				echo '<div class="viz-section-item">';
@@ -542,6 +584,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 			echo '<b>', $title, '</b>';
 			echo '<select class="control-select ', implode( ' ', $classes ) , '" name="', $name, '" ', ( $multiple ? 'multiple' : '' ), ' ' , $atts, '>';
 		foreach ( $options as $key => $label ) {
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			$extra      = $multiple && is_array( $value ) ? ( in_array( $key, $value ) ? 'selected' : '' ) : selected( $key, $value, false );
 			echo '<option value="', $key, '"', $extra, '>';
 			echo $label;
@@ -568,7 +611,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 		echo '<div class="viz-section-item">';
 			echo '<b>', $title, '</b>';
 			echo '<div>';
-				echo '<input type="text" class="color-picker-hex" name="', $name, '" maxlength="7" placeholder="', esc_attr__( 'Hex Value', 'visualizer' ), '" value="', is_null( $value ) ? $default : esc_attr( $value ), '" data-default-color="', $default, '">';
+				echo '<input type="text" class="color-picker-hex color-picker" data-alpha="true" name="', $name, '" maxlength="7" placeholder="', esc_attr__( 'Hex Value', 'visualizer' ), '" value="', is_null( $value ) ? $default : esc_attr( $value ), '" data-default-color="', $default, '">';
 			echo '</div>';
 		echo '</div>';
 	}
@@ -614,8 +657,8 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	 * @param string $html Any additional HTML.
 	 * @param string $class Any additional classes.
 	 */
-	public static function _renderGroupStart( $title, $html = '', $class = '' ) {
-		echo '<li class="viz-group ' . $class . '">';
+	public static function _renderGroupStart( $title, $html = '', $class = '', $id = '' ) {
+		echo '<li id="' . $id . '" class="viz-group ' . $class . '">';
 			echo '<h3 class="viz-group-title">', $title, '</h3>';
 			echo $html;
 			echo '<ul class="viz-group-content">';
@@ -679,9 +722,9 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 	 * @access public
 	 * @param string $description The description text.
 	 */
-	public static function _renderSectionDescription( $description ) {
+	public static function _renderSectionDescription( $description, $classes = '' ) {
 		echo '<div class="viz-section-item">';
-			echo '<div class="viz-section-description">', $description, '</div>';
+			echo '<div class="viz-section-description ' . $classes . '">', $description, '</div>';
 		echo '</div>';
 	}
 
@@ -725,6 +768,7 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 		echo '<div class="viz-section-item">';
 			echo '<a class="more-info" href="javascript:;">[?]</a>';
 			echo '<b>', $title, '</b>';
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			echo '<input type="checkbox" class="control-check" value="', $default, '" name="', $name, '" ', ( $value == $default ? 'checked' : '' ), ' ', ( $disabled ? 'disabled=disabled' : '' ), '>';
 			echo '<p class="viz-section-description">', $desc, '</p>';
 		echo '</div>';
@@ -748,4 +792,24 @@ abstract class Visualizer_Render_Sidebar extends Visualizer_Render {
 		echo '</div>';
 	}
 
+	/**
+	 * Returns the library this chart implements.
+	 */
+	public function getLibrary() {
+		return $this->_library;
+	}
+
+	/**
+	 * Loads generic libraries conditionally.
+	 */
+	protected function load_dependent_assets( $libs ) {
+		if ( in_array( 'moment', $libs, true ) && ! wp_script_is( 'moment', 'registered' ) ) {
+			wp_register_script( 'moment', VISUALIZER_ABSURL . 'js/lib/moment.min.js', array(), Visualizer_Plugin::VERSION );
+		}
+
+		if ( in_array( 'numeral', $libs, true ) && ! wp_script_is( 'numeral', 'registered' ) ) {
+			wp_register_script( 'numeral', VISUALIZER_ABSURL . 'js/lib/numeral.min.js', array(), Visualizer_Plugin::VERSION );
+		}
+
+	}
 }
