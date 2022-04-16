@@ -1,4 +1,3 @@
-/* globals jQuery, tribe */
 /**
  * Makes sure we have all the required levels on the Tribe Object
  *
@@ -134,7 +133,7 @@ tribe.events.views.breakpoints = {};
 	 *
 	 * @return {void}
 	 */
-	obj.deinit = function( event, jqXHR, settings ) {
+	obj.deinit = function( event, jqXHR, settings ) { // eslint-disable-line no-unused-vars
 		obj.unbindEvents( event.data.container );
 	};
 
@@ -207,7 +206,7 @@ tribe.events.views.breakpoints = {};
 
 		// If we have data element set it up.
 		if ( $data.length ) {
-			data = JSON.parse( $.trim( $data.text() ) );
+			data = JSON.parse( $data.text().trim() );
 		}
 
 		obj.initTasks( $container, data );
@@ -225,5 +224,5 @@ tribe.events.views.breakpoints = {};
 	};
 
 	// Configure on document ready
-	$document.ready( obj.ready );
+	$( obj.ready );
 } )( jQuery, tribe.events.views.breakpoints );

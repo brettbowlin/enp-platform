@@ -15,7 +15,7 @@
  *
  * @since 1.5.0
  *
- * @global object $authordata The current author's DB object.
+ * @global WP_User $authordata The current author's data.
  *
  * @param string $deprecated Deprecated.
  * @return string|null The author's display name.
@@ -32,7 +32,7 @@ function get_the_author( $deprecated = '' ) {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param string $authordata->display_name The author's display name.
+	 * @param string|null $display_name The author's display name.
 	 */
 	return apply_filters( 'the_author', is_object( $authordata ) ? $authordata->display_name : null );
 }
@@ -49,9 +49,16 @@ function get_the_author( $deprecated = '' ) {
  * return it. However, backward compatibility has to be maintained.
  *
  * @since 0.71
+<<<<<<< HEAD
  * @see get_the_author()
  * @link https://developer.wordpress.org/reference/functions/the_author/
  *
+=======
+ *
+ * @see get_the_author()
+ * @link https://developer.wordpress.org/reference/functions/the_author/
+ *
+>>>>>>> master
  * @param string $deprecated      Deprecated.
  * @param bool   $deprecated_echo Deprecated. Use get_the_author(). Echo the string or return it.
  * @return string|null The author's display name, from get_the_author().
@@ -98,7 +105,7 @@ function get_the_modified_author() {
 		 *
 		 * @since 2.8.0
 		 *
-		 * @param string $last_user->display_name The author's display name.
+		 * @param string $display_name The author's display name.
 		 */
 		return apply_filters( 'the_modified_author', $last_user->display_name );
 	}
@@ -151,7 +158,7 @@ function the_modified_author() {
  *
  * @since 2.8.0
  *
- * @global object $authordata The current author's DB object.
+ * @global WP_User $authordata The current author's data.
  *
  * @param string    $field   Optional. The user field to retrieve. Default empty.
  * @param int|false $user_id Optional. User ID.
@@ -167,7 +174,11 @@ function get_the_author_meta( $field = '', $user_id = false ) {
 		$authordata = get_userdata( $user_id );
 	}
 
+<<<<<<< HEAD
 	if ( in_array( $field, array( 'login', 'pass', 'nicename', 'email', 'url', 'registered', 'activation_key', 'status' ) ) ) {
+=======
+	if ( in_array( $field, array( 'login', 'pass', 'nicename', 'email', 'url', 'registered', 'activation_key', 'status' ), true ) ) {
+>>>>>>> master
 		$field = 'user_' . $field;
 	}
 
@@ -286,7 +297,7 @@ function the_author_posts() {
  *
  * @since 4.4.0
  *
- * @global object $authordata The current author's DB object.
+ * @global WP_User $authordata The current author's data.
  *
  * @return string An HTML link to the author page, or an empty string if $authordata isn't defined.
  */
@@ -349,7 +360,11 @@ function get_author_posts_url( $author_id, $author_nicename = '' ) {
 		$file = home_url( '/' );
 		$link = $file . '?author=' . $auth_ID;
 	} else {
+<<<<<<< HEAD
 		if ( '' == $author_nicename ) {
+=======
+		if ( '' === $author_nicename ) {
+>>>>>>> master
 			$user = get_userdata( $author_id );
 			if ( ! empty( $user->user_nicename ) ) {
 				$author_nicename = $user->user_nicename;
@@ -365,7 +380,7 @@ function get_author_posts_url( $author_id, $author_nicename = '' ) {
 	 * @since 2.1.0
 	 *
 	 * @param string $link            The URL to the author's page.
-	 * @param int    $author_id       The author's id.
+	 * @param int    $author_id       The author's ID.
 	 * @param string $author_nicename The author's nice name.
 	 */
 	$link = apply_filters( 'author_link', $link, $author_id, $author_nicename );
@@ -404,8 +419,8 @@ function get_author_posts_url( $author_id, $author_nicename = '' ) {
  *     @type string       $style         If 'list', each author is wrapped in an `<li>` element, otherwise the authors
  *                                       will be separated by commas.
  *     @type bool         $html          Whether to list the items in HTML form or plaintext. Default true.
- *     @type array|string $exclude       Array or comma/space-separated list of author IDs to exclude. Default empty.
- *     @type array|string $include       Array or comma/space-separated list of author IDs to include. Default empty.
+ *     @type int[]|string $exclude       Array or comma/space-separated list of author IDs to exclude. Default empty.
+ *     @type int[]|string $include       Array or comma/space-separated list of author IDs to include. Default empty.
  * }
  * @return void|string Void if 'echo' argument is true, list of authors if 'echo' is false.
  */
@@ -467,13 +482,17 @@ function wp_list_authors( $args = '' ) {
 			continue; // No need to go further to process HTML.
 		}
 
-		if ( 'list' == $args['style'] ) {
+		if ( 'list' === $args['style'] ) {
 			$return .= '<li>';
 		}
 
 		$link = sprintf(
 			'<a href="%1$s" title="%2$s">%3$s</a>',
+<<<<<<< HEAD
 			get_author_posts_url( $author->ID, $author->user_nicename ),
+=======
+			esc_url( get_author_posts_url( $author->ID, $author->user_nicename ) ),
+>>>>>>> master
 			/* translators: %s: Author's display name. */
 			esc_attr( sprintf( __( 'Posts by %s' ), $author->display_name ) ),
 			$name
@@ -513,7 +532,7 @@ function wp_list_authors( $args = '' ) {
 		}
 
 		$return .= $link;
-		$return .= ( 'list' == $args['style'] ) ? '</li>' : ', ';
+		$return .= ( 'list' === $args['style'] ) ? '</li>' : ', ';
 	}
 
 	$return = rtrim( $return, ', ' );

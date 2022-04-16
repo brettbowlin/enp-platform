@@ -6,14 +6,19 @@
  * @output wp-admin/js/edit-comments.js
  */
 
+<<<<<<< HEAD
 /* global adminCommentsL10n, thousandsSeparator, list_args, QTags, ajaxurl, wpAjax */
+=======
+/* global adminCommentsSettings, thousandsSeparator, list_args, QTags, ajaxurl, wpAjax */
+>>>>>>> master
 /* global commentReply, theExtraList, theList, setCommentsList */
 
 (function($) {
 var getCount, updateCount, updateCountText, updatePending, updateApproved,
 	updateHtmlTitle, updateDashboardText, updateInModerationText, adminTitle = document.title,
 	isDashboard = $('#dashboard_right_now').length,
-	titleDiv, titleRegEx;
+	titleDiv, titleRegEx,
+	__ = wp.i18n.__;
 
 	/**
 	 * Extracts a number from the content of a jQuery element.
@@ -158,7 +163,11 @@ var getCount, updateCount, updateCountText, updatePending, updateApproved,
 	 *
 	 * @since 5.2.0
 	 *
+<<<<<<< HEAD
 	 * @param {object} response Ajax response from the server that includes a
+=======
+	 * @param {Object} response Ajax response from the server that includes a
+>>>>>>> master
 	 *                          translated "comments in moderation" message.
 	 *
 	 * @return {void}
@@ -191,7 +200,12 @@ var getCount, updateCount, updateCountText, updatePending, updateApproved,
 	updateHtmlTitle = function( diff ) {
 		var newTitle, regExMatch, titleCount, commentFrag;
 
+<<<<<<< HEAD
 		titleRegEx = titleRegEx || new RegExp( adminCommentsL10n.docTitleCommentsCount.replace( '%s', '\\([0-9' + thousandsSeparator + ']+\\)' ) + '?' );
+=======
+		/* translators: %s: Comments count. */
+		titleRegEx = titleRegEx || new RegExp( __( 'Comments (%s)' ).replace( '%s', '\\([0-9' + thousandsSeparator + ']+\\)' ) + '?' );
+>>>>>>> master
 		// Count funcs operate on a $'d element.
 		titleDiv = titleDiv || $( '<div />' );
 		newTitle = adminTitle;
@@ -210,12 +224,13 @@ var getCount, updateCount, updateCountText, updatePending, updateApproved,
 			updateCount( titleDiv, titleCount );
 			regExMatch = titleRegEx.exec( document.title );
 			if ( regExMatch ) {
-				newTitle = document.title.replace( regExMatch[0], adminCommentsL10n.docTitleCommentsCount.replace( '%s', titleDiv.text() ) + ' ' );
+				/* translators: %s: Comments count. */
+				newTitle = document.title.replace( regExMatch[0], __( 'Comments (%s)' ).replace( '%s', titleDiv.text() ) + ' ' );
 			}
 		} else {
 			regExMatch = titleRegEx.exec( newTitle );
 			if ( regExMatch ) {
-				newTitle = newTitle.replace( regExMatch[0], adminCommentsL10n.docTitleComments );
+				newTitle = newTitle.replace( regExMatch[0], __( 'Comments' ) );
 			}
 		}
 		document.title = newTitle;
@@ -360,14 +375,14 @@ window.setCommentsList = function() {
 
 		if ( c.is('.unapproved') ) {
 			if ( settings.data.id == replyID )
-				replyButton.text(adminCommentsL10n.replyApprove);
+				replyButton.text( __( 'Approve and Reply' ) );
 
 			c.find( '.row-actions span.view' ).addClass( 'hidden' ).end()
 				.find( 'div.comment_status' ).html( '0' );
 
 		} else {
 			if ( settings.data.id == replyID )
-				replyButton.text(adminCommentsL10n.reply);
+				replyButton.text( __( 'Reply' ) );
 
 			c.find( '.row-actions span.view' ).removeClass( 'hidden' ).end()
 				.find( 'div.comment_status' ).html( '1' );
@@ -442,7 +457,7 @@ window.setCommentsList = function() {
 			a.attr('class', 'vim-z vim-destructive aria-button-if-js');
 			$('.avatar', el).first().clone().prependTo('#undo-' + id + ' .' + action + '-undo-inside');
 
-			a.click(function( e ){
+			a.on( 'click', function( e ){
 				e.preventDefault();
 				e.stopPropagation(); // Ticket #35904.
 				list.wpList.del(this);
@@ -759,7 +774,11 @@ window.setCommentsList = function() {
 	 * @global
 	 */
 	window.theList = $('#the-comment-list').wpList( { alt: '', delBefore: delBefore, dimAfter: dimAfter, delAfter: delAfter, addColor: 'none' } )
+<<<<<<< HEAD
 		.bind('wpListDelEnd', function(e, s){
+=======
+		.on('wpListDelEnd', function(e, s){
+>>>>>>> master
 			var wpListsData = $(s.target).attr('data-wp-lists'), id = s.element.replace(/[^0-9]+/g, '');
 
 			if ( wpListsData.indexOf(':trash=1') != -1 || wpListsData.indexOf(':spam=1') != -1 )
@@ -790,9 +809,15 @@ window.commentReply = {
 	init : function() {
 		var row = $('#replyrow');
 
+<<<<<<< HEAD
 		$( '.cancel', row ).click( function() { return commentReply.revert(); } );
 		$( '.save', row ).click( function() { return commentReply.send(); } );
 		$( 'input#author-name, input#author-email, input#author-url', row ).keypress( function( e ) {
+=======
+		$( '.cancel', row ).on( 'click', function() { return commentReply.revert(); } );
+		$( '.save', row ).on( 'click', function() { return commentReply.send(); } );
+		$( 'input#author-name, input#author-email, input#author-url', row ).on( 'keypress', function( e ) {
+>>>>>>> master
 			if ( e.which == 13 ) {
 				commentReply.send();
 				e.preventDefault();
@@ -801,11 +826,15 @@ window.commentReply = {
 		});
 
 		// Add events.
+<<<<<<< HEAD
 		$('#the-comment-list .column-comment > p').dblclick(function(){
+=======
+		$('#the-comment-list .column-comment > p').on( 'dblclick', function(){
+>>>>>>> master
 			commentReply.toggle($(this).parent());
 		});
 
-		$('#doaction, #doaction2, #post-query-submit').click(function(){
+		$('#doaction, #post-query-submit').on( 'click', function(){
 			if ( $('#the-comment-list #replyrow').length > 0 )
 				commentReply.close();
 		});
@@ -828,7 +857,7 @@ window.commentReply = {
 	 */
 	addEvents : function(r) {
 		r.each(function() {
-			$(this).find('.column-comment > p').dblclick(function(){
+			$(this).find('.column-comment > p').on( 'dblclick', function(){
 				commentReply.toggle($(this).parent());
 			});
 		});
@@ -846,8 +875,13 @@ window.commentReply = {
 	 * @return {void}
 	 */
 	toggle : function(el) {
+<<<<<<< HEAD
 		if ( 'none' !== $( el ).css( 'display' ) && ( $( '#replyrow' ).parent().is('#com-reply') || window.confirm( adminCommentsL10n.warnQuickEdit ) ) ) {
 			$( el ).find( 'button.vim-q' ).click();
+=======
+		if ( 'none' !== $( el ).css( 'display' ) && ( $( '#replyrow' ).parent().is('#com-reply') || window.confirm( __( 'Are you sure you want to edit this comment?\nThe changes you made will be lost.' ) ) ) ) {
+			$( el ).find( 'button.vim-q' ).trigger( 'click' );
+>>>>>>> master
 		}
 	},
 
@@ -902,7 +936,11 @@ window.commentReply = {
 					.show()
 					.find( '.vim-q' )
 						.attr( 'aria-expanded', 'false' )
+<<<<<<< HEAD
 						.focus();
+=======
+						.trigger( 'focus' );
+>>>>>>> master
 			} ).css( 'backgroundColor', '' );
 		}
 
@@ -910,7 +948,11 @@ window.commentReply = {
 		if ( 'replyto-comment' === this.act ) {
 			commentRow.find( '.vim-r' )
 				.attr( 'aria-expanded', 'false' )
+<<<<<<< HEAD
 				.focus();
+=======
+				.trigger( 'focus' );
+>>>>>>> master
 		}
 
 		// Reset the Quicktags buttons.
@@ -939,8 +981,13 @@ window.commentReply = {
 	 *
 	 * @memberof commentReply
 	 *
+<<<<<<< HEAD
 	 * @param {number} comment_id The comment id to open an editor for.
 	 * @param {number} post_id The post id to open an editor for.
+=======
+	 * @param {number} comment_id The comment ID to open an editor for.
+	 * @param {number} post_id The post ID to open an editor for.
+>>>>>>> master
 	 * @param {string} action The action to perform. Either 'edit' or 'replyto'.
 	 *
 	 * @return {boolean} Always false.
@@ -1007,9 +1054,9 @@ window.commentReply = {
 			c.after(editRow);
 
 			if ( c.hasClass('unapproved') ) {
-				replyButton.text(adminCommentsL10n.replyApprove);
+				replyButton.text( __( 'Approve and Reply' ) );
 			} else {
-				replyButton.text(adminCommentsL10n.reply);
+				replyButton.text( __( 'Reply' ) );
 			}
 
 			$('#replyrow').fadeIn(300, function(){ $(this).show(); });
@@ -1029,7 +1076,7 @@ window.commentReply = {
 			else if ( rtop - 20 < scrollTop )
 				window.scroll(0, rtop - 35);
 
-			$('#replycontent').focus().keyup(function(e){
+			$('#replycontent').trigger( 'focus' ).on( 'keyup', function(e){
 				if ( e.which == 27 )
 					commentReply.revert(); // Close on Escape.
 			});
@@ -1132,7 +1179,12 @@ window.commentReply = {
 			updateCountText( 'span.all-count', 1 );
 		}
 
+<<<<<<< HEAD
 		c = $.trim(r.data); // Trim leading whitespaces.
+=======
+		r.data = r.data || '';
+		c = r.data.toString().trim(); // Trim leading whitespaces.
+>>>>>>> master
 		$(c).hide();
 		$('#replyrow').after(c);
 
@@ -1186,7 +1238,11 @@ window.commentReply = {
 	 *
 	 * @memberof commentReply
 	 *
+<<<<<<< HEAD
 	 * @param {number} post_id The post id.
+=======
+	 * @param {number} post_id The post ID.
+>>>>>>> master
 	 *
 	 * @return {void}
 	 */
@@ -1217,11 +1273,11 @@ window.commentReply = {
 			return true;
 		}
 
-		return window.confirm( adminCommentsL10n.warnCommentChanges );
+		return window.confirm( __( 'Are you sure you want to do this?\nThe comment changes you made will be lost.' ) );
 	}
 };
 
-$(document).ready(function(){
+$( function(){
 	var make_hotkeys_redirect, edit_comment, toggle_all, make_bulk;
 
 	setCommentsList();
@@ -1294,7 +1350,7 @@ $(document).ready(function(){
 			return function() {
 				var scope = $('select[name="action"]');
 				$('option[value="' + value + '"]', scope).prop('selected', true);
-				$('#doaction').click();
+				$('#doaction').trigger( 'click' );
 			};
 		};
 
@@ -1312,8 +1368,8 @@ $(document).ready(function(){
 				['shift+u', make_bulk('unapprove')]
 			],
 			{
-				highlight_first: adminCommentsL10n.hotkeys_highlight_first,
-				highlight_last: adminCommentsL10n.hotkeys_highlight_last,
+				highlight_first: adminCommentsSettings.hotkeys_highlight_first,
+				highlight_last: adminCommentsSettings.hotkeys_highlight_last,
 				prev_page_link_cb: make_hotkeys_redirect('prev'),
 				next_page_link_cb: make_hotkeys_redirect('next'),
 				hotkeys_opts: {

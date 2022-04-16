@@ -47,9 +47,160 @@ var media = (function () {
       hasDimensions: hasDimensions
     };
 
+<<<<<<< HEAD
     var global$3 = tinymce.util.Tools.resolve('tinymce.html.SaxParser');
 
     var global$4 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+=======
+    var Cell = function (initial) {
+      var value = initial;
+      var get = function () {
+        return value;
+      };
+      var set = function (v) {
+        value = v;
+      };
+      var clone = function () {
+        return Cell(get());
+      };
+      return {
+        get: get,
+        set: set,
+        clone: clone
+      };
+    };
+
+    var noop = function () {
+    };
+    var constant = function (value) {
+      return function () {
+        return value;
+      };
+    };
+    var never = constant(false);
+    var always = constant(true);
+
+    var none = function () {
+      return NONE;
+    };
+    var NONE = function () {
+      var eq = function (o) {
+        return o.isNone();
+      };
+      var call = function (thunk) {
+        return thunk();
+      };
+      var id = function (n) {
+        return n;
+      };
+      var me = {
+        fold: function (n, s) {
+          return n();
+        },
+        is: never,
+        isSome: never,
+        isNone: always,
+        getOr: id,
+        getOrThunk: call,
+        getOrDie: function (msg) {
+          throw new Error(msg || 'error: getOrDie called on none.');
+        },
+        getOrNull: constant(null),
+        getOrUndefined: constant(undefined),
+        or: id,
+        orThunk: call,
+        map: none,
+        each: noop,
+        bind: none,
+        exists: never,
+        forall: always,
+        filter: none,
+        equals: eq,
+        equals_: eq,
+        toArray: function () {
+          return [];
+        },
+        toString: constant('none()')
+      };
+      if (Object.freeze) {
+        Object.freeze(me);
+      }
+      return me;
+    }();
+    var some = function (a) {
+      var constant_a = constant(a);
+      var self = function () {
+        return me;
+      };
+      var bind = function (f) {
+        return f(a);
+      };
+      var me = {
+        fold: function (n, s) {
+          return s(a);
+        },
+        is: function (v) {
+          return a === v;
+        },
+        isSome: always,
+        isNone: never,
+        getOr: constant_a,
+        getOrThunk: constant_a,
+        getOrDie: constant_a,
+        getOrNull: constant_a,
+        getOrUndefined: constant_a,
+        or: self,
+        orThunk: self,
+        map: function (f) {
+          return some(f(a));
+        },
+        each: function (f) {
+          f(a);
+        },
+        bind: bind,
+        exists: bind,
+        forall: bind,
+        filter: function (f) {
+          return f(a) ? me : NONE;
+        },
+        toArray: function () {
+          return [a];
+        },
+        toString: function () {
+          return 'some(' + a + ')';
+        },
+        equals: function (o) {
+          return o.is(a);
+        },
+        equals_: function (o, elementEq) {
+          return o.fold(never, function (b) {
+            return elementEq(a, b);
+          });
+        }
+      };
+      return me;
+    };
+    var from = function (value) {
+      return value === null || value === undefined ? NONE : some(value);
+    };
+    var Option = {
+      some: some,
+      none: none,
+      from: from
+    };
+
+    var hasOwnProperty = Object.hasOwnProperty;
+    var get = function (obj, key) {
+      return has(obj, key) ? Option.from(obj[key]) : Option.none();
+    };
+    var has = function (obj, key) {
+      return hasOwnProperty.call(obj, key);
+    };
+
+    var global$3 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+
+    var global$4 = tinymce.util.Tools.resolve('tinymce.html.SaxParser');
+>>>>>>> master
 
     var getVideoScriptMatch = function (prefixes, src) {
       if (prefixes) {
@@ -62,6 +213,7 @@ var media = (function () {
     };
     var VideoScript = { getVideoScriptMatch: getVideoScriptMatch };
 
+<<<<<<< HEAD
     var trimPx = function (value) {
       return value.replace(/px$/, '');
     };
@@ -98,10 +250,33 @@ var media = (function () {
     var htmlToDataSax = function (prefixes, html) {
       var data = {};
       global$3({
+=======
+    var DOM = global$3.DOM;
+    var trimPx = function (value) {
+      return value.replace(/px$/, '');
+    };
+    var getEphoxEmbedData = function (attrs) {
+      var style = attrs.map.style;
+      var styles = style ? DOM.parseStyle(style) : {};
+      return {
+        type: 'ephox-embed-iri',
+        source1: attrs.map['data-ephox-embed-iri'],
+        source2: '',
+        poster: '',
+        width: get(styles, 'max-width').map(trimPx).getOr(''),
+        height: get(styles, 'max-height').map(trimPx).getOr('')
+      };
+    };
+    var htmlToData = function (prefixes, html) {
+      var isEphoxEmbed = Cell(false);
+      var data = {};
+      global$4({
+>>>>>>> master
         validate: false,
         allow_conditional_comments: true,
         special: 'script,noscript',
         start: function (name, attrs) {
+<<<<<<< HEAD
           if (!data.source1 && name === 'param') {
             data.source1 = attrs.map.movie;
           }
@@ -132,6 +307,43 @@ var media = (function () {
           }
           if (name === 'img' && !data.poster) {
             data.poster = attrs.map.src;
+=======
+          if (isEphoxEmbed.get()) ; else if (has(attrs.map, 'data-ephox-embed-iri')) {
+            isEphoxEmbed.set(true);
+            data = getEphoxEmbedData(attrs);
+          } else {
+            if (!data.source1 && name === 'param') {
+              data.source1 = attrs.map.movie;
+            }
+            if (name === 'iframe' || name === 'object' || name === 'embed' || name === 'video' || name === 'audio') {
+              if (!data.type) {
+                data.type = name;
+              }
+              data = global$2.extend(attrs.map, data);
+            }
+            if (name === 'script') {
+              var videoScript = VideoScript.getVideoScriptMatch(prefixes, attrs.map.src);
+              if (!videoScript) {
+                return;
+              }
+              data = {
+                type: 'script',
+                source1: attrs.map.src,
+                width: videoScript.width,
+                height: videoScript.height
+              };
+            }
+            if (name === 'source') {
+              if (!data.source1) {
+                data.source1 = attrs.map.src;
+              } else if (!data.source2) {
+                data.source2 = attrs.map.src;
+              }
+            }
+            if (name === 'img' && !data.poster) {
+              data.poster = attrs.map.src;
+            }
+>>>>>>> master
           }
         }
       }).parse(html);
@@ -140,6 +352,7 @@ var media = (function () {
       data.poster = data.poster || '';
       return data;
     };
+<<<<<<< HEAD
     var ephoxEmbedHtmlToData = function (html) {
       var fragment = DOM.createFragment(html);
       var div = fragment.firstChild;
@@ -155,6 +368,8 @@ var media = (function () {
     var htmlToData = function (prefixes, html) {
       return isEphoxEmbed(html) ? ephoxEmbedHtmlToData(html) : htmlToDataSax(prefixes, html);
     };
+=======
+>>>>>>> master
     var HtmlToData = { htmlToData: htmlToData };
 
     var global$5 = tinymce.util.Tools.resolve('tinymce.util.Promise');
@@ -174,6 +389,7 @@ var media = (function () {
     };
     var Mime = { guess: guess };
 
+<<<<<<< HEAD
     var global$6 = tinymce.util.Tools.resolve('tinymce.html.Writer');
 
     var global$7 = tinymce.util.Tools.resolve('tinymce.html.Schema');
@@ -190,6 +406,23 @@ var media = (function () {
           i = attrs.length;
           while (i--) {
             attr = attrs[i];
+=======
+    var global$6 = tinymce.util.Tools.resolve('tinymce.html.Schema');
+
+    var global$7 = tinymce.util.Tools.resolve('tinymce.html.Writer');
+
+    var DOM$1 = global$3.DOM;
+    var addPx = function (value) {
+      return /^[0-9.]+$/.test(value) ? value + 'px' : value;
+    };
+    var setAttributes = function (attrs, updatedAttrs) {
+      for (var name in updatedAttrs) {
+        var value = '' + updatedAttrs[name];
+        if (attrs.map[name]) {
+          var i = attrs.length;
+          while (i--) {
+            var attr = attrs[i];
+>>>>>>> master
             if (attr.name === name) {
               if (value) {
                 attrs.map[name] = value;
@@ -209,6 +442,7 @@ var media = (function () {
         }
       }
     };
+<<<<<<< HEAD
     var normalizeHtml = function (html) {
       var writer = global$6();
       var parser = global$3(writer);
@@ -220,6 +454,21 @@ var media = (function () {
       var sourceCount = 0;
       var hasImage;
       global$3({
+=======
+    var updateEphoxEmbed = function (data, attrs) {
+      var style = attrs.map.style;
+      var styleMap = style ? DOM$1.parseStyle(style) : {};
+      styleMap['max-width'] = addPx(data.width);
+      styleMap['max-height'] = addPx(data.height);
+      setAttributes(attrs, { style: DOM$1.serializeStyle(styleMap) });
+    };
+    var updateHtml = function (html, data, updateAll) {
+      var writer = global$7();
+      var isEphoxEmbed = Cell(false);
+      var sourceCount = 0;
+      var hasImage;
+      global$4({
+>>>>>>> master
         validate: false,
         allow_conditional_comments: true,
         special: 'script,noscript',
@@ -233,6 +482,7 @@ var media = (function () {
           writer.text(text, raw);
         },
         start: function (name, attrs, empty) {
+<<<<<<< HEAD
           switch (name) {
           case 'video':
           case 'object':
@@ -279,11 +529,65 @@ var media = (function () {
               }
               hasImage = true;
               break;
+=======
+          if (isEphoxEmbed.get()) ; else if (has(attrs.map, 'data-ephox-embed-iri')) {
+            isEphoxEmbed.set(true);
+            updateEphoxEmbed(data, attrs);
+          } else {
+            switch (name) {
+            case 'video':
+            case 'object':
+            case 'embed':
+            case 'img':
+            case 'iframe':
+              if (data.height !== undefined && data.width !== undefined) {
+                setAttributes(attrs, {
+                  width: data.width,
+                  height: data.height
+                });
+              }
+              break;
+            }
+            if (updateAll) {
+              switch (name) {
+              case 'video':
+                setAttributes(attrs, {
+                  poster: data.poster,
+                  src: ''
+                });
+                if (data.source2) {
+                  setAttributes(attrs, { src: '' });
+                }
+                break;
+              case 'iframe':
+                setAttributes(attrs, { src: data.source1 });
+                break;
+              case 'source':
+                sourceCount++;
+                if (sourceCount <= 2) {
+                  setAttributes(attrs, {
+                    src: data['source' + sourceCount],
+                    type: data['source' + sourceCount + 'mime']
+                  });
+                  if (!data['source' + sourceCount]) {
+                    return;
+                  }
+                }
+                break;
+              case 'img':
+                if (!data.poster) {
+                  return;
+                }
+                hasImage = true;
+                break;
+              }
+>>>>>>> master
             }
           }
           writer.start(name, attrs, empty);
         },
         end: function (name) {
+<<<<<<< HEAD
           if (name === 'video' && updateAll) {
             for (var index = 1; index <= 2; index++) {
               if (data['source' + index]) {
@@ -328,6 +632,40 @@ var media = (function () {
     var updateHtml = function (html, data, updateAll) {
       return isEphoxEmbed$1(html) ? updateEphoxEmbed(html, data) : updateHtmlSax(html, data, updateAll);
     };
+=======
+          if (!isEphoxEmbed.get()) {
+            if (name === 'video' && updateAll) {
+              for (var index = 1; index <= 2; index++) {
+                if (data['source' + index]) {
+                  var attrs = [];
+                  attrs.map = {};
+                  if (sourceCount < index) {
+                    setAttributes(attrs, {
+                      src: data['source' + index],
+                      type: data['source' + index + 'mime']
+                    });
+                    writer.start('source', attrs, true);
+                  }
+                }
+              }
+            }
+            if (data.poster && name === 'object' && updateAll && !hasImage) {
+              var imgAttrs = [];
+              imgAttrs.map = {};
+              setAttributes(imgAttrs, {
+                src: data.poster,
+                width: data.width,
+                height: data.height
+              });
+              writer.start('img', imgAttrs, true);
+            }
+          }
+          writer.end(name);
+        }
+      }, global$6({})).parse(html);
+      return writer.getContent();
+    };
+>>>>>>> master
     var UpdateHtml = { updateHtml: updateHtml };
 
     var urlPatterns = [
@@ -551,6 +889,34 @@ var media = (function () {
       isCached: isCached
     };
 
+<<<<<<< HEAD
+=======
+    var trimPx$1 = function (value) {
+      return value.replace(/px$/, '');
+    };
+    var addPx$1 = function (value) {
+      return /^[0-9.]+$/.test(value) ? value + 'px' : value;
+    };
+    var getSize = function (name) {
+      return function (elm) {
+        return elm ? trimPx$1(elm.style[name]) : '';
+      };
+    };
+    var setSize = function (name) {
+      return function (elm, value) {
+        if (elm) {
+          elm.style[name] = addPx$1(value);
+        }
+      };
+    };
+    var Size = {
+      getMaxWidth: getSize('maxWidth'),
+      getMaxHeight: getSize('maxHeight'),
+      setMaxWidth: setSize('maxWidth'),
+      setMaxHeight: setSize('maxHeight')
+    };
+
+>>>>>>> master
     var doSyncSize = function (widthCtrl, heightCtrl) {
       widthCtrl.state.set('oldVal', widthCtrl.value());
       heightCtrl.state.set('oldVal', heightCtrl.value());
@@ -825,13 +1191,21 @@ var media = (function () {
     };
     var Dialog = { showDialog: showDialog };
 
+<<<<<<< HEAD
     var get = function (editor) {
+=======
+    var get$1 = function (editor) {
+>>>>>>> master
       var showDialog = function () {
         Dialog.showDialog(editor);
       };
       return { showDialog: showDialog };
     };
+<<<<<<< HEAD
     var Api = { get: get };
+=======
+    var Api = { get: get$1 };
+>>>>>>> master
 
     var register = function (editor) {
       var showDialog = function () {
@@ -847,9 +1221,15 @@ var media = (function () {
       if (Settings.shouldFilterHtml(editor) === false) {
         return html;
       }
+<<<<<<< HEAD
       var writer = global$6();
       var blocked;
       global$3({
+=======
+      var writer = global$7();
+      var blocked;
+      global$4({
+>>>>>>> master
         validate: false,
         allow_conditional_comments: false,
         special: 'script,noscript',
@@ -864,6 +1244,7 @@ var media = (function () {
         },
         start: function (name, attrs, empty) {
           blocked = true;
+<<<<<<< HEAD
           if (name === 'script' || name === 'noscript') {
             return;
           }
@@ -872,6 +1253,18 @@ var media = (function () {
               return;
             }
             if (attrs[i].name === 'style') {
+=======
+          if (name === 'script' || name === 'noscript' || name === 'svg') {
+            return;
+          }
+          for (var i = attrs.length - 1; i >= 0; i--) {
+            var attrName = attrs[i].name;
+            if (attrName.indexOf('on') === 0) {
+              delete attrs.map[attrName];
+              attrs.splice(i, 1);
+            }
+            if (attrName === 'style') {
+>>>>>>> master
               attrs[i].value = editor.dom.serializeStyle(editor.dom.parseStyle(attrs[i].value), name);
             }
           }
@@ -884,7 +1277,11 @@ var media = (function () {
           }
           writer.end(name);
         }
+<<<<<<< HEAD
       }, global$7({})).parse(html);
+=======
+      }, global$6({})).parse(html);
+>>>>>>> master
       return writer.getContent();
     };
     var Sanitize = { sanitize: sanitize };

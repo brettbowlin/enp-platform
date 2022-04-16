@@ -13,6 +13,7 @@
  * @return string Returns the tag cloud for selected taxonomy.
  */
 function render_block_core_tag_cloud( $attributes ) {
+<<<<<<< HEAD
 	$class = isset( $attributes['align'] ) ?
 		"wp-block-tag-cloud align{$attributes['align']}" :
 		'wp-block-tag-cloud';
@@ -22,11 +23,17 @@ function render_block_core_tag_cloud( $attributes ) {
 	}
 
 	$args = array(
+=======
+	$args      = array(
+>>>>>>> master
 		'echo'       => false,
 		'taxonomy'   => $attributes['taxonomy'],
 		'show_count' => $attributes['showTagCounts'],
 	);
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	$tag_cloud = wp_tag_cloud( $args );
 
 	if ( ! $tag_cloud ) {
@@ -40,9 +47,17 @@ function render_block_core_tag_cloud( $attributes ) {
 		);
 	}
 
+<<<<<<< HEAD
 	return sprintf(
 		'<p class="%1$s">%2$s</p>',
 		esc_attr( $class ),
+=======
+	$wrapper_attributes = get_block_wrapper_attributes();
+
+	return sprintf(
+		'<p %1$s>%2$s</p>',
+		$wrapper_attributes,
+>>>>>>> master
 		$tag_cloud
 	);
 }
@@ -51,6 +66,7 @@ function render_block_core_tag_cloud( $attributes ) {
  * Registers the `core/tag-cloud` block on server.
  */
 function register_block_core_tag_cloud() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/tag-cloud',
 		array(
@@ -71,6 +87,11 @@ function register_block_core_tag_cloud() {
 					'default' => false,
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/tag-cloud',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_tag_cloud',
 		)
 	);

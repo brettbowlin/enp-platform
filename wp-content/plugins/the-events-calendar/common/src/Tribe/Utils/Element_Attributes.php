@@ -188,7 +188,11 @@ class Element_Attributes {
 	protected function parse_string( $arguments ) {
 		$values = preg_split( '/\s+/', $arguments, -1, PREG_SPLIT_NO_EMPTY );
 
+<<<<<<< HEAD
 		// When it doesnt match, bail early.
+=======
+		// When it doesn't match, bail early.
+>>>>>>> master
 		if ( ! $values ) {
 			return;
 		}

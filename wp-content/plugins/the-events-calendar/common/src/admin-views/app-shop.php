@@ -12,6 +12,7 @@ foreach ( $products as $product ) {
 		$all_products['for-sale'][] = $product;
 	}
 }
+<<<<<<< HEAD
 ?>
 
 <div id="tribe-app-shop">
@@ -23,6 +24,27 @@ foreach ( $products as $product ) {
 				<h1><span>TEC</span>&nbsp;<?php esc_html_e( 'Add-Ons', 'tribe-common' ); ?></h1>
 			</div>
 
+=======
+
+use \Tribe\Admin\Troubleshooting;
+?>
+
+<div id="tribe-app-shop">
+
+	<?php 
+		tribe( Troubleshooting::class )->admin_notice( 'app-shop' );
+	?>
+
+	<div class="tribe-header">
+		<div class="content-wrapper">
+			<div class="logo-word-mark">
+				<img
+					src="<?php echo esc_url( tribe_resource_url( 'images/logo/tec-brand.svg', false, null, $main ) ); ?>"
+					alt="<?php esc_attr_e( 'The Events Calendar brand logo', 'tribe-common' ); ?>"
+				/>
+			</div>
+
+>>>>>>> master
 			<ul>
 				<li class="selected" data-tab="tribe-all-solutions"><?php esc_html_e( 'All Solutions', 'tribe-common' ); ?></li>
 				<li data-tab="tribe-bundles"><?php esc_html_e( 'Save with Bundles', 'tribe-common' ); ?></li>
@@ -32,6 +54,14 @@ foreach ( $products as $product ) {
 	</div>
 
 	<div id="tribe-all-solutions" class="tribe-content">
+<<<<<<< HEAD
+=======
+		<img
+			class="tribe-events-admin-graphic"
+			src="<?php echo esc_url( tribe_resource_url( 'images/header/all-solutions.jpg', false, null, $main ) ); ?>"
+			alt="<?php esc_attr_e( 'Shapes and lines for visual interest', 'tribe-common' ); ?>"
+		/>
+>>>>>>> master
 		<div class="content-wrapper">
 			<div class="addon-grid">
 				<?php foreach ( $all_products as $status => $some_products ) : ?>
@@ -64,7 +94,11 @@ foreach ( $products as $product ) {
 							</div>
 
 							<ul class="features">
+<<<<<<< HEAD
 								<?php foreach( $product->features as $feature ) : ?>
+=======
+								<?php foreach ( $product->features as $feature ) : ?>
+>>>>>>> master
 									<li>
 										<span class="check">
 											<svg fill="none" height="12" viewBox="0 0 16 12" width="16" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m13.7357.374803-8.40784 8.402337-3.06361-3.06158c-.52424-.506-1.357557-.49877-1.872924.01626s-.522608 1.34779-.016275 1.87169l4.008209 4.00559c.52173.5212 1.36747.5212 1.8892 0l9.35244-9.34634c.5064-.5239.4991-1.356665-.0162-1.871692-.5154-.515027-1.3487-.522264-1.873-.016265z" fill="#3d54ff" fill-rule="evenodd"/></svg>
@@ -76,7 +110,11 @@ foreach ( $products as $product ) {
 							</ul>
 
 							<?php if ( 'installed' == $status ) : ?>
+<<<<<<< HEAD
 								<a class="button" href="https://m.tri.be/1aiz"><?php esc_html_e( 'Manage', 'tribe-common' ); ?></a>
+=======
+								<a class="button" href="https://evnt.is/1aiz"><?php esc_html_e( 'Manage', 'tribe-common' ); ?></a>
+>>>>>>> master
 							<?php else : ?>
 								<a class="button" href="<?php echo esc_url( $product->link ); ?>"><?php esc_html_e( 'Learn More', 'tribe-common' ); ?></a>
 							<?php endif; ?>
@@ -89,6 +127,14 @@ foreach ( $products as $product ) {
 	</div>
 
 	<div id="tribe-bundles" class="tribe-content">
+<<<<<<< HEAD
+=======
+		<img
+			class="tribe-events-admin-graphic"
+			src="<?php echo esc_url( tribe_resource_url( 'images/header/bundles.jpg', false, null, $main ) ); ?>"
+			alt="<?php esc_attr_e( 'Shapes and lines for visual interest', 'tribe-common' ); ?>"
+		/>
+>>>>>>> master
 		<div class="content-wrapper">
 			<div class="addon-grid">
 				<h2><?php esc_html_e( 'The plugins you need at one discounted price', 'tribe-common' ); ?></h2>
@@ -142,10 +188,22 @@ foreach ( $products as $product ) {
 	</div>
 
 	<div id="tribe-extensions" class="tribe-content">
+<<<<<<< HEAD
 		<div class="content-wrapper">
 			<div class="addon-grid">
 				<h2><?php esc_html_e( 'Free extensions to power up your plugins', 'tribe-common' ); ?></h2>
 				<p><?php esc_html_e( 'Extensions are quick solutions our team came up with to solve specific issues you may need. (Just a note - extensions are not covered by our support team.)', 'tribe-common' ); ?></p>
+=======
+		<img
+			class="tribe-events-admin-graphic"
+			src="<?php echo esc_url( tribe_resource_url( 'images/header/extensions.jpg', false, null, $main ) ); ?>"
+			alt="<?php esc_attr_e( 'Shapes and lines for visual interest', 'tribe-common' ); ?>"
+		/>
+		<div class="content-wrapper">
+			<div class="addon-grid">
+				<h2><?php esc_html_e( 'Free extensions to power up your plugins', 'tribe-common' ); ?></h2>
+				<p><?php esc_html_e( 'Extensions are quick solutions our team came up with to solve specific issues you may need. (Note - extensions are not covered by our support team.)', 'tribe-common' ); ?></p>
+>>>>>>> master
 				<?php foreach ( $extensions as $extension ) : ?>
 					<div class="tribe-addon">
 						<div class="headline">
@@ -163,7 +221,11 @@ foreach ( $products as $product ) {
 					</div>
 				<?php endforeach; ?>
 
+<<<<<<< HEAD
 				<a class="button secondary" href="https://m.tri.be/1ajd"><?php esc_html_e( 'Browse Extensions', 'tribe-common' ); ?></a>
+=======
+				<a class="button secondary" href="https://evnt.is/1ajd"><?php esc_html_e( 'Browse Extensions', 'tribe-common' ); ?></a>
+>>>>>>> master
 
 			</div>
 
@@ -172,7 +234,11 @@ foreach ( $products as $product ) {
 
 </div>
 
+<<<<<<< HEAD
 <?php // this is inline jQuery / javascript for extra simiplicity */ ?>
+=======
+<?php // this is inline jQuery / javascript for extra simplicity */ ?>
+>>>>>>> master
 <script type="text/javascript">
 	jQuery( document ).ready( function($) {
 		var current_tab = "#tribe-all-solutions";

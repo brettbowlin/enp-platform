@@ -22,14 +22,27 @@ class WP_Widget_RSS extends WP_Widget {
 	 * @since 2.8.0
 	 */
 	public function __construct() {
+<<<<<<< HEAD
 		$widget_ops  = array(
+=======
+		$widget_ops = array(
+>>>>>>> master
 			'description'                 => __( 'Entries from any RSS or Atom feed.' ),
 			'customize_selective_refresh' => true,
+			'show_instance_in_rest'       => true,
+
 		);
 		$control_ops = array(
 			'width'  => 400,
 			'height' => 200,
 		);
+<<<<<<< HEAD
+		$control_ops = array(
+			'width'  => 400,
+			'height' => 200,
+		);
+=======
+>>>>>>> master
 		parent::__construct( 'rss', __( 'RSS' ), $widget_ops, $control_ops );
 	}
 
@@ -48,7 +61,11 @@ class WP_Widget_RSS extends WP_Widget {
 		}
 
 		$url = ! empty( $instance['url'] ) ? $instance['url'] : '';
+<<<<<<< HEAD
 		while ( stristr( $url, 'http' ) != $url ) {
+=======
+		while ( ! empty( $url ) && stristr( $url, 'http' ) !== $url ) {
+>>>>>>> master
 			$url = substr( $url, 1 );
 		}
 
@@ -57,7 +74,11 @@ class WP_Widget_RSS extends WP_Widget {
 		}
 
 		// Self-URL destruction sequence.
+<<<<<<< HEAD
 		if ( in_array( untrailingslashit( $url ), array( site_url(), home_url() ) ) ) {
+=======
+		if ( in_array( untrailingslashit( $url ), array( site_url(), home_url() ), true ) ) {
+>>>>>>> master
 			return;
 		}
 
@@ -72,7 +93,11 @@ class WP_Widget_RSS extends WP_Widget {
 				$title = strip_tags( $rss->get_title() );
 			}
 			$link = strip_tags( $rss->get_permalink() );
+<<<<<<< HEAD
 			while ( stristr( $link, 'http' ) != $link ) {
+=======
+			while ( ! empty( $link ) && stristr( $link, 'http' ) !== $link ) {
+>>>>>>> master
 				$link = substr( $link, 1 );
 			}
 		}
@@ -94,7 +119,25 @@ class WP_Widget_RSS extends WP_Widget {
 		if ( $title ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
+
+		$format = current_theme_supports( 'html5', 'navigation-widgets' ) ? 'html5' : 'xhtml';
+
+		/** This filter is documented in wp-includes/widgets/class-wp-nav-menu-widget.php */
+		$format = apply_filters( 'navigation_widgets_format', $format );
+
+		if ( 'html5' === $format ) {
+			// The title may be filtered: Strip out HTML and make sure the aria-label is never empty.
+			$title      = trim( strip_tags( $title ) );
+			$aria_label = $title ? $title : __( 'RSS Feed' );
+			echo '<nav role="navigation" aria-label="' . esc_attr( $aria_label ) . '">';
+		}
+
 		wp_widget_rss_output( $rss, $instance );
+
+		if ( 'html5' === $format ) {
+			echo '</nav>';
+		}
+
 		echo $args['after_widget'];
 
 		if ( ! is_wp_error( $rss ) ) {
@@ -114,7 +157,11 @@ class WP_Widget_RSS extends WP_Widget {
 	 * @return array Updated settings to save.
 	 */
 	public function update( $new_instance, $old_instance ) {
+<<<<<<< HEAD
 		$testurl = ( isset( $new_instance['url'] ) && ( ! isset( $old_instance['url'] ) || ( $new_instance['url'] != $old_instance['url'] ) ) );
+=======
+		$testurl = ( isset( $new_instance['url'] ) && ( ! isset( $old_instance['url'] ) || ( $new_instance['url'] !== $old_instance['url'] ) ) );
+>>>>>>> master
 		return wp_widget_rss_process( $new_instance, $testurl );
 	}
 

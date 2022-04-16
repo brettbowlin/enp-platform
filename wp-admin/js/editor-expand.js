@@ -204,7 +204,11 @@
 			/**
 			 * Gets the offset of the editor.
 			 *
+<<<<<<< HEAD
 			 * @return {Number|Boolean} Returns the offset of the editor
+=======
+			 * @return {number|boolean} Returns the offset of the editor
+>>>>>>> master
 			 * or false if there is no offset height.
 			 */
 			function mceGetCursorOffset() {

@@ -9,7 +9,7 @@
  * @desc The tribe_ev namespace that stores all custom functions, data, application state and an empty events object to bind custom events to.
  * This Object Literal namespace loads for all tribe events pages and is by design fully public so that themers can hook in and/or extend anything they want from their own files.
  * @example <caption>Test for tribe_ev in your own js and then run one of our functions.</caption>
- * jQuery(document).ready(function ($) {
+ * jQuery(function ($) {
  *      if (Object.prototype.hasOwnProperty.call(window, 'tribe_ev')) {
  *          if(tribe_ev.fn.get_category() === 'Cats'){
  *              alert('Meow!');
@@ -1490,7 +1490,7 @@ Date.prototype.format = function( mask, utc ) {
 	 */
 
 
-	$( document ).ready( function() {
+	$( function() {
 
 		// @ifdef DEBUG
 		dbug && tec_debug.info( 'TEC Debug: Tribe Events JS init, Init Timer started from tribe-events.js.' );
@@ -1681,9 +1681,12 @@ Date.prototype.format = function( mask, utc ) {
 
 		/**
 		 * @function tribe_ical_url
-		 * @desc tribe_ical_url This function adds required params to the ical url. Runs on doc ready, and hooks into 'ajax-success.tribe' also.
+		 * @desc tribe_ical_url This function adds required params to the ical url.
+		 *                       Runs on doc ready, and hooks into 'ajax-success.tribe' also.
+		 * @deprecated 5.12.0
 		 */
-		function tribe_ical_url() {
+		function tribe_ical_url() { // eslint-disable-line no-unused-vars
+			console.info( 'Method deprecated with no replacement.' ); // eslint-disable-line no-console, max-len
 			var should_overwrite = true;
 
 			// If the "force filtered iCal link" option is set, we should not overwrite.
@@ -1705,19 +1708,13 @@ Date.prototype.format = function( mask, utc ) {
 			}
 		}
 
-		$( te ).on( 'tribe_ev_ajaxSuccess', function() {
-			tribe_ical_url();
-		} );
-
-		tribe_ical_url();
-
-		$( window )
-			.resize( function() {
-
+		$( window ).on(
+			'resize',
+			function() {
 				clearTimeout( resize_timer );
 				resize_timer = setTimeout( tf.execute_resize, 200 );
-
-			} );
+			}
+		);
 
 		// @ifdef DEBUG
 		if ( dbug ) {

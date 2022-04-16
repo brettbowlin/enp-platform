@@ -23,11 +23,24 @@ class Shortcodes extends \tad_DI52_ServiceProvider {
 		}
 
 		$this->container->singleton( Manager::class, Manager::class );
+<<<<<<< HEAD
+=======
+		$this->container->singleton(
+			'shortcode.manager',
+			function() {
+				return $this->container->make( Manager::class );
+			}
+		);
+>>>>>>> master
 
 		$this->register_hooks();
 		$this->register_assets();
 
 		$this->container->singleton( static::class, $this );
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 	}
 
 	/**
@@ -64,6 +77,11 @@ class Shortcodes extends \tad_DI52_ServiceProvider {
 	 */
 	protected function register_hooks() {
 		add_action( 'init', [ $this, 'action_add_shortcodes' ], 20 );
+<<<<<<< HEAD
+=======
+		add_filter( 'pre_do_shortcode_tag', [ $this, 'filter_pre_do_shortcode_tag' ], 10, 4 );
+		add_filter( 'do_shortcode_tag', [ $this, 'filter_do_shortcode_tag' ], 10, 4 );
+>>>>>>> master
 	}
 
 	/**
@@ -77,4 +95,40 @@ class Shortcodes extends \tad_DI52_ServiceProvider {
 	public function action_add_shortcodes() {
 		$this->container->make( Manager::class )->add_shortcodes();
 	}
+<<<<<<< HEAD
 }
+=======
+
+	/**
+	 * Filters `pre_do_shortcode_tag` to mark that a tribe shortcode is currently being done.
+	 *
+	 * @since 4.12.9
+	 *
+	 * @param bool|string $return      Short-circuit return value. Either false or the value to replace the shortcode with.
+	 * @param string      $tag         Shortcode name.
+	 * @param array       $attr        Shortcode attributes array,
+	 * @param array       $m           Regular expression match array.
+	 *
+	 * @return bool|string Short-circuit return value.
+	 */
+	public function filter_pre_do_shortcode_tag( $false, $tag, $attr, $m ) {
+		return $this->container->make( Manager::class )->filter_pre_do_shortcode_tag( $false, $tag, $attr, $m );
+	}
+
+	/**
+	 * * Filters `do_shortcode_tag` to mark that a tribe shortcode is complete, and remove it from the current list.
+	 *
+	 * @since 4.12.9
+	 *
+	 * @param string       $output Shortcode output.
+	 * @param string       $tag    Shortcode name.
+	 * @param array|string $attr   Shortcode attributes array or empty string.
+	 * @param array        $m      Regular expression match array.
+	 *
+	 * @return string Shortcode output.
+	 */
+	public function filter_do_shortcode_tag( $output, $tag, $attr, $m ) {
+		return $this->container->make( Manager::class )->filter_do_shortcode_tag( $output, $tag, $attr, $m );
+	}
+}
+>>>>>>> master

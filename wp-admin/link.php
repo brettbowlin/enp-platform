@@ -35,7 +35,11 @@ switch ( $action ) {
 		check_admin_referer( 'bulk-bookmarks' );
 
 		// For each link id (in $linkcheck[]) change category to selected value.
+<<<<<<< HEAD
 		if ( count( $linkcheck ) == 0 ) {
+=======
+		if ( count( $linkcheck ) === 0 ) {
+>>>>>>> master
 			wp_redirect( $this_file );
 			exit;
 		}
@@ -56,11 +60,19 @@ switch ( $action ) {
 		check_admin_referer( 'bulk-bookmarks' );
 
 		// For each link id (in $linkcheck[]) change category to selected value.
+<<<<<<< HEAD
 		if ( count( $linkcheck ) == 0 ) {
 			wp_redirect( $this_file );
 			exit;
 		}
 		$all_links = join( ',', $linkcheck );
+=======
+		if ( count( $linkcheck ) === 0 ) {
+			wp_redirect( $this_file );
+			exit;
+		}
+		$all_links = implode( ',', $linkcheck );
+>>>>>>> master
 		/*
 		 * Should now have an array of links we can change:
 		 *     $q = $wpdb->query("update $wpdb->links SET link_category='$category' WHERE link_id IN ($all_links)");

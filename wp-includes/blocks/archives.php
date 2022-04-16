@@ -17,6 +17,7 @@
 function render_block_core_archives( $attributes ) {
 	$show_post_count = ! empty( $attributes['showPostCounts'] );
 
+<<<<<<< HEAD
 	$class = 'wp-block-archives';
 
 	if ( isset( $attributes['align'] ) ) {
@@ -26,6 +27,9 @@ function render_block_core_archives( $attributes ) {
 	if ( isset( $attributes['className'] ) ) {
 		$class .= " {$attributes['className']}";
 	}
+=======
+	$class = '';
+>>>>>>> master
 
 	if ( ! empty( $attributes['displayAsDropdown'] ) ) {
 
@@ -66,7 +70,11 @@ function render_block_core_archives( $attributes ) {
 				break;
 		}
 
+<<<<<<< HEAD
 		$label = esc_attr( $label );
+=======
+		$label = esc_html( $label );
+>>>>>>> master
 
 		$block_content = '<label class="screen-reader-text" for="' . $dropdown_id . '">' . $title . '</label>
 	<select id="' . $dropdown_id . '" name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
@@ -96,18 +104,32 @@ function render_block_core_archives( $attributes ) {
 
 	$classnames = esc_attr( $class );
 
+<<<<<<< HEAD
 	if ( empty( $archives ) ) {
 
 		return sprintf(
 			'<div class="%1$s">%2$s</div>',
 			$classnames,
+=======
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $classnames ) );
+
+	if ( empty( $archives ) ) {
+		return sprintf(
+			'<div %1$s>%2$s</div>',
+			$wrapper_attributes,
+>>>>>>> master
 			__( 'No archives to show.' )
 		);
 	}
 
 	return sprintf(
+<<<<<<< HEAD
 		'<ul class="%1$s">%2$s</ul>',
 		$classnames,
+=======
+		'<ul %1$s>%2$s</ul>',
+		$wrapper_attributes,
+>>>>>>> master
 		$archives
 	);
 }
@@ -116,6 +138,7 @@ function render_block_core_archives( $attributes ) {
  * Register archives block.
  */
 function register_block_core_archives() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/archives',
 		array(
@@ -136,6 +159,11 @@ function register_block_core_archives() {
 					'default' => false,
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/archives',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_archives',
 		)
 	);

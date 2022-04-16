@@ -243,7 +243,9 @@ class WP_Admin_Bar {
 	}
 
 	/**
-	 * Add a group to a menu node.
+	 * Add a group to a toolbar menu node.
+	 *
+	 * Groups can be used to organize toolbar items into distinct sections of a toolbar menu.
 	 *
 	 * @since 3.3.0
 	 *
@@ -424,15 +426,17 @@ class WP_Admin_Bar {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * @global bool $is_IE
+=======
+>>>>>>> master
 	 * @param object $root
 	 */
 	final protected function _render( $root ) {
-		global $is_IE;
-
 		// Add browser classes.
 		// We have to do this here since admin bar shows on the front end.
 		$class = 'nojq nojs';
+<<<<<<< HEAD
 		if ( $is_IE ) {
 			if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 7' ) ) {
 				$class .= ' ie7';
@@ -442,12 +446,15 @@ class WP_Admin_Bar {
 				$class .= ' ie9';
 			}
 		} elseif ( wp_is_mobile() ) {
+=======
+		if ( wp_is_mobile() ) {
+>>>>>>> master
 			$class .= ' mobile';
 		}
 
 		?>
 		<div id="wpadminbar" class="<?php echo $class; ?>">
-			<?php if ( ! is_admin() ) { ?>
+			<?php if ( ! is_admin() && ! did_action( 'wp_body_open' ) ) { ?>
 				<a class="screen-reader-shortcut" href="#wp-toolbar" tabindex="1"><?php _e( 'Skip to toolbar' ); ?></a>
 			<?php } ?>
 			<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="<?php esc_attr_e( 'Toolbar' ); ?>">

@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+<<<<<<< HEAD
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
@@ -18,6 +19,12 @@ if ( ! current_user_can( 'view_site_health_checks' ) ) {
 wp_enqueue_style( 'site-health' );
 wp_enqueue_script( 'site-health' );
 
+=======
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+>>>>>>> master
 if ( ! class_exists( 'WP_Debug_Data' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
 }
@@ -26,6 +33,7 @@ if ( ! class_exists( 'WP_Site_Health' ) ) {
 }
 
 $health_check_site_status = WP_Site_Health::get_instance();
+<<<<<<< HEAD
 
 require_once ABSPATH . 'wp-admin/admin-header.php';
 ?>
@@ -66,6 +74,9 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 </div>
 
 <hr class="wp-header-end">
+=======
+?>
+>>>>>>> master
 
 <div class="notice notice-error hide-if-js">
 	<p><?php _e( 'The Site Health check requires JavaScript.' ); ?></p>
@@ -99,7 +110,11 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 			<button type="button" class="button copy-button" data-clipboard-text="<?php echo esc_attr( WP_Debug_Data::format( $info, 'debug' ) ); ?>">
 				<?php _e( 'Copy site info to clipboard' ); ?>
 			</button>
+<<<<<<< HEAD
 			<span class="success" aria-hidden="true"><?php _e( 'Copied!' ); ?></span>
+=======
+			<span class="success hidden" aria-hidden="true"><?php _e( 'Copied!' ); ?></span>
+>>>>>>> master
 		</div>
 	</div>
 
@@ -179,6 +194,9 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 		<?php } ?>
 	</div>
 </div>
+<<<<<<< HEAD
 
 <?php
 require_once ABSPATH . 'wp-admin/admin-footer.php';
+=======
+>>>>>>> master

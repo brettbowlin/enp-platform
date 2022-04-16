@@ -1,7 +1,13 @@
+<<<<<<< HEAD
+=======
+
+// DOMRect
+>>>>>>> master
 (function (global) {
 	function number(v) {
 		return v === undefined ? 0 : Number(v);
 	}
+<<<<<<< HEAD
 
  	function different(u, v) {
 		return u !== v && !(isNaN(u) && isNaN(v));
@@ -11,11 +17,26 @@
 		var x, y, width, height, left, right, top, bottom;
 
  		x = number(xArg);
+=======
+	
+	function different(u, v) {
+		return u !== v && !(isNaN(u) && isNaN(v));
+	}
+
+	function DOMRect(xArg, yArg, wArg, hArg) {
+		var x, y, width, height, left, right, top, bottom;
+
+		x = number(xArg);
+>>>>>>> master
 		y = number(yArg);
 		width = number(wArg);
 		height = number(hArg);
 
+<<<<<<< HEAD
  		Object.defineProperties(this, {
+=======
+		Object.defineProperties(this, {
+>>>>>>> master
 			x: {
 				get: function () { return x; },
 				set: function (newX) {
@@ -94,6 +115,12 @@
 			}
 		});
 	}
+<<<<<<< HEAD
 
  	global.DOMRect = DOMRect;
 }(this));
+=======
+	
+	global.DOMRect = DOMRect;
+}(self));
+>>>>>>> master

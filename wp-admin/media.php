@@ -29,7 +29,11 @@ switch ( $action ) {
 			$location = 'media.php';
 			$referer  = wp_get_original_referer();
 			if ( $referer ) {
+<<<<<<< HEAD
 				if ( false !== strpos( $referer, 'upload.php' ) || ( url_to_postid( $referer ) == $attachment_id ) ) {
+=======
+				if ( false !== strpos( $referer, 'upload.php' ) || ( url_to_postid( $referer ) === $attachment_id ) ) {
+>>>>>>> master
 					$location = $referer;
 				}
 			}
@@ -53,7 +57,11 @@ switch ( $action ) {
 
 		if ( empty( $_GET['attachment_id'] ) ) {
 			wp_redirect( admin_url( 'upload.php' ) );
+<<<<<<< HEAD
 			exit();
+=======
+			exit;
+>>>>>>> master
 		}
 		$att_id = (int) $_GET['attachment_id'];
 
@@ -69,7 +77,11 @@ switch ( $action ) {
 		if ( 'attachment' !== $att->post_type ) {
 			wp_die( __( 'You attempted to edit an item that isn&#8217;t an attachment. Please go back and try again.' ) );
 		}
+<<<<<<< HEAD
 		if ( 'trash' == $att->post_status ) {
+=======
+		if ( 'trash' === $att->post_status ) {
+>>>>>>> master
 			wp_die( __( 'You can&#8217;t edit this attachment because it is in the Trash. Please move it out of the Trash and try again.' ) );
 		}
 

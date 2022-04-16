@@ -2,8 +2,13 @@
 Contributors: jarednova
 Tags: template engine, templates, twig
 Requires at least: 4.9.8
+<<<<<<< HEAD
 Tested up to: 5.4.1
 Stable tag: 1.16.0
+=======
+Tested up to: 5.8.1
+Stable tag: 1.19.1
+>>>>>>> master
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,14 +31,93 @@ _Twig is the template language powering Timber; if you need a little background 
 * **[Video Tutorials](https://timber.github.io/docs/getting-started/video-tutorials/)**
 * [Overview / Getting Started Guide](https://timber.github.io/docs/getting-started/)
 
+### Need support?
+* [StackOverflow](https://stackoverflow.com/questions/tagged/timber) is for usage questions and troubleshooting
+* [GitHub issues](https://github.com/timber/timber/issues) are for reporting bugs and errors
+
 == Changelog ==
 
 = Develop (next release) =
 
+**Changes for Theme Developers**
+
 **Fixes and improvements**
+* Fix documented return type for Timber\Image::thumbnail #2463 (thanks @titouanmathis)
+
+= 1.19.1 =
+
+**Fixes and improvements**
+
+<<<<<<< HEAD
+**Changes for Theme Developers**
+
+=======
+* Fix bug when using switch_to_blog() in combination with Timber images by @gchtr in https://github.com/timber/timber/pull/2478
+* Fix the `thumbnail()` method return type by @titouanmathis in https://github.com/timber/timber/pull/2463
+* Merge in 2.x GH Actions changes by @jarednova in https://github.com/timber/timber/pull/2484
+* Adds @nlemoine to the contribs list! by @jarednova in https://github.com/timber/timber/pull/2488
+* Bump version of Upstatement/Routes to 0.8.1 by @jarednova in https://github.com/timber/timber/pull/2512
+
+* @titouanmathis made their first contribution in https://github.com/timber/timber/pull/2463
+
+**Full Changelog**: https://github.com/timber/timber/compare/1.19.0...1.19.1
+
+= 1.19.0 =
 
 **Changes for Theme Developers**
 
+* You can now get dimensions of SVG images #2421 #2432 (thanks @vyskoczilova)
+* You can pass additional variables to the `timber/loader/loader` filter #2324 (thanks @neojp)
+
+**Fixes and improvements**
+
+* Fix for double quotes that might appear in a "Read More" in Gutenberg #2337 #2343 (thanks @Keysaw)
+* Fix implementation of WP's `get_the_date` and `get_the_time` filters #2350 (thanks @shvlv)
+* Fix for how the `wp:more` tag works with `noteaser` #2348 #2351 (thanks @jhhazelaar)
+* Fix for two cases of where `home_url()` should be used instead of `site_url()` #2356 #2357 (thanks @Levdbas)
+* Fix for where `Timber::get_sites` returned the same locale for all sites #1908 #2369 (thanks @highbelt)
+* Use the latest release of Upstatement/Routes (0.5 => 0.8) #2373 (thanks @jverneaut)
+* Fix for sidebar retrieval in PHP 8 #2385 (thanks @marciojc)
+* Fix for proper ignoring of the Cache directory on case-insensitive file systems #342 #2416 (thanks @toonvandeputte)
+
+* Fixed a bug when using `switch_to_blog()` in combination with Timber images #1312 #2478 (thanks @gchtr)
+
+= 1.18.2 =
+
+**Fixes and improvements**
+
+* Fixes an issue where images loaded from another domain/site weren't properly deleted from the tmp directory #2216 (thanks @oxyc)
+
+
+= 1.18.1 =
+
+**Fixes and improvements**
+
+* Corrects an issue where #2305 tested for arrays but not other Iterables (like `Timber\PostCollection`s) #2314 (thanks @nlemoine)
+
+= 1.18.0 =
+
+**Changes for Theme Developers**
+
+* Improves control over pagination stops #2302 (thanks @IJMacD)
+
+**Fixes and improvements**
+
+* Fixes an error with array_filter and later versions of Twig #2305
+
+= 1.17.0 =
+
+**Changes for Theme Developers**
+
+* Adds new filter: `timber/allow_fs_write` to ensure compatibility with WordPress VIP and other hosts with filewrite restrictions. #2250 (thanks @mjangda)
+
+**Fixes and improvements**
+
+* Add a catch so that `{{ dump() }}` when WP_DEBUG = FALSE doesn't cause a fatal error #2217, #2282
+* Performance improvement for the deletion of transients #2281 (thanks @opengeekv2)
+* Fix for "More" block issue with Gutenberg #2256
+
+>>>>>>> master
 = 1.16.0 =
 **Changes for Theme Developers**
 * Allows for translation of time_ago Twig filter #2214 #2215 (thanks @gchtr)

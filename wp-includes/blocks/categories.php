@@ -28,19 +28,37 @@ function render_block_core_categories( $attributes ) {
 		$id                       = 'wp-block-categories-' . $block_id;
 		$args['id']               = $id;
 		$args['show_option_none'] = __( 'Select Category' );
+<<<<<<< HEAD
 		$wrapper_markup           = '<div class="%1$s">%2$s</div>';
+=======
+		$wrapper_markup           = '<div %1$s><label class="screen-reader-text" for="' . $id . '">' . __( 'Categories' ) . '</label>%2$s</div>';
+>>>>>>> master
 		$items_markup             = wp_dropdown_categories( $args );
 		$type                     = 'dropdown';
 
 		if ( ! is_admin() ) {
+<<<<<<< HEAD
 			$wrapper_markup .= build_dropdown_script_block_core_categories( $id );
 		}
 	} else {
 		$wrapper_markup = '<ul class="%1$s">%2$s</ul>';
+=======
+			// Inject the dropdown script immediately after the select dropdown.
+			$items_markup = preg_replace(
+				'#(?<=</select>)#',
+				build_dropdown_script_block_core_categories( $id ),
+				$items_markup,
+				1
+			);
+		}
+	} else {
+		$wrapper_markup = '<ul %1$s>%2$s</ul>';
+>>>>>>> master
 		$items_markup   = wp_list_categories( $args );
 		$type           = 'list';
 	}
 
+<<<<<<< HEAD
 	$class = "wp-block-categories wp-block-categories-{$type}";
 
 	if ( isset( $attributes['align'] ) ) {
@@ -54,6 +72,13 @@ function render_block_core_categories( $attributes ) {
 	return sprintf(
 		$wrapper_markup,
 		esc_attr( $class ),
+=======
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "wp-block-categories-{$type}" ) );
+
+	return sprintf(
+		$wrapper_markup,
+		$wrapper_attributes,
+>>>>>>> master
 		$items_markup
 	);
 }
@@ -89,6 +114,7 @@ function build_dropdown_script_block_core_categories( $dropdown_id ) {
  * Registers the `core/categories` block on server.
  */
 function register_block_core_categories() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/categories',
 		array(
@@ -113,6 +139,11 @@ function register_block_core_categories() {
 					'default' => false,
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/categories',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_categories',
 		)
 	);

@@ -1,29 +1,9 @@
 <?php
-/**
- * PHPMailer RFC821 SMTP email transport class.
- * PHP Version 5
- * @package PHPMailer
- * @link https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
- * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
- * @author Brent R. Matzelle (original founder)
- * @copyright 2014 Marcus Bointon
- * @copyright 2010 - 2012 Jim Jagielski
- * @copyright 2004 - 2009 Andy Prevost
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @note This program is distributed in the hope that it will be useful - WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.
- */
 
 /**
- * PHPMailer RFC821 SMTP email transport class.
- * Implements RFC 821 SMTP commands and provides some utility methods for sending mail to an SMTP server.
- * @package PHPMailer
- * @author Chris Ryan
- * @author Marcus Bointon <phpmailer@synchromedia.co.uk>
+ * The SMTP class has been moved to the wp-includes/PHPMailer subdirectory and now uses the PHPMailer\PHPMailer namespace.
  */
+<<<<<<< HEAD
 class SMTP
 {
     /**
@@ -31,13 +11,18 @@ class SMTP
      * @var string
      */
     const VERSION = '5.2.27';
+=======
+_deprecated_file(
+	basename( __FILE__ ),
+	'5.5.0',
+	WPINC . '/PHPMailer/SMTP.php',
+	__( 'The SMTP class has been moved to the wp-includes/PHPMailer subdirectory and now uses the PHPMailer\PHPMailer namespace.' )
+);
+>>>>>>> master
 
-    /**
-     * SMTP line break constant.
-     * @var string
-     */
-    const CRLF = "\r\n";
+require_once __DIR__ . '/PHPMailer/SMTP.php';
 
+<<<<<<< HEAD
     /**
      * The SMTP port to use if one is not specified.
      * @var integer
@@ -1211,3 +1196,6 @@ class SMTP
         return $this->last_smtp_transaction_id;
     }
 }
+=======
+class_alias( PHPMailer\PHPMailer\SMTP::class, 'SMTP' );
+>>>>>>> master

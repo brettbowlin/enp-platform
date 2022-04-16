@@ -22,7 +22,10 @@
 			shortlink,
 			skipLink,
 			mobileEvent,
+<<<<<<< HEAD
 			fontFaceRegex,
+=======
+>>>>>>> master
 			adminBarSearchInput,
 			i;
 
@@ -37,7 +40,10 @@
 		shortlink = document.getElementById( 'wp-admin-bar-get-shortlink' );
 		skipLink = adminBar.querySelector( '.screen-reader-shortcut' );
 		mobileEvent = /Mobile\/.+Safari/.test( navigator.userAgent ) ? 'touchstart' : 'click';
+<<<<<<< HEAD
 		fontFaceRegex = /Android (1.0|1.1|1.5|1.6|2.0|2.1)|Nokia|Opera Mini|w(eb)?OSBrowser|webOS|UCWEB|Windows Phone OS 7|XBLWP7|ZuneWP7|MSIE 7/;
+=======
+>>>>>>> master
 
 		// Remove nojs class after the DOM is loaded.
 		removeClass( adminBar, 'nojs' );
@@ -111,6 +117,7 @@
 			window.scrollBy( 0, -32 );
 		}
 
+<<<<<<< HEAD
 		// Add no-font-face class to body if needed.
 		if (
 			navigator.userAgent &&
@@ -142,6 +149,30 @@
 
 		wrapper = getClosest( event.target, '.menupop' );
 
+=======
+		// Clear sessionStorage on logging out.
+		if ( adminBarLogout ) {
+			adminBarLogout.addEventListener( 'click', emptySessionStorage );
+		}
+	} );
+
+	/**
+	 * Remove hover class for top level menu item when escape is pressed.
+	 *
+	 * @since 5.3.1
+	 *
+	 * @param {Event} event The keydown event.
+	 */
+	function removeHoverIfEscape( event ) {
+		var wrapper;
+
+		if ( event.which !== 27 ) {
+			return;
+		}
+
+		wrapper = getClosest( event.target, '.menupop' );
+
+>>>>>>> master
 		if ( ! wrapper ) {
 			return;
 		}
@@ -305,8 +336,13 @@
 	 * @since 5.3.1
 	 *
 	 * @param {HTMLElement} element The HTML element.
+<<<<<<< HEAD
 	 * @param {String}      className The class name.
 	 * @return {bool} Whether the element has the className.
+=======
+	 * @param {string}      className The class name.
+	 * @return {boolean} Whether the element has the className.
+>>>>>>> master
 	 */
 	function hasClass( element, className ) {
 		var classNames;
@@ -331,7 +367,11 @@
 	 * @since 5.3.1
 	 *
 	 * @param {HTMLElement} element The HTML element.
+<<<<<<< HEAD
 	 * @param {String}      className The class name.
+=======
+	 * @param {string}      className The class name.
+>>>>>>> master
 	 */
 	function addClass( element, className ) {
 		if ( ! element ) {
@@ -355,7 +395,11 @@
 	 * @since 5.3.1
 	 *
 	 * @param {HTMLElement} element The HTML element.
+<<<<<<< HEAD
 	 * @param {String}      className The class name.
+=======
+	 * @param {string}      className The class name.
+>>>>>>> master
 	 */
 	function removeClass( element, className ) {
 		var testName,

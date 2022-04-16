@@ -82,11 +82,16 @@ this["wp"] = this["wp"] || {}; this["wp"]["blockSerializationDefaultParser"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 291);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "SiJt");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 20:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -176,17 +181,27 @@ function _unsupportedIterableToArray(o, minLen) {
 /***/ }),
 
 /***/ 291:
+=======
+/***/ "SiJt":
+>>>>>>> master
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
+<<<<<<< HEAD
 /* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 
 var document;
 var offset;
 var output;
 var stack;
+=======
+let document;
+let offset;
+let output;
+let stack;
+>>>>>>> master
 /**
  * Matches block comment delimiters
  *
@@ -223,12 +238,17 @@ var stack;
  *    once browsers reliably support atomic grouping or possessive
  *    quantifiers natively we should remove this trick and simplify
  *
+<<<<<<< HEAD
  * @type RegExp
+=======
+ * @type {RegExp}
+>>>>>>> master
  *
  * @since 3.8.0
  * @since 4.6.1 added optimization to prevent backtracking on attribute parsing
  */
 
+<<<<<<< HEAD
 var tokenizer = /<!--\s+(\/)?wp:([a-z][a-z0-9_-]*\/)?([a-z][a-z0-9_-]*)\s+({(?:(?=([^}]+|}+(?=})|(?!}\s+\/?-->)[^])*)\5|[^]*?)}\s+)?(\/)?-->/g;
 
 function Block(blockName, attrs, innerBlocks, innerHTML, innerContent) {
@@ -238,6 +258,17 @@ function Block(blockName, attrs, innerBlocks, innerHTML, innerContent) {
     innerBlocks: innerBlocks,
     innerHTML: innerHTML,
     innerContent: innerContent
+=======
+const tokenizer = /<!--\s+(\/)?wp:([a-z][a-z0-9_-]*\/)?([a-z][a-z0-9_-]*)\s+({(?:(?=([^}]+|}+(?=})|(?!}\s+\/?-->)[^])*)\5|[^]*?)}\s+)?(\/)?-->/g;
+
+function Block(blockName, attrs, innerBlocks, innerHTML, innerContent) {
+  return {
+    blockName,
+    attrs,
+    innerBlocks,
+    innerHTML,
+    innerContent
+>>>>>>> master
   };
 }
 
@@ -247,11 +278,19 @@ function Freeform(innerHTML) {
 
 function Frame(block, tokenStart, tokenLength, prevOffset, leadingHtmlStart) {
   return {
+<<<<<<< HEAD
     block: block,
     tokenStart: tokenStart,
     tokenLength: tokenLength,
     prevOffset: prevOffset || tokenStart + tokenLength,
     leadingHtmlStart: leadingHtmlStart
+=======
+    block,
+    tokenStart,
+    tokenLength,
+    prevOffset: prevOffset || tokenStart + tokenLength,
+    leadingHtmlStart
+>>>>>>> master
   };
 }
 /**
@@ -333,7 +372,11 @@ function Frame(block, tokenStart, tokenLength, prevOffset, leadingHtmlStart) {
  */
 
 
+<<<<<<< HEAD
 var parse = function parse(doc) {
+=======
+const parse = doc => {
+>>>>>>> master
   document = doc;
   offset = 0;
   output = [];
@@ -347,6 +390,7 @@ var parse = function parse(doc) {
 };
 
 function proceed() {
+<<<<<<< HEAD
   var next = nextToken();
 
   var _next = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(next, 5),
@@ -359,6 +403,13 @@ function proceed() {
   var stackDepth = stack.length; // we may have some HTML soup before the next block
 
   var leadingHtmlStart = startOffset > offset ? offset : null;
+=======
+  const next = nextToken();
+  const [tokenType, blockName, attrs, startOffset, tokenLength] = next;
+  const stackDepth = stack.length; // we may have some HTML soup before the next block
+
+  const leadingHtmlStart = startOffset > offset ? offset : null;
+>>>>>>> master
 
   switch (tokenType) {
     case 'no-more-tokens':
@@ -433,8 +484,13 @@ function proceed() {
       // block and add it as a innerBlock to the parent
 
 
+<<<<<<< HEAD
       var stackTop = stack.pop();
       var html = document.substr(stackTop.prevOffset, startOffset - stackTop.prevOffset);
+=======
+      const stackTop = stack.pop();
+      const html = document.substr(stackTop.prevOffset, startOffset - stackTop.prevOffset);
+>>>>>>> master
       stackTop.block.innerHTML += html;
       stackTop.block.innerContent.push(html);
       stackTop.prevOffset = startOffset + tokenLength;
@@ -474,13 +530,19 @@ function nextToken() {
   // we're also using a trick here because the only difference between a
   // block opener and a block closer is the leading `/` before `wp:` (and
   // a closer has no attributes). we can trap them both and process the
+<<<<<<< HEAD
   // match back in Javascript to see which one it was.
   var matches = tokenizer.exec(document); // we have no more tokens
+=======
+  // match back in JavaScript to see which one it was.
+  const matches = tokenizer.exec(document); // we have no more tokens
+>>>>>>> master
 
   if (null === matches) {
     return ['no-more-tokens'];
   }
 
+<<<<<<< HEAD
   var startedAt = matches.index;
 
   var _matches = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(matches, 7),
@@ -500,6 +562,19 @@ function nextToken() {
   var name = namespace + nameMatch;
   var hasAttrs = !!attrsMatch;
   var attrs = hasAttrs ? parseJSON(attrsMatch) : {}; // This state isn't allowed
+=======
+  const startedAt = matches.index;
+  const [match, closerMatch, namespaceMatch, nameMatch, attrsMatch
+  /* internal/unused */
+  ,, voidMatch] = matches;
+  const length = match.length;
+  const isCloser = !!closerMatch;
+  const isVoid = !!voidMatch;
+  const namespace = namespaceMatch || 'core/';
+  const name = namespace + nameMatch;
+  const hasAttrs = !!attrsMatch;
+  const attrs = hasAttrs ? parseJSON(attrsMatch) : {}; // This state isn't allowed
+>>>>>>> master
   // This is an error
 
   if (isCloser && (isVoid || hasAttrs)) {// we can ignore them since they don't hurt anything
@@ -518,7 +593,11 @@ function nextToken() {
 }
 
 function addFreeform(rawLength) {
+<<<<<<< HEAD
   var length = rawLength ? rawLength : document.length - offset;
+=======
+  const length = rawLength ? rawLength : document.length - offset;
+>>>>>>> master
 
   if (0 === length) {
     return;
@@ -528,9 +607,15 @@ function addFreeform(rawLength) {
 }
 
 function addInnerBlock(block, tokenStart, tokenLength, lastOffset) {
+<<<<<<< HEAD
   var parent = stack[stack.length - 1];
   parent.block.innerBlocks.push(block);
   var html = document.substr(parent.prevOffset, tokenStart - parent.prevOffset);
+=======
+  const parent = stack[stack.length - 1];
+  parent.block.innerBlocks.push(block);
+  const html = document.substr(parent.prevOffset, tokenStart - parent.prevOffset);
+>>>>>>> master
 
   if (html) {
     parent.block.innerHTML += html;
@@ -542,6 +627,7 @@ function addInnerBlock(block, tokenStart, tokenLength, lastOffset) {
 }
 
 function addBlockFromStack(endOffset) {
+<<<<<<< HEAD
   var _stack$pop = stack.pop(),
       block = _stack$pop.block,
       leadingHtmlStart = _stack$pop.leadingHtmlStart,
@@ -549,6 +635,15 @@ function addBlockFromStack(endOffset) {
       tokenStart = _stack$pop.tokenStart;
 
   var html = endOffset ? document.substr(prevOffset, endOffset - prevOffset) : document.substr(prevOffset);
+=======
+  const {
+    block,
+    leadingHtmlStart,
+    prevOffset,
+    tokenStart
+  } = stack.pop();
+  const html = endOffset ? document.substr(prevOffset, endOffset - prevOffset) : document.substr(prevOffset);
+>>>>>>> master
 
   if (html) {
     block.innerHTML += html;
@@ -563,6 +658,7 @@ function addBlockFromStack(endOffset) {
 }
 
 
+<<<<<<< HEAD
 /***/ }),
 
 /***/ 38:
@@ -585,6 +681,8 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+=======
+>>>>>>> master
 /***/ })
 
 /******/ });

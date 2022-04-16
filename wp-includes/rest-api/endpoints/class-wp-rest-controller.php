@@ -50,7 +50,11 @@ abstract class WP_REST_Controller {
 			'WP_REST_Controller::register_routes',
 			/* translators: %s: register_routes() */
 			sprintf( __( "Method '%s' must be overridden." ), __METHOD__ ),
+<<<<<<< HEAD
 			'4.7'
+=======
+			'4.7.0'
+>>>>>>> master
 		);
 	}
 
@@ -288,7 +292,7 @@ abstract class WP_REST_Controller {
 	 *
 	 * @since 4.7.0
 	 *
-	 * @param array  $data    Response data to fiter.
+	 * @param array  $data    Response data to filter.
 	 * @param string $context Context defined in the schema.
 	 * @return array Filtered response.
 	 */
@@ -296,32 +300,7 @@ abstract class WP_REST_Controller {
 
 		$schema = $this->get_item_schema();
 
-		foreach ( $data as $key => $value ) {
-			if ( empty( $schema['properties'][ $key ] ) || empty( $schema['properties'][ $key ]['context'] ) ) {
-				continue;
-			}
-
-			if ( ! in_array( $context, $schema['properties'][ $key ]['context'], true ) ) {
-				unset( $data[ $key ] );
-				continue;
-			}
-
-			if ( 'object' === $schema['properties'][ $key ]['type'] && ! empty( $schema['properties'][ $key ]['properties'] ) ) {
-				foreach ( $schema['properties'][ $key ]['properties'] as $attribute => $details ) {
-					if ( empty( $details['context'] ) ) {
-						continue;
-					}
-
-					if ( ! in_array( $context, $details['context'], true ) ) {
-						if ( isset( $data[ $key ][ $attribute ] ) ) {
-							unset( $data[ $key ][ $attribute ] );
-						}
-					}
-				}
-			}
-		}
-
-		return $data;
+		return rest_filter_response_by_context( $data, $schema, $context );
 	}
 
 	/**
@@ -468,7 +447,7 @@ abstract class WP_REST_Controller {
 	 *
 	 * @param object          $object  Data model like WP_Term or WP_Post.
 	 * @param WP_REST_Request $request Full details about the request.
-	 * @return bool|WP_Error True on success, WP_Error object if a field cannot be updated.
+	 * @return true|WP_Error True on success, WP_Error object if a field cannot be updated.
 	 */
 	protected function update_additional_fields_for_object( $object, $request ) {
 		$additional_fields = $this->get_additional_fields();
@@ -577,7 +556,7 @@ abstract class WP_REST_Controller {
 	 * @since 4.9.6
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
-	 * @return array Fields to be included in the response.
+	 * @return string[] Fields to be included in the response.
 	 */
 	public function get_fields_for_response( $request ) {
 		$schema     = $this->get_item_schema();
@@ -650,6 +629,7 @@ abstract class WP_REST_Controller {
 	 * @return array Endpoint arguments.
 	 */
 	public function get_endpoint_args_for_item_schema( $method = WP_REST_Server::CREATABLE ) {
+<<<<<<< HEAD
 
 		$schema            = $this->get_item_schema();
 		$schema_properties = ! empty( $schema['properties'] ) ? $schema['properties'] : array();
@@ -704,6 +684,9 @@ abstract class WP_REST_Controller {
 		}
 
 		return $endpoint_args;
+=======
+		return rest_get_endpoint_args_for_schema( $this->get_item_schema(), $method );
+>>>>>>> master
 	}
 
 	/**

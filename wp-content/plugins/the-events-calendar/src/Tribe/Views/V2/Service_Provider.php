@@ -8,6 +8,8 @@
 
 namespace Tribe\Events\Views\V2;
 
+use Tribe\Events\Event_Status\Event_Status_Provider;
+
 /**
  * Class Service_Provider
  *
@@ -39,6 +41,11 @@ class Service_Provider extends \tad_DI52_ServiceProvider {
 		$this->container->singleton( Rest_Endpoint::class, Rest_Endpoint::class );
 		$this->container->singleton( Template\Settings\Advanced_Display::class, Template\Settings\Advanced_Display::class );
 		$this->container->singleton( Template\JSON_LD::class, Template\JSON_LD::class );
+
+		tribe_register_provider( Widgets\Service_Provider::class );
+		tribe_register_provider( Customizer\Service_Provider::class );
+		tribe_register_provider( iCalendar\iCalendar_Handler::class );
+		tribe_register_provider( Event_Status_Provider::class );
 
 		$this->register_hooks();
 		$this->register_assets();

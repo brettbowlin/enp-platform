@@ -64,6 +64,8 @@ function tribe_attributes() {
 /**
  * Get attributes for required fields.
  *
+ * @deprecated 4.12.6
+ *
  * @since 4.10.0
  *
  * @param boolean $required If the field is required.
@@ -110,6 +112,8 @@ function tribe_required_label( $required, $echo = true ) {
 /**
  * Get attributes for disabled fields.
  *
+ * @deprecated 4.12.6
+ *
  * @since 4.10.0
  *
  * @param boolean $disabled If the field is disabled.
@@ -127,4 +131,95 @@ function tribe_disabled( $disabled, $echo = true ) {
 			echo $disabled_string;
 		}
 	}
+}
+
+/**
+ * Generates a string for the tribe-dependency attributes.
+ *
+ * @since 4.12.14
+ *
+ * @param array<string,mixed> $deps       The passed array of dependencies.
+ *
+ * @return string             $dependency The string of dependencies attributes to add to the input.
+ */
+function tribe_format_field_dependency( $deps ) {
+	// Sanity check.
+	if ( empty( $deps ) ) {
+		return '';
+	}
+
+	// Let's be case-insensitive!
+	$deps = array_combine( array_map( 'strtolower', array_keys( $deps ) ), $deps );
+
+	// No ID to hook to? Bail.
+	if ( empty( $deps['id'] ) ) {
+		return;
+	}
+
+	$dependency = '';
+
+	$accepted = [
+		'id',
+		'parent',
+		'is',
+		'is-not',
+		'is-empty',
+		'is-not-empty',
+		'is-numeric',
+		'is-not-numeric',
+		'is-checked',
+		'is-not-checked',
+	];
+
+	$valid_deps = array_intersect_key( $deps, array_flip( $accepted ) );
+
+	foreach ( $valid_deps as $attr => $value ) {
+		// Attributes are always lower case.
+		$attr = strtolower( $attr );
+
+		// Handle the ID component.
+		if ( 'id' === $attr ) {
+			// Prepend a hash "#" if it's missing.
+			if ( '#' !== substr( $value, 0, 1 ) ) {
+				$value = '#' . $value;
+			}
+
+			$dependency .= " data-depends=\"{$value}\"";
+			continue;
+		}
+
+		// Handle the dependent parent component.
+		if ( 'parent' === $attr ) {
+			$dependency .= " data-dependent-parent=\"{$value}\"";
+			continue;
+		}
+
+		// Handle boolean values.
+		if ( is_bool( $value ) ) {
+			if ( $value ) {
+				$dependency .= " data-condition-{$attr}";
+			} else {
+				if ( 0 === stripos( $attr, 'is-not-' ) ) {
+					$attr = str_replace( 'is-not-', 'is-', $attr );
+				} else {
+					$attr = str_replace( 'is-', 'is-not-', $attr );
+				}
+
+				$dependency .= " data-{$attr}";
+			}
+
+			continue;
+		}
+
+		// Handle string and "empty" values
+		if( 0 === strlen( $value ) ) {
+			$dependency .= " data-condition-{$attr}";
+		} else if ( 'is' === $attr ) {
+			$dependency .= " data-condition=\"{$value}\"";
+		} else if ( 'is-not' === $attr ) {
+			$dependency .= " data-condition-not=\"{$value}\"";
+		}
+	}
+
+	return $dependency;
 }

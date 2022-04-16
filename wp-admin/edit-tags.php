@@ -19,7 +19,11 @@ if ( ! $tax ) {
 	wp_die( __( 'Invalid taxonomy.' ) );
 }
 
+<<<<<<< HEAD
 if ( ! in_array( $tax->name, get_taxonomies( array( 'show_ui' => true ) ) ) ) {
+=======
+if ( ! in_array( $tax->name, get_taxonomies( array( 'show_ui' => true ) ), true ) ) {
+>>>>>>> master
 	wp_die( __( 'Sorry, you are not allowed to edit terms in this taxonomy.' ) );
 }
 
@@ -320,7 +324,11 @@ if ( 'category' === $taxonomy || 'link_category' === $taxonomy || 'post_tag' ===
 
 require_once ABSPATH . 'wp-admin/admin-header.php';
 
+<<<<<<< HEAD
 /** Also used by the Edit Tag  form */
+=======
+// Also used by the Edit Tag form.
+>>>>>>> master
 require_once ABSPATH . 'wp-admin/includes/edit-tag-messages.php';
 
 $class = ( isset( $_REQUEST['error'] ) ) ? 'error' : 'updated';
@@ -338,8 +346,18 @@ if ( is_plugin_active( 'wpcat2tag-importer/wpcat2tag-importer.php' ) ) {
 
 <?php
 if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
+<<<<<<< HEAD
 	/* translators: %s: Search query. */
 	printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;' ) . '</span>', esc_html( wp_unslash( $_REQUEST['s'] ) ) );
+=======
+	echo '<span class="subtitle">';
+	printf(
+		/* translators: %s: Search query. */
+		__( 'Search results for: %s' ),
+		'<strong>' . esc_html( wp_unslash( $_REQUEST['s'] ) ) . '</strong>'
+	);
+	echo '</span>';
+>>>>>>> master
 }
 ?>
 
@@ -409,6 +427,11 @@ if ( $can_edit_terms ) {
 	 *
 	 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
 	 *
+	 * Possible hook names include:
+	 *
+	 *  - `category_pre_add_form`
+	 *  - `post_tag_pre_add_form`
+	 *
 	 * @since 3.0.0
 	 *
 	 * @param string $taxonomy The taxonomy slug.
@@ -425,6 +448,14 @@ if ( $can_edit_terms ) {
 	 *
 	 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
 	 *
+<<<<<<< HEAD
+=======
+	 * Possible hook names include:
+	 *
+	 *  - `category_term_new_form_tag`
+	 *  - `post_tag_term_new_form_tag`
+	 *
+>>>>>>> master
 	 * @since 3.7.0
 	 */
 	do_action( "{$taxonomy}_term_new_form_tag" );
@@ -516,6 +547,14 @@ if ( $can_edit_terms ) {
 	 * Fires after the Add Term form fields.
 	 *
 	 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
+<<<<<<< HEAD
+=======
+	 *
+	 * Possible hook names include:
+	 *
+	 *  - `category_add_form_fields`
+	 *  - `post_tag_add_form_fields`
+>>>>>>> master
 	 *
 	 * @since 3.0.0
 	 *
@@ -565,6 +604,14 @@ if ( $can_edit_terms ) {
 	 *
 	 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
 	 *
+<<<<<<< HEAD
+=======
+	 * Possible hook names include:
+	 *
+	 *  - `category_add_form`
+	 *  - `post_tag_add_form`
+	 *
+>>>>>>> master
 	 * @since 3.0.0
 	 *
 	 * @param string $taxonomy The taxonomy slug.
@@ -632,6 +679,11 @@ endif;
  * Fires after the taxonomy list table.
  *
  * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
+ *
+ * Possible hook names include:
+ *
+ *  - `after-category-table`
+ *  - `after-post_tag-table`
  *
  * @since 3.0.0
  *

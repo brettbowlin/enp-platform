@@ -15,33 +15,40 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	 * @return bool
 	 */
 	public function hook() {
-		add_filter( 'tribe_events_register_event_type_args', array( $this, 'add_event_template_blocks' ) );
+		add_filter( 'tribe_events_register_event_type_args', [ $this, 'add_event_template_blocks' ] );
 
 		// Add Rest API support
-		add_filter( 'tribe_events_register_event_type_args', array( $this, 'add_rest_support' ) );
-		add_filter( 'tribe_events_register_venue_type_args', array( $this, 'add_rest_support' ) );
-		add_filter( 'tribe_events_register_organizer_type_args', array( $this, 'add_rest_support' ) );
+		add_filter( 'tribe_events_register_event_type_args', [ $this, 'add_rest_support' ] );
+		add_filter( 'tribe_events_register_venue_type_args', [ $this, 'add_rest_support' ] );
+		add_filter( 'tribe_events_register_organizer_type_args', [ $this, 'add_rest_support' ] );
 
 		// Maybe add flag from classic editor
-		add_action( 'load-post.php', array( $this, 'flag_post_from_classic_editor' ), 0 );
+		add_action( 'load-post.php', [ $this, 'flag_post_from_classic_editor' ], 0 );
 
 		// Update Post content to use blocks
-		add_action( 'tribe_blocks_editor_flag_post_classic_editor', array( $this, 'update_post_content_to_blocks' ) );
+		add_action( 'tribe_blocks_editor_flag_post_classic_editor', [ $this, 'update_post_content_to_blocks' ] );
 
 		// Remove assets that are not relevant for Gutenberg Editor
-		add_action( 'wp_print_scripts', array( $this, 'deregister_scripts' ) );
+		add_action( 'wp_print_scripts', [ $this, 'deregister_scripts' ] );
 
 		// Setup the registration of Blocks
-		add_action( 'init', array( $this, 'register_blocks' ), 20 );
+		add_action( 'init', [ $this, 'register_blocks' ], 20 );
 
 		// Load assets of the blocks
-		add_action( 'admin_init', array( $this, 'assets' ) );
+		add_action( 'admin_init', [ $this, 'assets' ] );
 
 		// Add Block Categories to Editor
-		add_action( 'block_categories', array( $this, 'block_categories' ), 10, 2 );
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.8', '<' ) ) {
+			// WP version is less then 5.8.
+			add_action( 'block_categories', [ $this, 'block_categories' ], 10, 2 );
+		} else {
+			// WP version is 5.8 or above.
+			add_action( 'block_categories_all', [ $this, 'block_categories_all' ], 10, 2 );
+		}
 
 		// Make sure Events supports 'custom-fields'
-		add_action( 'init', array( $this, 'add_event_custom_field_support' ), 11 );
+		add_action( 'init', [ $this, 'add_event_custom_field_support' ], 11 );
 
 		/**
 		 * @todo Move away from the generic to the new filter once it's introduced
@@ -49,12 +56,13 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		 *
 		 *       E.g.: `use_block_editor_for_{post_type}`
 		 */
-		add_filter( 'use_block_editor_for_post_type', array( $this, 'deactivate_blocks_editor_venue' ), 10, 2 );
-		add_filter( 'use_block_editor_for_post_type', array( $this, 'deactivate_blocks_editor_organizer' ), 10, 2 );
+		add_filter( 'use_block_editor_for_post_type', [ $this, 'deactivate_blocks_editor_venue' ], 10, 2 );
+		add_filter( 'use_block_editor_for_post_type', [ $this, 'deactivate_blocks_editor_organizer' ], 10, 2 );
+		add_filter( 'use_block_editor_for_post_type', [ $this, 'deactivate_blocks_editor_event' ], 10, 2 );
 	}
 
 	/**
-	 * For now we dont use Blocks editor on the Post Type for Organizers
+	 * For now we don't use Blocks editor on the Post Type for Organizers
 	 *
 	 * @todo  see https://core.trac.wordpress.org/ticket/45275
 	 *
@@ -74,7 +82,7 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	}
 
 	/**
-	 * For now we dont use Blocks editor on the Post Type for Venues
+	 * For now we don't use Blocks editor on the Post Type for Venues
 	 *
 	 * @todo  see https://core.trac.wordpress.org/ticket/45275
 	 *
@@ -91,6 +99,36 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		}
 
 		return $is_enabled;
+	}
+
+	/**
+	 * Deactivate the blocks editor from the events post type unless explicitly enabled by the user via the settings
+	 * on the events tab.
+	 *
+	 * @since 5.7.1
+	 *
+	 * @param bool   $is_enabled If blocks editor is enabled or not.
+	 * @param string $post_type  The current post type.
+	 *
+	 * @return false
+	 */
+	public function deactivate_blocks_editor_event( $is_enabled, $post_type ) {
+		// Not an event post type.
+		if ( Tribe__Events__Main::POSTTYPE !== $post_type ) {
+			return $is_enabled;
+		}
+
+		// Classic editor plugin is overriding.
+		if ( tribe( 'events.editor' )->is_classic_option_active() ) {
+			return false;
+		}
+
+		// Blocks aren't toggled on.
+		if ( tribe( 'events.editor.compatibility' )->is_blocks_editor_toggled_on() ) {
+			return $is_enabled;
+		}
+
+		return false;
 	}
 
 	/**
@@ -184,7 +222,7 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		$post    = get_post( $post );
 
 		$blocks  = $this->get_classic_template();
-		$content = array();
+		$content = [];
 
 		foreach ( $blocks as $key => $block_param ) {
 			$slug = reset( $block_param );
@@ -233,10 +271,10 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		 */
 		$content = apply_filters( 'tribe_blocks_editor_update_classic_content', $content, $post, $blocks );
 
-		$status = wp_update_post( array(
-			'ID' => $post->ID,
+		$status = wp_update_post( [
+			'ID'           => $post->ID,
 			'post_content' => $content,
-		) );
+		] );
 
 		return $status;
 	}
@@ -249,18 +287,18 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	 * @return array
 	 */
 	public function get_classic_template() {
-		$template = array();
-		$template[] = array( 'tribe/event-datetime' );
-		$template[] = array( 'tribe/featured-image' );
-		$template[] = array(
+		$template   = [];
+		$template[] = [ 'tribe/event-datetime' ];
+		$template[] = [ 'tribe/featured-image' ];
+		$template[] = [
 			'core/paragraph',
-			array(
+			[
 				'placeholder' => __( 'Add Description...', 'the-events-calendar' ),
-			),
-		);
-		$template[] = array( 'tribe/event-links' );
-		$template[] = array( 'tribe/classic-event-details' );
-		$template[] = array( 'tribe/event-venue' );
+			],
+		];
+		$template[] = [ 'tribe/event-links' ];
+		$template[] = [ 'tribe/classic-event-details' ];
+		$template[] = [ 'tribe/event-venue' ];
 
 		/**
 		 * Allow modifying the default classic template for Events
@@ -284,8 +322,8 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	 *
 	 * @return array
 	 */
-	public function add_event_template_blocks( $args = array() ) {
-		$template = array();
+	public function add_event_template_blocks( $args = [] ) {
+		$template = [];
 
 		$post = tribe_get_request_var( 'post' );
 		$is_classic_editor = ! empty( $post ) && is_numeric( $post ) && ! has_blocks( $post );
@@ -294,18 +332,18 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		if ( $is_classic_editor ) {
 			$template = $this->get_classic_template();
 		} else {
-			$template[] = array( 'tribe/event-datetime' );
-			$template[] = array(
+			$template[] = [ 'tribe/event-datetime' ];
+			$template[] = [
 				'core/paragraph',
-				array(
+				[
 					'placeholder' => __( 'Add Description...', 'the-events-calendar' ),
-				),
-			);
-			$template[] = array( 'tribe/event-price' );
-			$template[] = array( 'tribe/event-organizer' );
-			$template[] = array( 'tribe/event-venue' );
-			$template[] = array( 'tribe/event-website' );
-			$template[] = array( 'tribe/event-links' );
+				],
+			];
+			$template[] = [ 'tribe/event-price' ];
+			$template[] = [ 'tribe/event-organizer' ];
+			$template[] = [ 'tribe/event-venue' ];
+			$template[] = [ 'tribe/event-website' ];
+			$template[] = [ 'tribe/event-links' ];
 		}
 
 		/**
@@ -352,6 +390,19 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	}
 
 	/**
+	 * Check whether the current page is an edit post type page.
+	 *
+	 * @since 5.12.0
+	 *
+	 * @return bool
+	 */
+	public function is_edit_screen() {
+		$current_screen = get_current_screen();
+
+		return 'post' === $current_screen->base;
+	}
+
+	/**
 	 * @todo   Move this into the Block PHP files
 	 *
 	 * @since 4.7
@@ -372,7 +423,7 @@ class Tribe__Events__Editor extends Tribe__Editor {
 		$gmaps_api_url = 'https://maps.googleapis.com/maps/api/js';
 
 		if ( ! empty( $gmaps_api_key ) && is_string( $gmaps_api_key ) ) {
-			$gmaps_api_url = add_query_arg( array( 'key' => $gmaps_api_key ), $gmaps_api_url );
+			$gmaps_api_url = add_query_arg( [ 'key' => $gmaps_api_key ], $gmaps_api_url );
 		}
 
 		/**
@@ -388,119 +439,192 @@ class Tribe__Events__Editor extends Tribe__Editor {
 			$plugin,
 			'tribe-events-editor-blocks-gmaps-api',
 			$gmaps_api_url,
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
+			[
 				'type'         => 'js',
 				'in_footer'    => false,
-				'localize'     => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority' => 1
-			)
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 1,
+			]
 		);
 
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-data',
 			'app/data.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 101,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 101,
+			]
 		);
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-editor',
 			'app/editor.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 102,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 102,
+			]
 		);
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-icons',
 			'app/icons.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 103,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 103,
+			]
 		);
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-hoc',
 			'app/hoc.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 104,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 104,
+			]
 		);
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-elements',
 			'app/elements.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 105,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 105,
+			]
 		);
 
 		tribe_asset(
 			$plugin,
 			'tribe-the-events-calendar-blocks',
 			'app/blocks.js',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
-				'in_footer' => false,
-				'localize'  => array(),
-				'conditionals' => array( $this, 'is_events_post_type' ),
-				'priority'  => 106,
-			)
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'conditionals' => [ $this, 'is_events_post_type' ],
+				'priority'     => 106,
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tec-widget-blocks',
+			'app/widgets.js',
+			[
+				'react',
+				'react-dom',
+				'wp-components',
+				'wp-api',
+				'wp-api-request',
+				'wp-blocks',
+				'wp-widgets',
+				'wp-i18n',
+				'wp-element',
+				'wp-editor',
+				'tribe-common-gutenberg-data',
+				'tribe-common-gutenberg-utils',
+				'tribe-common-gutenberg-store',
+				'tribe-common-gutenberg-icons',
+				'tribe-common-gutenberg-hoc',
+				'tribe-common-gutenberg-elements',
+				'tribe-common-gutenberg-components',
+			],
+			'enqueue_block_editor_assets',
+			[
+				'in_footer'    => false,
+				'localize'     => [],
+				'priority'     => 106,
+				'conditionals' => [ $this, 'is_edit_screen' ],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'legacy-widget',
+			'legacy-widget.js',
+			[
+				'admin-widgets',
+				'wp-widgets',
+			],
+			'enqueue_block_editor_assets',
+			[
+				'in_footer'    => true,
+				'conditionals' => [ $this, 'is_edit_screen' ],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tec-widget-blocks-styles',
+			'app/widgets.css',
+			[
+				'wp-widgets',
+			],
+			'enqueue_block_editor_assets',
+			[
+				'in_footer'    => false,
+				'conditionals' => [ $this, 'is_edit_screen' ],
+			]
+		);
+
+		tribe_asset(
+			$plugin,
+			'tec-blocks-category-icon-styles',
+			'tribe-admin-block-category-icons.css',
+			[],
+			'enqueue_block_editor_assets',
+			[
+				'in_footer'    => false,
+				'conditionals' => [ $this, 'is_edit_screen' ],
+			]
 		);
 
 		tribe_asset(
 			$plugin,
 			'tribe-block-editor',
 			'app/editor.css',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
+			[
 				'in_footer'    => false,
-				'conditionals' => array( $this, 'is_events_post_type' ),
-			)
+				'conditionals' => [ $this, 'is_events_post_type' ],
+			]
 		);
 
 		tribe_asset(
 			$plugin,
 			'tribe-block-editor-blocks',
 			'app/blocks.css',
-			array(),
+			[],
 			'enqueue_block_editor_assets',
-			array(
+			[
 				'in_footer'    => false,
-				'conditionals' => array( $this, 'is_events_post_type' ),
-			)
+				'conditionals' => [ $this, 'is_events_post_type' ],
+			]
 		);
 	}
 
@@ -517,23 +641,68 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	/**
 	 * Add "Event Blocks" category to the editor
 	 *
+	 * @deprecated 5.8.2
+	 *
 	 * @since 4.7
+	 *
+	 * @param array<array<string|string>> $categories An array of categories each an array
+	 *                                                in the format property => value.
+	 * @param WP_Post                     $post       The post object we're editing.
 	 *
 	 * @return array
 	 */
 	public function block_categories( $categories, $post ) {
+		// Handle where someone is using this outside of this object
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.8', '>=' ) ) {
+			_deprecated_function( __FUNCTION__, '5.8.2', 'block_categories_all' );
+		}
+
 		if ( Tribe__Events__Main::POSTTYPE !== $post->post_type ) {
 			return $categories;
 		}
 
 		return array_merge(
 			$categories,
-			array(
-				array(
+			[
+				[
 					'slug'  => 'tribe-events',
 					'title' => __( 'Event Blocks', 'the-events-calendar' ),
-				),
-			)
+				],
+			]
+		);
+	}
+
+	/**
+	 * Add "Event Blocks" category to the editor.
+	 *
+	 * @since 5.8.2 block_categories() modified to cover WP 5.8 change of filter in a backwards-compatible way.
+	 *
+	 * @param array<array<string,string>> $categories An array of categories each an array.
+	 *                                                in the format property => value.
+	 * @param WP_Block_Editor_Context     $context    The Block Editor Context object.
+	 *                                                In WP versions prior to 5.8 this was the post object.
+	 *
+	 * @return array<array<string,string>> The block categories, filtered to add the Event Categories if applicable.
+	 */
+	public function block_categories_all( $categories, $context ) {
+		if ( ! $context instanceof WP_Block_Editor_Context ) {
+			return $categories;
+		}
+
+		// Make sure we have the post available.
+		if ( empty( $context->post ) ) {
+			return $categories;
+		}
+
+		return array_merge(
+			$categories,
+			[
+				[
+					'slug'  => 'tribe-events',
+					'title' => __( 'Event Blocks', 'the-events-calendar' ),
+				],
+			]
 		);
 	}
 
@@ -553,7 +722,7 @@ class Tribe__Events__Editor extends Tribe__Editor {
 	 *
 	 * @return array
 	 */
-	public function add_template_blocks( $args = array() ) {
+	public function add_template_blocks( $args = [] ) {
 		return $this->add_event_template_blocks( $args );
 	}
 

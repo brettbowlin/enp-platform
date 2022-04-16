@@ -5,8 +5,14 @@
  */
 
 // Privacy request action handling.
+<<<<<<< HEAD
 jQuery( document ).ready( function( $ ) {
 	var strings = window.privacyToolsL10n || {};
+=======
+jQuery( function( $ ) {
+	var __ = wp.i18n.__,
+		copiedNoticeTimeout;
+>>>>>>> master
 
 	function setActionState( $action, state ) {
 		$action.children().addClass( 'hidden' );
@@ -55,7 +61,11 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 
+<<<<<<< HEAD
 	$( '.export-personal-data-handle' ).click( function( event ) {
+=======
+	$( '.export-personal-data-handle' ).on( 'click', function( event ) {
+>>>>>>> master
 		var $this          = $( this ),
 			$action        = $this.parents( '.export-personal-data' ),
 			$requestRow    = $this.parents( 'tr' ),
@@ -71,12 +81,24 @@ jQuery( document ).ready( function( $ ) {
 
 		$rowActions.addClass( 'processing' );
 
+<<<<<<< HEAD
 		$action.blur();
+=======
+		$action.trigger( 'blur' );
+>>>>>>> master
 		clearResultsAfterRow( $requestRow );
 		setExportProgress( 0 );
 
 		function onExportDoneSuccess( zipUrl ) {
+<<<<<<< HEAD
 			var summaryMessage = strings.emailSent;
+=======
+			var summaryMessage = __( 'This user&#8217;s personal data export link was sent.' );
+
+			if ( 'undefined' !== typeof zipUrl ) {
+				summaryMessage = __( 'This user&#8217;s personal data export file was downloaded.' );
+			}
+>>>>>>> master
 
 			setActionState( $action, 'export-personal-data-success' );
 
@@ -85,6 +107,7 @@ jQuery( document ).ready( function( $ ) {
 			if ( 'undefined' !== typeof zipUrl ) {
 				window.location = zipUrl;
 			} else if ( ! sendAsEmail ) {
+<<<<<<< HEAD
 				onExportFailure( strings.noExportFile );
 			}
 
@@ -103,6 +126,30 @@ jQuery( document ).ready( function( $ ) {
 		function setExportProgress( exporterIndex ) {
 			var progress       = ( exportersCount > 0 ? exporterIndex / exportersCount : 0 );
 			var progressString = Math.round( progress * 100 ).toString() + '%';
+=======
+				onExportFailure( __( 'No personal data export file was generated.' ) );
+			}
+
+			setTimeout( function() { $rowActions.removeClass( 'processing' ); }, 500 );
+		}
+
+		function onExportFailure( errorMessage ) {
+			var summaryMessage = __( 'An error occurred while attempting to export personal data.' );
+
+			setActionState( $action, 'export-personal-data-failed' );
+
+			if ( errorMessage ) {
+				appendResultsAfterRow( $requestRow, 'notice-error', summaryMessage, [ errorMessage ] );
+			}
+
+			setTimeout( function() { $rowActions.removeClass( 'processing' ); }, 500 );
+		}
+
+		function setExportProgress( exporterIndex ) {
+			var progress       = ( exportersCount > 0 ? exporterIndex / exportersCount : 0 ),
+				progressString = Math.round( progress * 100 ).toString() + '%';
+
+>>>>>>> master
 			$progress.html( progressString );
 		}
 
@@ -125,7 +172,11 @@ jQuery( document ).ready( function( $ ) {
 
 				if ( ! response.success ) {
 					// e.g. invalid request ID.
+<<<<<<< HEAD
 					setTimeout( function(){ onExportFailure( response.data ); }, 500 );
+=======
+					setTimeout( function() { onExportFailure( response.data ); }, 500 );
+>>>>>>> master
 					return;
 				}
 
@@ -136,12 +187,20 @@ jQuery( document ).ready( function( $ ) {
 					if ( exporterIndex < exportersCount ) {
 						setTimeout( doNextExport( exporterIndex + 1, 1 ) );
 					} else {
+<<<<<<< HEAD
 						setTimeout( function(){ onExportDoneSuccess( responseData.url ); }, 500 );
+=======
+						setTimeout( function() { onExportDoneSuccess( responseData.url ); }, 500 );
+>>>>>>> master
 					}
 				}
 			}).fail( function( jqxhr, textStatus, error ) {
 				// e.g. Nonce failure.
+<<<<<<< HEAD
 				setTimeout( function(){ onExportFailure( error ); }, 500 );
+=======
+				setTimeout( function() { onExportFailure( error ); }, 500 );
+>>>>>>> master
 			});
 		}
 
@@ -150,7 +209,11 @@ jQuery( document ).ready( function( $ ) {
 		doNextExport( 1, 1 );
 	});
 
+<<<<<<< HEAD
 	$( '.remove-personal-data-handle' ).click( function( event ) {
+=======
+	$( '.remove-personal-data-handle' ).on( 'click', function( event ) {
+>>>>>>> master
 		var $this         = $( this ),
 			$action       = $this.parents( '.remove-personal-data' ),
 			$requestRow   = $this.parents( 'tr' ),
@@ -168,33 +231,55 @@ jQuery( document ).ready( function( $ ) {
 
 		$rowActions.addClass( 'processing' );
 
+<<<<<<< HEAD
 		$action.blur();
+=======
+		$action.trigger( 'blur' );
+>>>>>>> master
 		clearResultsAfterRow( $requestRow );
 		setErasureProgress( 0 );
 
 		function onErasureDoneSuccess() {
+<<<<<<< HEAD
 			var summaryMessage = strings.noDataFound;
 			var classes = 'notice-success';
+=======
+			var summaryMessage = __( 'No personal data was found for this user.' ),
+				classes = 'notice-success';
+>>>>>>> master
 
 			setActionState( $action, 'remove-personal-data-success' );
 
 			if ( false === hasRemoved ) {
 				if ( false === hasRetained ) {
+<<<<<<< HEAD
 					summaryMessage = strings.noDataFound;
 				} else {
 					summaryMessage = strings.noneRemoved;
+=======
+					summaryMessage = __( 'No personal data was found for this user.' );
+				} else {
+					summaryMessage = __( 'Personal data was found for this user but was not erased.' );
+>>>>>>> master
 					classes = 'notice-warning';
 				}
 			} else {
 				if ( false === hasRetained ) {
+<<<<<<< HEAD
 					summaryMessage = strings.foundAndRemoved;
 				} else {
 					summaryMessage = strings.someNotRemoved;
+=======
+					summaryMessage = __( 'All of the personal data found for this user was erased.' );
+				} else {
+					summaryMessage = __( 'Personal data was found for this user but some of the personal data found was not erased.' );
+>>>>>>> master
 					classes = 'notice-warning';
 				}
 			}
 			appendResultsAfterRow( $requestRow, classes, summaryMessage, messages );
 
+<<<<<<< HEAD
 			setTimeout( function(){ $rowActions.removeClass( 'processing' ); }, 500 );
 		}
 
@@ -208,6 +293,25 @@ jQuery( document ).ready( function( $ ) {
 		function setErasureProgress( eraserIndex ) {
 			var progress       = ( erasersCount > 0 ? eraserIndex / erasersCount : 0 );
 			var progressString = Math.round( progress * 100 ).toString() + '%';
+=======
+			setTimeout( function() { $rowActions.removeClass( 'processing' ); }, 500 );
+		}
+
+		function onErasureFailure() {
+			var summaryMessage = __( 'An error occurred while attempting to find and erase personal data.' );
+
+			setActionState( $action, 'remove-personal-data-failed' );
+
+			appendResultsAfterRow( $requestRow, 'notice-error', summaryMessage, [] );
+
+			setTimeout( function() { $rowActions.removeClass( 'processing' ); }, 500 );
+		}
+
+		function setErasureProgress( eraserIndex ) {
+			var progress       = ( erasersCount > 0 ? eraserIndex / erasersCount : 0 ),
+				progressString = Math.round( progress * 100 ).toString() + '%';
+
+>>>>>>> master
 			$progress.html( progressString );
 		}
 
@@ -226,7 +330,11 @@ jQuery( document ).ready( function( $ ) {
 				var responseData = response.data;
 
 				if ( ! response.success ) {
+<<<<<<< HEAD
 					setTimeout( function(){ onErasureFailure(); }, 500 );
+=======
+					setTimeout( function() { onErasureFailure(); }, 500 );
+>>>>>>> master
 					return;
 				}
 				if ( responseData.items_removed ) {
@@ -245,11 +353,19 @@ jQuery( document ).ready( function( $ ) {
 					if ( eraserIndex < erasersCount ) {
 						setTimeout( doNextErasure( eraserIndex + 1, 1 ) );
 					} else {
+<<<<<<< HEAD
 						setTimeout( function(){ onErasureDoneSuccess(); }, 500 );
 					}
 				}
 			}).fail( function() {
 				setTimeout( function(){ onErasureFailure(); }, 500 );
+=======
+						setTimeout( function() { onErasureDoneSuccess(); }, 500 );
+					}
+				}
+			}).fail( function() {
+				setTimeout( function() { onErasureFailure(); }, 500 );
+>>>>>>> master
 			});
 		}
 
@@ -259,6 +375,7 @@ jQuery( document ).ready( function( $ ) {
 		doNextErasure( 1, 1 );
 	});
 
+<<<<<<< HEAD
 	// Privacy policy page, copy button.
 	$( document ).on( 'click', function( event ) {
 		var $target = $( event.target );
@@ -273,10 +390,26 @@ jQuery( document ).ready( function( $ ) {
 			}
 
 			if ( $container.length ) {
+=======
+	// Privacy Policy page, copy action.
+	$( document ).on( 'click', function( event ) {
+		var $parent,
+			range,
+			$target = $( event.target ),
+			copiedNotice = $target.siblings( '.success' );
+
+		clearTimeout( copiedNoticeTimeout );
+
+		if ( $target.is( 'button.privacy-text-copy' ) ) {
+			$parent = $target.closest( '.privacy-settings-accordion-panel' );
+
+			if ( $parent.length ) {
+>>>>>>> master
 				try {
 					var documentPosition = document.documentElement.scrollTop,
 						bodyPosition     = document.body.scrollTop;
 
+<<<<<<< HEAD
 					window.getSelection().removeAllRanges();
 					range = document.createRange();
 					$container.addClass( 'hide-privacy-policy-tutorial' );
@@ -288,14 +421,68 @@ jQuery( document ).ready( function( $ ) {
 					$container.removeClass( 'hide-privacy-policy-tutorial' );
 					window.getSelection().removeAllRanges();
 
+=======
+					// Setup copy.
+					window.getSelection().removeAllRanges();
+
+					// Hide tutorial content to remove from copied content.
+					range = document.createRange();
+					$parent.addClass( 'hide-privacy-policy-tutorial' );
+
+					// Copy action.
+					range.selectNodeContents( $parent[0] );
+					window.getSelection().addRange( range );
+					document.execCommand( 'copy' );
+
+					// Reset section.
+					$parent.removeClass( 'hide-privacy-policy-tutorial' );
+					window.getSelection().removeAllRanges();
+
+					// Return scroll position - see #49540.
+>>>>>>> master
 					if ( documentPosition > 0 && documentPosition !== document.documentElement.scrollTop ) {
 						document.documentElement.scrollTop = documentPosition;
 					} else if ( bodyPosition > 0 && bodyPosition !== document.body.scrollTop ) {
 						document.body.scrollTop = bodyPosition;
 					}
+<<<<<<< HEAD
+=======
+
+					// Display and speak notice to indicate action complete.
+					copiedNotice.addClass( 'visible' );
+					wp.a11y.speak( __( 'The suggested policy text has been copied to your clipboard.' ) );
+
+					// Delay notice dismissal.
+					copiedNoticeTimeout = setTimeout( function() {
+						copiedNotice.removeClass( 'visible' );
+					}, 3000 );
+>>>>>>> master
 				} catch ( er ) {}
 			}
 		}
 	});
+<<<<<<< HEAD
 });
 
+=======
+
+	// Label handling to focus the create page button on Privacy settings page.
+	$( 'body.options-privacy-php label[for=create-page]' ).on( 'click', function( e ) {
+		e.preventDefault();
+		$( 'input#create-page' ).trigger( 'focus' );
+	} );
+
+	// Accordion handling in various new Privacy settings pages.
+	$( '.privacy-settings-accordion' ).on( 'click', '.privacy-settings-accordion-trigger', function() {
+		var isExpanded = ( 'true' === $( this ).attr( 'aria-expanded' ) );
+
+		if ( isExpanded ) {
+			$( this ).attr( 'aria-expanded', 'false' );
+			$( '#' + $( this ).attr( 'aria-controls' ) ).attr( 'hidden', true );
+		} else {
+			$( this ).attr( 'aria-expanded', 'true' );
+			$( '#' + $( this ).attr( 'aria-controls' ) ).attr( 'hidden', false );
+		}
+	} );
+});
+>>>>>>> master

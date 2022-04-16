@@ -35,9 +35,15 @@ $tax      = get_taxonomy( $tag->taxonomy );
 $taxonomy = $tax->name;
 $title    = $tax->labels->edit_item;
 
+<<<<<<< HEAD
 if ( ! in_array( $taxonomy, get_taxonomies( array( 'show_ui' => true ) ) ) ||
 	! current_user_can( 'edit_term', $tag->term_id ) ) {
 
+=======
+if ( ! in_array( $taxonomy, get_taxonomies( array( 'show_ui' => true ) ), true )
+	|| ! current_user_can( 'edit_term', $tag->term_id )
+) {
+>>>>>>> master
 	wp_die(
 		'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
 		'<p>' . __( 'Sorry, you are not allowed to edit this item.' ) . '</p>',

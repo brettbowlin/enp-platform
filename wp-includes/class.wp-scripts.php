@@ -227,7 +227,11 @@ class WP_Scripts extends WP_Dependencies {
 			return $output;
 		}
 
+<<<<<<< HEAD
 		echo "<script{$this->type_attr}>\n";
+=======
+		printf( "<script%s id='%s-js-extra'>\n", $this->type_attr, esc_attr( $handle ) );
+>>>>>>> master
 
 		// CDATA is not needed for HTML 5.
 		if ( $this->type_attr ) {
@@ -298,17 +302,33 @@ class WP_Scripts extends WP_Dependencies {
 		$after_handle  = $this->print_inline_script( $handle, 'after', false );
 
 		if ( $before_handle ) {
+<<<<<<< HEAD
 			$before_handle = sprintf( "<script%s>\n%s\n</script>\n", $this->type_attr, $before_handle );
 		}
 
 		if ( $after_handle ) {
 			$after_handle = sprintf( "<script%s>\n%s\n</script>\n", $this->type_attr, $after_handle );
+=======
+			$before_handle = sprintf( "<script%s id='%s-js-before'>\n%s\n</script>\n", $this->type_attr, esc_attr( $handle ), $before_handle );
+		}
+
+		if ( $after_handle ) {
+			$after_handle = sprintf( "<script%s id='%s-js-after'>\n%s\n</script>\n", $this->type_attr, esc_attr( $handle ), $after_handle );
+>>>>>>> master
 		}
 
 		if ( $before_handle || $after_handle ) {
 			$inline_script_tag = $cond_before . $before_handle . $after_handle . $cond_after;
 		} else {
 			$inline_script_tag = '';
+<<<<<<< HEAD
+=======
+		}
+
+		$translations = $this->print_translations( $handle, false );
+		if ( $translations ) {
+			$translations = sprintf( "<script%s id='%s-js-translations'>\n%s\n</script>\n", $this->type_attr, esc_attr( $handle ), $translations );
+>>>>>>> master
 		}
 
 		if ( $this->do_concat ) {
@@ -322,7 +342,7 @@ class WP_Scripts extends WP_Dependencies {
 			 */
 			$srce = apply_filters( 'script_loader_src', $src, $handle );
 
-			if ( $this->in_default_dir( $srce ) && ( $before_handle || $after_handle ) ) {
+			if ( $this->in_default_dir( $srce ) && ( $before_handle || $after_handle || $translations ) ) {
 				$this->do_concat = false;
 
 				// Have to print the so-far concatenated scripts right away to maintain the right order.
@@ -385,7 +405,11 @@ class WP_Scripts extends WP_Dependencies {
 		}
 
 		$tag  = $translations . $cond_before . $before_handle;
+<<<<<<< HEAD
 		$tag .= sprintf( "<script%s src='%s'></script>\n", $this->type_attr, $src );
+=======
+		$tag .= sprintf( "<script%s src='%s' id='%s-js'></script>\n", $this->type_attr, $src, esc_attr( $handle ) );
+>>>>>>> master
 		$tag .= $after_handle . $cond_after;
 
 		/**
@@ -415,7 +439,11 @@ class WP_Scripts extends WP_Dependencies {
 	 *
 	 * @param string $handle   Name of the script to add the inline script to.
 	 *                         Must be lowercase.
+<<<<<<< HEAD
 	 * @param string $data     String containing the javascript to be added.
+=======
+	 * @param string $data     String containing the JavaScript to be added.
+>>>>>>> master
 	 * @param string $position Optional. Whether to add the inline script
 	 *                         before the handle or after. Default 'after'.
 	 * @return bool True on success, false on failure.
@@ -458,7 +486,11 @@ class WP_Scripts extends WP_Dependencies {
 		$output = trim( implode( "\n", $output ), "\n" );
 
 		if ( $echo ) {
+<<<<<<< HEAD
 			printf( "<script%s>\n%s\n</script>\n", $this->type_attr, $output );
+=======
+			printf( "<script%s id='%s-js-%s'>\n%s\n</script>\n", $this->type_attr, esc_attr( $handle ), esc_attr( $position ), $output );
+>>>>>>> master
 		}
 
 		return $output;
@@ -477,6 +509,7 @@ class WP_Scripts extends WP_Dependencies {
 	public function localize( $handle, $object_name, $l10n ) {
 		if ( 'jquery' === $handle ) {
 			$handle = 'jquery-core';
+<<<<<<< HEAD
 		}
 
 		if ( is_array( $l10n ) && isset( $l10n['l10n_print_after'] ) ) { // back compat, preserve the code in 'l10n_print_after' if present.
@@ -490,6 +523,38 @@ class WP_Scripts extends WP_Dependencies {
 			}
 
 			$l10n[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
+=======
+		}
+
+		if ( is_array( $l10n ) && isset( $l10n['l10n_print_after'] ) ) { // back compat, preserve the code in 'l10n_print_after' if present.
+			$after = $l10n['l10n_print_after'];
+			unset( $l10n['l10n_print_after'] );
+		}
+
+		if ( ! is_array( $l10n ) ) {
+			_doing_it_wrong(
+				__METHOD__,
+				sprintf(
+					/* translators: 1: $l10n, 2: wp_add_inline_script() */
+					__( 'The %1$s parameter must be an array. To pass arbitrary data to scripts, use the %2$s function instead.' ),
+					'<code>$l10n</code>',
+					'<code>wp_add_inline_script()</code>'
+				),
+				'5.7.0'
+			);
+		}
+
+		if ( is_string( $l10n ) ) {
+			$l10n = html_entity_decode( $l10n, ENT_QUOTES, 'UTF-8' );
+		} else {
+			foreach ( (array) $l10n as $key => $value ) {
+				if ( ! is_scalar( $value ) ) {
+					continue;
+				}
+
+				$l10n[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
+			}
+>>>>>>> master
 		}
 
 		$script = "var $object_name = " . wp_json_encode( $l10n ) . ';';
@@ -595,7 +660,11 @@ class WP_Scripts extends WP_Dependencies {
 JS;
 
 		if ( $echo ) {
+<<<<<<< HEAD
 			printf( "<script%s>\n%s\n</script>\n", $this->type_attr, $output );
+=======
+			printf( "<script%s id='%s-js-translations'>\n%s\n</script>\n", $this->type_attr, esc_attr( $handle ), $output );
+>>>>>>> master
 		}
 
 		return $output;

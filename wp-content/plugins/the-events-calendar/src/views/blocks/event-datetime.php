@@ -7,7 +7,7 @@
  *
  * See more documentation about our Blocks Editor templating system.
  *
- * @link {INSERT_ARTCILE_LINK_HERE}
+ * @link http://evnt.is/1aiy
  *
  * @version 5.0.1
  *
@@ -34,14 +34,24 @@ $use_yearless_format = apply_filters( 'tribe_events_event_block_datetime_use_yea
 	$event
 );
 
+<<<<<<< HEAD
 $time_format    = tribe_get_time_format();
 $date_format    = tribe_get_date_format( $use_yearless_format );
 $timezone       = get_post_meta( $event_id, '_EventTimezone', true );
 $show_time_zone = $this->attr( 'showTimeZone' );
+=======
+$time_format      = tribe_get_time_format();
+$date_format      = tribe_get_date_format( ! $use_yearless_format );
+$timezone         = get_post_meta( $event_id, '_EventTimezone', true );
+$show_time_zone   = $this->attr( 'showTimeZone' );
+$local_start_time = tribe_get_start_date( $event_id, true, Tribe__Date_Utils::DBDATETIMEFORMAT );
+$time_zone_label  = $this->attr( 'timeZoneLabel' );
+>>>>>>> master
 
 if ( is_null( $show_time_zone ) ) {
 	$show_time_zone = tribe_get_option( 'tribe_events_timezones_show_zone', false );
 }
+<<<<<<< HEAD
 
 $time_zone_label = $this->attr( 'timeZoneLabel' );
 
@@ -49,6 +59,12 @@ if ( is_null( $time_zone_label ) ) {
 	$time_zone_label = Tribe__Events__Timezones::get_event_timezone_abbr( $event_id );
 }
 
+=======
+
+if ( is_null( $time_zone_label ) ) {
+	$time_zone_label = Tribe__Events__Timezones::is_mode( 'site' ) ? Tribe__Events__Timezones::wp_timezone_abbr( $local_start_time ) : Tribe__Events__Timezones::get_event_timezone_abbr( $event_id );
+}
+>>>>>>> master
 
 $formatted_start_date = tribe_get_start_date( $event_id, false, $date_format );
 $formatted_start_time = tribe_get_start_time( $event_id, $time_format );
@@ -68,9 +84,8 @@ $is_all_day        = tribe_event_is_all_day( $event_id );
 $is_same_day       = $formatted_start_date == $formatted_end_date;
 $is_same_start_end = $formatted_start_date == $formatted_end_date && $formatted_start_time == $formatted_end_time;
 
+$event_id = $this->get( 'post_id' );
 ?>
-
-<?php $event_id = $this->get( 'post_id' ); ?>
 <div class="tribe-events-schedule tribe-clearfix">
 	<h2 class="tribe-events-schedule__datetime">
 		<span class="tribe-events-schedule__date tribe-events-schedule__date--start">

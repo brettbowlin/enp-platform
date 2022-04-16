@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Merge pre-3.0 duplicate venues and organizers
  */
@@ -41,23 +40,28 @@ class Tribe__Events__Amalgamator {
 	 */
 	public function merge_identical_organizers() {
 		$titles  = $this->get_redundant_titles( Tribe__Events__Main::ORGANIZER_POST_TYPE );
-		$buckets = array();
+		$buckets = [];
+
 		foreach ( $titles as $t ) {
 			$organizer_ids = $this->get_posts_with_title( $t, Tribe__Events__Main::ORGANIZER_POST_TYPE );
+
 			foreach ( $organizer_ids as $id ) {
 				$post = get_post( $id );
-				$data = array(
+				$data = [
 					'title'             => $post->post_title,
 					'status'            => $post->post_status,
 					'content'           => $post->post_content,
 					'_OrganizerPhone'   => get_post_meta( $id, '_OrganizerPhone', true ),
 					'_OrganizerWebsite' => get_post_meta( $id, '_OrganizerWebsite', true ),
 					'_OrganizerEmail'   => get_post_meta( $id, '_OrganizerEmail', true ),
-				);
+				];
+
 				$hash = md5( serialize( $data ) );
+
 				if ( ! isset( $buckets[ $hash ] ) ) {
-					$buckets[ $hash ] = array();
+					$buckets[ $hash ] = [];
 				}
+
 				// prioritize organizers with an eventbrite id
 				$eventbrite = get_post_meta( $id, '_OrganizerEventBriteID', true );
 				if ( empty( $eventbrite ) ) {
@@ -67,6 +71,7 @@ class Tribe__Events__Amalgamator {
 				}
 			}
 		}
+
 		foreach ( $buckets as $organizer_ids ) {
 			$this->amalgamate_organizers( $organizer_ids );
 		}
@@ -78,12 +83,14 @@ class Tribe__Events__Amalgamator {
 	 */
 	public function merge_identical_venues() {
 		$titles  = $this->get_redundant_titles( Tribe__Events__Main::VENUE_POST_TYPE );
-		$buckets = array();
+		$buckets = [];
+
 		foreach ( $titles as $t ) {
 			$venue_ids = $this->get_posts_with_title( $t, Tribe__Events__Main::VENUE_POST_TYPE );
+
 			foreach ( $venue_ids as $id ) {
 				$post = get_post( $id );
-				$data = array(
+				$data = [
 					'title'          => $post->post_title,
 					'status'         => $post->post_status,
 					'content'        => $post->post_content,
@@ -95,11 +102,14 @@ class Tribe__Events__Amalgamator {
 					'_VenueZip'      => get_post_meta( $id, '_VenueZip', true ),
 					'_VenuePhone'    => get_post_meta( $id, '_VenuePhone', true ),
 					'_VenueURL'      => get_post_meta( $id, '_VenueURL', true ),
-				);
+				];
+
 				$hash = md5( serialize( $data ) );
+
 				if ( ! isset( $buckets[ $hash ] ) ) {
-					$buckets[ $hash ] = array();
+					$buckets[ $hash ] = [];
 				}
+
 				// prioritize venues with an eventbrite id
 				$eventbrite = get_post_meta( $id, '_VenueEventBriteID', true );
 				if ( empty( $eventbrite ) ) {
@@ -109,6 +119,7 @@ class Tribe__Events__Amalgamator {
 				}
 			}
 		}
+
 		foreach ( $buckets as $venue_ids ) {
 			$this->amalgamate_venues( $venue_ids );
 		}
@@ -168,7 +179,6 @@ class Tribe__Events__Amalgamator {
 		$this->delete_posts( $venue_ids );
 	}
 
-
 	/**
 	 * Merge all organizers in the given list into one post (keeping the first)
 	 *
@@ -208,7 +218,6 @@ class Tribe__Events__Amalgamator {
 			$community->setOption( 'defaultCommunityVenueID', $keep );
 		}
 	}
-
 
 	/**
 	 * If a removed organizer is being used as a default, change the default to
@@ -253,17 +262,17 @@ class Tribe__Events__Amalgamator {
 		$settings = Tribe__Settings::instance();
 
 		// get the base settings page url
-		$url  = apply_filters(
+		$url = apply_filters(
 			'tribe_settings_url', add_query_arg(
-				array(
+				[
 					'post_type' => Tribe__Events__Main::POSTTYPE,
 					'page'      => $settings->adminSlug,
-				), admin_url( 'edit.php' )
+				], admin_url( 'edit.php' )
 			)
 		);
 
-		$url  = add_query_arg( array( 'amalgamate' => '1' ), $url );
-		$url  = wp_nonce_url( $url, 'amalgamate_duplicates' );
+		$url = add_query_arg( [ 'amalgamate' => '1' ], $url );
+		$url = wp_nonce_url( $url, 'amalgamate_duplicates' );
 
 		return sprintf( '<a href="%s" class="button">%s</a>', $url, $text );
 	}
@@ -284,10 +293,10 @@ class Tribe__Events__Amalgamator {
 		$settings = Tribe__Settings::instance();
 		$url      = apply_filters(
 			'tribe_settings_url', add_query_arg(
-				array(
+				[
 					'post_type' => Tribe__Events__Main::POSTTYPE,
 					'page'      => $settings->adminSlug,
-				), admin_url( 'edit.php' )
+				], admin_url( 'edit.php' )
 			)
 		);
 		wp_redirect( esc_url_raw( $url ) );

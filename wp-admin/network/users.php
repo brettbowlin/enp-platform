@@ -26,8 +26,13 @@ if ( isset( $_GET['action'] ) ) {
 
 			check_admin_referer( 'deleteuser' );
 
+<<<<<<< HEAD
 			$id = intval( $_GET['id'] );
 			if ( '0' != $id && '1' != $id ) {
+=======
+			$id = (int) $_GET['id'];
+			if ( $id > 1 ) {
+>>>>>>> master
 				$_POST['allusers'] = array( $id ); // confirm_delete_users() can only handle arrays.
 				$title             = __( 'Users' );
 				$parent_file       = 'users.php';
@@ -39,17 +44,24 @@ if ( isset( $_GET['action'] ) ) {
 			} else {
 				wp_redirect( network_admin_url( 'users.php' ) );
 			}
-			exit();
+			exit;
 
 		case 'allusers':
 			if ( ! current_user_can( 'manage_network_users' ) ) {
 				wp_die( __( 'Sorry, you are not allowed to access this page.' ), 403 );
 			}
 
+<<<<<<< HEAD
 			if ( ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) && isset( $_POST['allusers'] ) ) {
 				check_admin_referer( 'bulk-users-network' );
 
 				$doaction     = -1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
+=======
+			if ( isset( $_POST['action'] ) && isset( $_POST['allusers'] ) ) {
+				check_admin_referer( 'bulk-users-network' );
+
+				$doaction     = $_POST['action'];
+>>>>>>> master
 				$userfunction = '';
 
 				foreach ( (array) $_POST['allusers'] as $user_id ) {
@@ -66,7 +78,11 @@ if ( isset( $_GET['action'] ) ) {
 								confirm_delete_users( $_POST['allusers'] );
 								echo '</div>';
 								require_once ABSPATH . 'wp-admin/admin-footer.php';
+<<<<<<< HEAD
 								exit();
+=======
+								exit;
+>>>>>>> master
 
 							case 'spam':
 								$user = get_userdata( $user_id );
@@ -116,13 +132,13 @@ if ( isset( $_GET['action'] ) ) {
 
 				if ( ! in_array( $doaction, array( 'delete', 'spam', 'notspam' ), true ) ) {
 					$sendback = wp_get_referer();
-
 					$user_ids = (array) $_POST['allusers'];
+
 					/** This action is documented in wp-admin/network/site-themes.php */
 					$sendback = apply_filters( 'handle_network_bulk_actions-' . get_current_screen()->id, $sendback, $doaction, $user_ids ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 
 					wp_safe_redirect( $sendback );
-					exit();
+					exit;
 				}
 
 				wp_safe_redirect(
@@ -142,7 +158,7 @@ if ( isset( $_GET['action'] ) ) {
 				}
 				wp_redirect( $location );
 			}
-			exit();
+			exit;
 
 		case 'dodelete':
 			check_admin_referer( 'ms-users-delete' );
@@ -157,7 +173,11 @@ if ( isset( $_GET['action'] ) ) {
 							continue;
 						}
 
+<<<<<<< HEAD
 						if ( ! empty( $_POST['delete'] ) && 'reassign' == $_POST['delete'][ $blogid ][ $id ] ) {
+=======
+						if ( ! empty( $_POST['delete'] ) && 'reassign' === $_POST['delete'][ $blogid ][ $id ] ) {
+>>>>>>> master
 							remove_user_from_blog( $id, $blogid, (int) $user_id );
 						} else {
 							remove_user_from_blog( $id, $blogid );
@@ -165,7 +185,12 @@ if ( isset( $_GET['action'] ) ) {
 					}
 				}
 			}
+
 			$i = 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 			if ( is_array( $_POST['user'] ) && ! empty( $_POST['user'] ) ) {
 				foreach ( $_POST['user'] as $id ) {
 					if ( ! current_user_can( 'delete_user', $id ) ) {
@@ -176,7 +201,11 @@ if ( isset( $_GET['action'] ) ) {
 				}
 			}
 
+<<<<<<< HEAD
 			if ( 1 == $i ) {
+=======
+			if ( 1 === $i ) {
+>>>>>>> master
 				$deletefunction = 'delete';
 			} else {
 				$deletefunction = 'all_delete';
@@ -191,7 +220,11 @@ if ( isset( $_GET['action'] ) ) {
 					network_admin_url( 'users.php' )
 				)
 			);
+<<<<<<< HEAD
 			exit();
+=======
+			exit;
+>>>>>>> master
 	}
 }
 
@@ -271,6 +304,7 @@ if ( isset( $_REQUEST['updated'] ) && 'true' == $_REQUEST['updated'] && ! empty(
 	<?php
 	if ( current_user_can( 'create_users' ) ) :
 		?>
+<<<<<<< HEAD
 		<a href="<?php echo network_admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
 							<?php
 	endif;
@@ -278,6 +312,20 @@ if ( isset( $_REQUEST['updated'] ) && 'true' == $_REQUEST['updated'] && ! empty(
 	if ( strlen( $usersearch ) ) {
 		/* translators: %s: Search query. */
 		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;' ) . '</span>', esc_html( $usersearch ) );
+=======
+		<a href="<?php echo esc_url( network_admin_url( 'user-new.php' ) ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
+		<?php
+	endif;
+
+	if ( strlen( $usersearch ) ) {
+		echo '<span class="subtitle">';
+		printf(
+			/* translators: %s: Search query. */
+			__( 'Search results for: %s' ),
+			'<strong>' . esc_html( $usersearch ) . '</strong>'
+		);
+		echo '</span>';
+>>>>>>> master
 	}
 	?>
 

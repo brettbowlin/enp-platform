@@ -35,7 +35,7 @@ if ( ! function_exists( 'tribe_get_display_end_date' ) ) {
 	 */
 	function tribe_get_display_end_date( $event = null, $display_time = true, $date_format = '', $timezone = null ) {
 		$timestamp = tribe_get_end_date( $event, true, 'U', $timezone );
-		$beginning_of_day = tribe_beginning_of_day( date( Tribe__Date_Utils::DBDATETIMEFORMAT, $timestamp ) );
+		$beginning_of_day = tribe_beginning_of_day( date( Tribe__Date_Utils::DBDATETIMEFORMAT, (int) $timestamp ) );
 
 		if ( tribe_event_is_multiday( $event ) && $timestamp < strtotime( $beginning_of_day ) ) {
 			$timestamp -= DAY_IN_SECONDS;
@@ -94,13 +94,14 @@ if ( ! function_exists( 'tribe_event_is_on_date' ) ) {
 
 		// kludge
 		if ( ! empty( $event->_end_date_fixed ) ) {
-			// @todo remove this once we can have all day events without a start / end time
+			// @todo [BTRIA-613]: remove this once we can have all day events without a start / end time.
 			$event_end = date_create( date( Tribe__Date_Utils::DBDATETIMEFORMAT, $event_end ) );
 			$event_end->modify( '+1 day' );
 			$event_end    = $event_end->format( 'U' );
 		}
 
-		/* note:
+		/*
+		 * Note:
 		 * events that start exactly on the EOD cutoff will count on the following day
 		 * events that end exactly on the EOD cutoff will count on the previous day
 		 */

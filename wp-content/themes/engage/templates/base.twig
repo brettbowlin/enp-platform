@@ -6,6 +6,11 @@
 	</head>
 {% endblock %}
 	<body class="{{body_class}}">
+	<!-- Google Tag Manager (noscript) -->
+	<noscript>
+		<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T4Z9KW" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+	</noscript>
+	<!-- End Google Tag Manager (noscript) -->
 		<div class="main-body-wrapper">
 			{% include 'partial/svg.twig' %}
 			{% include 'partial/brandbar.twig' %}
@@ -16,7 +21,7 @@
 			{% endblock %}
 
 
-			<main role="main" class="main wrapper">
+			<main role="main" class="main wrapper wrapper--pad">
 				{% block content %}
 					Sorry, no content
 				{% endblock %}

@@ -7,16 +7,16 @@ body {
 }
 
 body {
-	background: #f1f1f1;
+	background: #f0f0f1;
 	min-width: 0;
-	color: #444;
+	color: #3c434a;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-size: 13px;
 	line-height: 1.4;
 }
 
 a {
-	color: #0073aa;
+	color: #2271b1;
 	transition-property: border, background, color;
 	transition-duration: .05s;
 	transition-timing-function: ease-in-out;
@@ -28,14 +28,19 @@ a {
 
 a:hover,
 a:active {
-	color: #00a0d2;
+	color: #135e96;
 }
 
 a:focus {
-	color: #124964;
+	color: #043959;
 	box-shadow:
+<<<<<<< HEAD
 		0 0 0 1px #5b9dd9,
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
+=======
+		0 0 0 1px #4f94d4,
+		0 0 2px 1px rgba(79, 148, 212, 0.8);
+>>>>>>> master
 }
 
 p {
@@ -45,7 +50,7 @@ p {
 .login .message,
 .login .success,
 .login #login_error {
-	border-right: 4px solid #00a0d2;
+	border-right: 4px solid #72aee6;
 	padding: 12px;
 	margin-right: 0;
 	margin-bottom: 20px;
@@ -54,11 +59,11 @@ p {
 }
 
 .login .success {
-	border-right-color: #46b450;
+	border-right-color: #00a32a;
 }
 
 .login #login_error {
-	border-right-color: #dc3232;
+	border-right-color: #d63638;
 }
 
 #loginform p.submit,
@@ -103,8 +108,13 @@ p {
 
 .login .button.wp-hide-pw:focus {
 	background: transparent;
+<<<<<<< HEAD
 	border-color: #007cba;
 	box-shadow: 0 0 0 1px #007cba;
+=======
+	border-color: #3582c4;
+	box-shadow: 0 0 0 1px #3582c4;
+>>>>>>> master
 	/* Only visible in Windows High Contrast mode */
 	outline: 2px solid transparent;
 }
@@ -132,11 +142,15 @@ p {
 .login form {
 	margin-top: 20px;
 	margin-right: 0;
-	padding: 26px 24px 46px;
+	padding: 26px 24px 34px;
 	font-weight: 400;
 	overflow: hidden;
 	background: #fff;
+<<<<<<< HEAD
 	border: 1px solid #ccd0d4;
+=======
+	border: 1px solid #c3c4c7;
+>>>>>>> master
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
@@ -158,13 +172,33 @@ p {
 	}
 }
 
+<<<<<<< HEAD
 .login-action-confirm_admin_email #login {
 	width: 60vw;
+=======
+@media (prefers-reduced-motion: reduce) {
+	.login form.shake {
+		animation: none;
+		transform: none;
+	}
+}
+
+.login-action-confirm_admin_email #login {
+	width: 60vw;
+	max-width: 650px;
+>>>>>>> master
 	margin-top: -2vh;
 }
 
 @media screen and (max-width: 782px) {
 	.login-action-confirm_admin_email #login {
+<<<<<<< HEAD
+=======
+		box-sizing: border-box;
+		margin-top: 0;
+		padding-right: 4vw;
+		padding-left: 4vw;
+>>>>>>> master
 		width: 100vw;
 	}
 }
@@ -179,6 +213,21 @@ p {
 	float: left;
 }
 
+<<<<<<< HEAD
+=======
+.login .reset-pass-submit {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+
+.login .reset-pass-submit .button {
+	display: inline-block;
+	float: none;
+	margin-bottom: 6px;
+}
+
+>>>>>>> master
 .login .admin-email-confirm-form .submit {
 	text-align: center;
 }
@@ -192,8 +241,13 @@ p {
 }
 
 .login h1.admin-email__heading {
+<<<<<<< HEAD
 	border-bottom: 1px rgb(241, 241, 241) solid;
 	color: rgb(95, 95, 95);
+=======
+	border-bottom: 1px #f0f0f1 solid;
+	color: #50575e;
+>>>>>>> master
 	font-weight: normal;
 	padding-bottom: 0.5em;
 	text-align: right;
@@ -241,7 +295,7 @@ p {
 	background-size: 84px;
 	background-position: center top;
 	background-repeat: no-repeat;
-	color: #444;
+	color: #3c434a;
 	height: 84px;
 	font-size: 20px;
 	font-weight: 400;
@@ -274,24 +328,25 @@ p {
 
 #backtoblog {
 	margin: 16px 0;
+	word-break: break-word;
 }
 
 .login #nav a,
 .login #backtoblog a {
 	text-decoration: none;
-	color: #555d66;
+	color: #50575e;
 }
 
 .login #nav a:hover,
 .login #backtoblog a:hover,
 .login h1 a:hover {
-	color: #00a0d2;
+	color: #135e96;
 }
 
 .login #nav a:focus,
 .login #backtoblog a:focus,
 .login h1 a:focus {
-	color: #124964;
+	color: #043959;
 }
 
 .login .privacy-policy-page-link {
@@ -313,6 +368,13 @@ p {
 	max-height: none;
 }
 
+<<<<<<< HEAD
+=======
+.login input.password-input {
+	font-family: Consolas, Monaco, monospace;
+}
+
+>>>>>>> master
 .js.login input.password-input,
 .js.login-action-rp form .input,
 .js.login-action-rp input[type="text"] {
@@ -322,7 +384,7 @@ p {
 .login form .input,
 .login input[type="text"],
 .login form input[type="checkbox"] {
-	background: #fbfbfb;
+	background: #fff;
 }
 
 .js.login-action-rp input[type="text"],
@@ -374,6 +436,7 @@ body.interim-login {
 	position: absolute;
 	width: 1px;
 	word-wrap: normal !important; /* many screen reader and browser combinations announce broken words as they would appear visually */
+<<<<<<< HEAD
 }
 
 /* Hide the Edge "reveal password" native button */
@@ -385,6 +448,15 @@ input::-ms-reveal {
 	width: device-width;
 }
 
+=======
+}
+
+/* Hide the Edge "reveal password" native button */
+input::-ms-reveal {
+	display: none;
+}
+
+>>>>>>> master
 @media screen and (max-height: 550px) {
 	#login {
 		padding: 20px 0;

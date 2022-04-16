@@ -9,13 +9,14 @@
 /**
  * Constructs the admin menu.
  *
- * The elements in the array are :
- *     0: Menu item name
+ * The elements in the array are:
+ *     0: Menu item name.
  *     1: Minimum level or capability required.
- *     2: The URL of the item's file
- *     3: Class
- *     4: ID
- *     5: Icon for top level menu
+ *     2: The URL of the item's file.
+ *     3: Page title.
+ *     4: Classes.
+ *     5: ID.
+ *     6: Icon for top level menu.
  *
  * @global array $menu
  */
@@ -134,7 +135,7 @@ foreach ( array_merge( $builtin, $types ) as $ptype ) {
 		} else {
 			$menu_icon = esc_url( $ptype_obj->menu_icon );
 		}
-	} elseif ( in_array( $ptype, $builtin ) ) {
+	} elseif ( in_array( $ptype, $builtin, true ) ) {
 		$menu_icon = 'dashicons-admin-' . $ptype;
 	}
 
@@ -151,7 +152,7 @@ foreach ( array_merge( $builtin, $types ) as $ptype ) {
 		$edit_tags_file = "edit-tags.php?taxonomy=%s&amp;post_type=$ptype";
 	}
 
-	if ( in_array( $ptype, $builtin ) ) {
+	if ( in_array( $ptype, $builtin, true ) ) {
 		$ptype_menu_id = 'menu-' . $ptype_for_id . 's';
 	} else {
 		$ptype_menu_id = 'menu-posts-' . $ptype_for_id;
@@ -161,7 +162,11 @@ foreach ( array_merge( $builtin, $types ) as $ptype ) {
 	 * by a hard-coded value below, increment the position.
 	 */
 	$core_menu_positions = array( 59, 60, 65, 70, 75, 80, 85, 99 );
+<<<<<<< HEAD
 	while ( isset( $menu[ $ptype_menu_position ] ) || in_array( $ptype_menu_position, $core_menu_positions ) ) {
+=======
+	while ( isset( $menu[ $ptype_menu_position ] ) || in_array( $ptype_menu_position, $core_menu_positions, true ) ) {
+>>>>>>> master
 		$ptype_menu_position++;
 	}
 
@@ -184,9 +189,29 @@ $menu[59] = array( '', 'read', 'separator2', '', 'wp-menu-separator' );
 
 $appearance_cap = current_user_can( 'switch_themes' ) ? 'switch_themes' : 'edit_theme_options';
 
+<<<<<<< HEAD
 $menu[60]                     = array( __( 'Appearance' ), $appearance_cap, 'themes.php', '', 'menu-top menu-icon-appearance', 'menu-appearance', 'dashicons-admin-appearance' );
 	$submenu['themes.php'][5] = array( __( 'Themes' ), $appearance_cap, 'themes.php' );
 
+=======
+$menu[60] = array( __( 'Appearance' ), $appearance_cap, 'themes.php', '', 'menu-top menu-icon-appearance', 'menu-appearance', 'dashicons-admin-appearance' );
+
+$count = '';
+if ( ! is_multisite() && current_user_can( 'update_themes' ) ) {
+	if ( ! isset( $update_data ) ) {
+		$update_data = wp_get_update_data();
+	}
+	$count = sprintf(
+		'<span class="update-plugins count-%s"><span class="theme-count">%s</span></span>',
+		$update_data['counts']['themes'],
+		number_format_i18n( $update_data['counts']['themes'] )
+	);
+}
+
+	/* translators: %s: Number of available theme updates. */
+	$submenu['themes.php'][5] = array( sprintf( __( 'Themes %s' ), $count ), $appearance_cap, 'themes.php' );
+
+>>>>>>> master
 	$customize_url            = add_query_arg( 'return', urlencode( remove_query_arg( wp_removable_query_args(), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ), 'customize.php' );
 	$submenu['themes.php'][6] = array( __( 'Customize' ), 'customize', esc_url( $customize_url ), '', 'hide-if-no-customize' );
 
@@ -208,12 +233,12 @@ if ( current_theme_supports( 'custom-background' ) && current_user_can( 'customi
 
 unset( $appearance_cap );
 
-// Add 'Editor' to the bottom of the Appearance menu.
+// Add 'Theme Editor' to the bottom of the Appearance menu.
 if ( ! is_multisite() ) {
 	add_action( 'admin_menu', '_add_themes_utility_last', 101 );
 }
 /**
- * Adds the (theme) 'Editor' link to the bottom of the Appearance menu.
+ * Adds the 'Theme Editor' link to the bottom of the Appearance menu.
  *
  * @access private
  * @since 3.0.0
@@ -235,7 +260,11 @@ if ( ! is_multisite() && current_user_can( 'update_plugins' ) ) {
 	);
 }
 
+<<<<<<< HEAD
 /* translators: %s: Number of pending plugin updates. */
+=======
+/* translators: %s: Number of available plugin updates. */
+>>>>>>> master
 $menu[65] = array( sprintf( __( 'Plugins %s' ), $count ), 'activate_plugins', 'plugins.php', '', 'menu-top menu-icon-plugins', 'menu-plugins', 'dashicons-admin-plugins' );
 
 $submenu['plugins.php'][5] = array( __( 'Installed Plugins' ), 'activate_plugins', 'plugins.php' );
@@ -263,10 +292,17 @@ if ( current_user_can( 'list_users' ) ) {
 		$submenu['users.php'][10] = array( _x( 'Add New', 'user' ), 'promote_users', 'user-new.php' );
 	}
 
+<<<<<<< HEAD
 	$submenu['users.php'][15] = array( __( 'Your Profile' ), 'read', 'profile.php' );
 } else {
 	$_wp_real_parent_file['users.php'] = 'profile.php';
 	$submenu['profile.php'][5]         = array( __( 'Your Profile' ), 'read', 'profile.php' );
+=======
+	$submenu['users.php'][15] = array( __( 'Profile' ), 'read', 'profile.php' );
+} else {
+	$_wp_real_parent_file['users.php'] = 'profile.php';
+	$submenu['profile.php'][5]         = array( __( 'Profile' ), 'read', 'profile.php' );
+>>>>>>> master
 	if ( current_user_can( 'create_users' ) ) {
 		$submenu['profile.php'][10] = array( __( 'Add New User' ), 'create_users', 'user-new.php' );
 	} elseif ( is_multisite() ) {

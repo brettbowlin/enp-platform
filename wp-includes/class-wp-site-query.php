@@ -59,7 +59,7 @@ class WP_Site_Query {
 	 * Date query container.
 	 *
 	 * @since 4.6.0
-	 * @var object WP_Date_Query
+	 * @var WP_Date_Query A date query instance.
 	 */
 	public $date_query = false;
 
@@ -114,8 +114,13 @@ class WP_Site_Query {
 	 * @param string|array $query {
 	 *     Optional. Array or query string of site query parameters. Default empty.
 	 *
+<<<<<<< HEAD
 	 *     @type array        $site__in               Array of site IDs to include. Default empty.
 	 *     @type array        $site__not_in           Array of site IDs to exclude. Default empty.
+=======
+	 *     @type int[]        $site__in               Array of site IDs to include. Default empty.
+	 *     @type int[]        $site__not_in           Array of site IDs to exclude. Default empty.
+>>>>>>> master
 	 *     @type bool         $count                  Whether to return a site count (true) or array of site objects.
 	 *                                                Default false.
 	 *     @type array        $date_query             Date query clauses to limit sites by. See WP_Date_Query.
@@ -135,6 +140,7 @@ class WP_Site_Query {
 	 *     @type string       $order                  How to order retrieved sites. Accepts 'ASC', 'DESC'. Default 'ASC'.
 	 *     @type int          $network_id             Limit results to those affiliated with a given network ID. If 0,
 	 *                                                include all networks. Default 0.
+<<<<<<< HEAD
 	 *     @type array        $network__in            Array of network IDs to include affiliated sites for. Default empty.
 	 *     @type array        $network__not_in        Array of network IDs to exclude affiliated sites for. Default empty.
 	 *     @type string       $domain                 Limit results to those affiliated with a given domain. Default empty.
@@ -143,16 +149,33 @@ class WP_Site_Query {
 	 *     @type string       $path                   Limit results to those affiliated with a given path. Default empty.
 	 *     @type array        $path__in               Array of paths to include affiliated sites for. Default empty.
 	 *     @type array        $path__not_in           Array of paths to exclude affiliated sites for. Default empty.
+=======
+	 *     @type int[]        $network__in            Array of network IDs to include affiliated sites for. Default empty.
+	 *     @type int[]        $network__not_in        Array of network IDs to exclude affiliated sites for. Default empty.
+	 *     @type string       $domain                 Limit results to those affiliated with a given domain. Default empty.
+	 *     @type string[]     $domain__in             Array of domains to include affiliated sites for. Default empty.
+	 *     @type string[]     $domain__not_in         Array of domains to exclude affiliated sites for. Default empty.
+	 *     @type string       $path                   Limit results to those affiliated with a given path. Default empty.
+	 *     @type string[]     $path__in               Array of paths to include affiliated sites for. Default empty.
+	 *     @type string[]     $path__not_in           Array of paths to exclude affiliated sites for. Default empty.
+>>>>>>> master
 	 *     @type int          $public                 Limit results to public sites. Accepts '1' or '0'. Default empty.
 	 *     @type int          $archived               Limit results to archived sites. Accepts '1' or '0'. Default empty.
 	 *     @type int          $mature                 Limit results to mature sites. Accepts '1' or '0'. Default empty.
 	 *     @type int          $spam                   Limit results to spam sites. Accepts '1' or '0'. Default empty.
 	 *     @type int          $deleted                Limit results to deleted sites. Accepts '1' or '0'. Default empty.
 	 *     @type int          $lang_id                Limit results to a language ID. Default empty.
+<<<<<<< HEAD
 	 *     @type array        $lang__in               Array of language IDs to include affiliated sites for. Default empty.
 	 *     @type array        $lang__not_in           Array of language IDs to exclude affiliated sites for. Default empty.
 	 *     @type string       $search                 Search term(s) to retrieve matching sites for. Default empty.
 	 *     @type array        $search_columns         Array of column names to be searched. Accepts 'domain' and 'path'.
+=======
+	 *     @type string[]     $lang__in               Array of language IDs to include affiliated sites for. Default empty.
+	 *     @type string[]     $lang__not_in           Array of language IDs to exclude affiliated sites for. Default empty.
+	 *     @type string       $search                 Search term(s) to retrieve matching sites for. Default empty.
+	 *     @type string[]     $search_columns         Array of column names to be searched. Accepts 'domain' and 'path'.
+>>>>>>> master
 	 *                                                Default empty array.
 	 *     @type bool         $update_site_cache      Whether to prime the cache for found sites. Default true.
 	 *     @type bool         $update_site_meta_cache Whether to prime the metadata cache for found sites. Default true.
@@ -245,7 +268,7 @@ class WP_Site_Query {
 	 * @since 4.6.0
 	 *
 	 * @param string|array $query Array or URL query string of parameters.
-	 * @return array|int List of WP_Site objects, a list of site ids when 'fields' is set to 'ids',
+	 * @return array|int List of WP_Site objects, a list of site IDs when 'fields' is set to 'ids',
 	 *                   or the number of sites when 'count' is passed as a query var.
 	 */
 	public function query( $query ) {
@@ -261,7 +284,11 @@ class WP_Site_Query {
 	 *
 	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
+<<<<<<< HEAD
 	 * @return array|int List of WP_Site objects, a list of site ids when 'fields' is set to 'ids',
+=======
+	 * @return array|int List of WP_Site objects, a list of site IDs when 'fields' is set to 'ids',
+>>>>>>> master
 	 *                   or the number of sites when 'count' is passed as a query var.
 	 */
 	public function get_sites() {
@@ -291,6 +318,7 @@ class WP_Site_Query {
 		$site_data = null;
 
 		/**
+<<<<<<< HEAD
 		 * Filter the site data before the get_sites query takes place.
 		 *
 		 * Return a non-null value to bypass WordPress's default site queries.
@@ -301,15 +329,51 @@ class WP_Site_Query {
 		 * Otherwise the filter should return an array of WP_Site objects.
 		 *
 		 * @since 5.2.0
+=======
+		 * Filters the site data before the get_sites query takes place.
+		 *
+		 * Return a non-null value to bypass WordPress' default site queries.
+		 *
+		 * The expected return type from this filter depends on the value passed
+		 * in the request query vars:
+		 * - When `$this->query_vars['count']` is set, the filter should return
+		 *   the site count as an integer.
+		 * - When `'ids' === $this->query_vars['fields']`, the filter should return
+		 *   an array of site IDs.
+		 * - Otherwise the filter should return an array of WP_Site objects.
+		 *
+		 * Note that if the filter returns an array of site data, it will be assigned
+		 * to the `sites` property of the current WP_Site_Query instance.
+		 *
+		 * Filtering functions that require pagination information are encouraged to set
+		 * the `found_sites` and `max_num_pages` properties of the WP_Site_Query object,
+		 * passed to the filter by reference. If WP_Site_Query does not perform a database
+		 * query, it will not have enough information to generate these values itself.
+		 *
+		 * @since 5.2.0
+		 * @since 5.6.0 The returned array of site data is assigned to the `sites` property
+		 *              of the current WP_Site_Query instance.
+>>>>>>> master
 		 *
 		 * @param array|int|null $site_data Return an array of site data to short-circuit WP's site query,
 		 *                                  the site count as an integer if `$this->query_vars['count']` is set,
 		 *                                  or null to run the normal queries.
+<<<<<<< HEAD
 		 * @param WP_Site_Query  $this      The WP_Site_Query instance, passed by reference.
+=======
+		 * @param WP_Site_Query  $query     The WP_Site_Query instance, passed by reference.
+>>>>>>> master
 		 */
 		$site_data = apply_filters_ref_array( 'sites_pre_query', array( $site_data, &$this ) );
 
 		if ( null !== $site_data ) {
+<<<<<<< HEAD
+=======
+			if ( is_array( $site_data ) && ! $this->query_vars['count'] ) {
+				$this->sites = $site_data;
+			}
+
+>>>>>>> master
 			return $site_data;
 		}
 
@@ -348,12 +412,12 @@ class WP_Site_Query {
 		// If querying for a count only, there's nothing more to do.
 		if ( $this->query_vars['count'] ) {
 			// $site_ids is actually a count in this case.
-			return intval( $site_ids );
+			return (int) $site_ids;
 		}
 
 		$site_ids = array_map( 'intval', $site_ids );
 
-		if ( 'ids' == $this->query_vars['fields'] ) {
+		if ( 'ids' === $this->query_vars['fields'] ) {
 			$this->sites = $site_ids;
 
 			return $this->sites;
@@ -379,7 +443,11 @@ class WP_Site_Query {
 		 * @since 4.6.0
 		 *
 		 * @param WP_Site[]     $_sites An array of WP_Site objects.
+<<<<<<< HEAD
 		 * @param WP_Site_Query $this   Current instance of WP_Site_Query (passed by reference).
+=======
+		 * @param WP_Site_Query $query  Current instance of WP_Site_Query (passed by reference).
+>>>>>>> master
 		 */
 		$_sites = apply_filters_ref_array( 'the_sites', array( $_sites, &$this ) );
 
@@ -583,7 +651,7 @@ class WP_Site_Query {
 			 *
 			 * @param string[]      $search_columns Array of column names to be searched.
 			 * @param string        $search         Text being searched.
-			 * @param WP_Site_Query $this           The current WP_Site_Query instance.
+			 * @param WP_Site_Query $query          The current WP_Site_Query instance.
 			 */
 			$search_columns = apply_filters( 'site_search_columns', $search_columns, $this->query_vars['search'], $this );
 
@@ -620,7 +688,11 @@ class WP_Site_Query {
 		 * @since 4.6.0
 		 *
 		 * @param string[]      $pieces An associative array of site query clauses.
+<<<<<<< HEAD
 		 * @param WP_Site_Query $this   Current instance of WP_Site_Query (passed by reference).
+=======
+		 * @param WP_Site_Query $query  Current instance of WP_Site_Query (passed by reference).
+>>>>>>> master
 		 */
 		$clauses = apply_filters_ref_array( 'sites_clauses', array( compact( $pieces ), &$this ) );
 
@@ -657,7 +729,7 @@ class WP_Site_Query {
 		$this->request = "{$this->sql_clauses['select']} {$this->sql_clauses['from']} {$where} {$this->sql_clauses['groupby']} {$this->sql_clauses['orderby']} {$this->sql_clauses['limits']}";
 
 		if ( $this->query_vars['count'] ) {
-			return intval( $wpdb->get_var( $this->request ) );
+			return (int) $wpdb->get_var( $this->request );
 		}
 
 		$site_ids = $wpdb->get_col( $this->request );

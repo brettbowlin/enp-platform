@@ -106,7 +106,11 @@ abstract class Shortcode_Abstract implements Shortcode_Interface {
 	 * {@inheritDoc}
 	 */
 	public function validate_arguments( array $arguments ) {
+<<<<<<< HEAD
 		$validate_arguments_map = $this->get_validated_arguments_map();
+=======
+		$validate_arguments_map = $this->filter_validated_arguments_map( $this->get_validated_arguments_map() );
+>>>>>>> master
 		foreach ( $validate_arguments_map as $key => $callback ) {
 			$arguments[ $key ] = $callback( isset( $arguments[ $key ] ) ? $arguments[ $key ] : null );
 		}
@@ -125,6 +129,16 @@ abstract class Shortcode_Abstract implements Shortcode_Interface {
 	 * {@inheritDoc}
 	 */
 	public function get_validated_arguments_map() {
+<<<<<<< HEAD
+=======
+		return $this->validate_arguments_map;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function filter_validated_arguments_map( $validate_arguments_map ) {
+>>>>>>> master
 		/**
 		 * Applies a filter to instance arguments validation callbacks.
 		 *
@@ -133,7 +147,11 @@ abstract class Shortcode_Abstract implements Shortcode_Interface {
 		 * @param array  $validate_arguments_map Current set of callbacks for arguments.
 		 * @param static $instance               Which instance of shortcode we are dealing with.
 		 */
+<<<<<<< HEAD
 		$validate_arguments_map = apply_filters( 'tribe_shortcode_validate_arguments_map', $this->validate_arguments_map, $this );
+=======
+		$validate_arguments_map = apply_filters( 'tribe_shortcode_validate_arguments_map', $validate_arguments_map, $this );
+>>>>>>> master
 
 		$registration_slug = $this->get_registration_slug();
 

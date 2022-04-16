@@ -18,7 +18,14 @@ $parent_file = 'options-general.php';
 
 $media_options_help = '<p>' . __( 'You can set maximum sizes for images inserted into your written content; you can also insert an image as Full Size.' ) . '</p>';
 
+<<<<<<< HEAD
 if ( ! is_multisite() && ( get_option( 'upload_url_path' ) || ( get_option( 'upload_path' ) != 'wp-content/uploads' && get_option( 'upload_path' ) ) ) ) {
+=======
+if ( ! is_multisite()
+	&& ( get_option( 'upload_url_path' )
+		|| get_option( 'upload_path' ) && 'wp-content/uploads' !== get_option( 'upload_path' ) )
+) {
+>>>>>>> master
 	$media_options_help .= '<p>' . __( 'Uploading Files allows you to choose the folder and path for storing your uploaded files.' ) . '</p>';
 }
 
@@ -107,8 +114,18 @@ if ( isset( $GLOBALS['wp_settings']['media']['embeds'] ) ) :
 <h2 class="title"><?php _e( 'Uploading Files' ); ?></h2>
 <table class="form-table" role="presentation">
 	<?php
+<<<<<<< HEAD
 	// If upload_url_path is not the default (empty), and upload_path is not the default ('wp-content/uploads' or empty).
 	if ( get_option( 'upload_url_path' ) || ( get_option( 'upload_path' ) != 'wp-content/uploads' && get_option( 'upload_path' ) ) ) :
+=======
+	/*
+	 * If upload_url_path is not the default (empty),
+	 * or upload_path is not the default ('wp-content/uploads' or empty),
+	 * they can be edited, otherwise they're locked.
+	 */
+	if ( get_option( 'upload_url_path' )
+		|| get_option( 'upload_path' ) && 'wp-content/uploads' !== get_option( 'upload_path' ) ) :
+>>>>>>> master
 		?>
 <tr>
 <th scope="row"><label for="upload_path"><?php _e( 'Store uploads in this folder' ); ?></label></th>

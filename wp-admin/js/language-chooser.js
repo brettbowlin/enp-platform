@@ -14,7 +14,11 @@ if ( ! $( 'body' ).hasClass( 'language-chooser' ) ) {
 	return;
 }
 
+<<<<<<< HEAD
 select.focus().on( 'change', function() {
+=======
+select.trigger( 'focus' ).on( 'change', function() {
+>>>>>>> master
 	/*
 	 * When a language is selected, set matching translation to continue button
 	 * and attach the language attribute.
@@ -26,7 +30,11 @@ select.focus().on( 'change', function() {
 	});
 });
 
+<<<<<<< HEAD
 $( 'form' ).submit( function() {
+=======
+$( 'form' ).on( 'submit', function() {
+>>>>>>> master
 	// Show spinner for languages that need to be downloaded.
 	if ( ! select.children( 'option:selected' ).data( 'installed' ) ) {
 		$( this ).find( '.step .spinner' ).css( 'visibility', 'visible' );

@@ -82,11 +82,16 @@ this["wp"] = this["wp"] || {}; this["wp"]["notices"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 438);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "Ko7W");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 18:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -187,6 +192,26 @@ function _iterableToArray(iter) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+=======
+/***/ "1ZqX":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["data"]; }());
+
+/***/ }),
+
+/***/ "Ko7W":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "store", function() { return /* reexport */ store; });
+
+// NAMESPACE OBJECT: ./node_modules/@wordpress/notices/build-module/store/actions.js
+>>>>>>> master
 var actions_namespaceObject = {};
 __webpack_require__.r(actions_namespaceObject);
 __webpack_require__.d(actions_namespaceObject, "createNotice", function() { return createNotice; });
@@ -195,10 +220,16 @@ __webpack_require__.d(actions_namespaceObject, "createInfoNotice", function() { 
 __webpack_require__.d(actions_namespaceObject, "createErrorNotice", function() { return createErrorNotice; });
 __webpack_require__.d(actions_namespaceObject, "createWarningNotice", function() { return createWarningNotice; });
 __webpack_require__.d(actions_namespaceObject, "removeNotice", function() { return removeNotice; });
+<<<<<<< HEAD
+=======
+
+// NAMESPACE OBJECT: ./node_modules/@wordpress/notices/build-module/store/selectors.js
+>>>>>>> master
 var selectors_namespaceObject = {};
 __webpack_require__.r(selectors_namespaceObject);
 __webpack_require__.d(selectors_namespaceObject, "getNotices", function() { return getNotices; });
 
+<<<<<<< HEAD
 // EXTERNAL MODULE: external {"this":["wp","data"]}
 var external_this_wp_data_ = __webpack_require__(4);
 
@@ -218,6 +249,15 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { Object(defineProperty["a" /* default */])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
+=======
+// EXTERNAL MODULE: external ["wp","data"]
+var external_wp_data_ = __webpack_require__("1ZqX");
+
+// EXTERNAL MODULE: external "lodash"
+var external_lodash_ = __webpack_require__("YLtl");
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/store/utils/on-sub-key.js
+>>>>>>> master
 /**
  * Higher-order reducer creator which creates a combined reducer object, keyed
  * by a property on the action object.
@@ -226,6 +266,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  *
  * @return {Function} Higher-order reducer.
  */
+<<<<<<< HEAD
 var on_sub_key_onSubKey = function onSubKey(actionProperty) {
   return function (reducer) {
     return function () {
@@ -256,6 +297,32 @@ var on_sub_key_onSubKey = function onSubKey(actionProperty) {
 // CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/store/reducer.js
 
 
+=======
+const onSubKey = actionProperty => reducer => (state = {}, action) => {
+  // Retrieve subkey from action. Do not track if undefined; useful for cases
+  // where reducer is scoped by action shape.
+  const key = action[actionProperty];
+
+  if (key === undefined) {
+    return state;
+  } // Avoid updating state if unchanged. Note that this also accounts for a
+  // reducer which returns undefined on a key which is not yet tracked.
+
+
+  const nextKeyState = reducer(state[key], action);
+
+  if (nextKeyState === state[key]) {
+    return state;
+  }
+
+  return { ...state,
+    [key]: nextKeyState
+  };
+};
+/* harmony default export */ var on_sub_key = (onSubKey);
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/store/reducer.js
+>>>>>>> master
 /**
  * External dependencies
  */
@@ -275,6 +342,7 @@ var on_sub_key_onSubKey = function onSubKey(actionProperty) {
  * @return {Object} Updated state.
  */
 
+<<<<<<< HEAD
 var notices = on_sub_key('context')(function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
@@ -288,13 +356,29 @@ var notices = on_sub_key('context')(function () {
 
     case 'REMOVE_NOTICE':
       return Object(external_this_lodash_["reject"])(state, {
+=======
+const notices = on_sub_key('context')((state = [], action) => {
+  switch (action.type) {
+    case 'CREATE_NOTICE':
+      // Avoid duplicates on ID.
+      return [...Object(external_lodash_["reject"])(state, {
+        id: action.notice.id
+      }), action.notice];
+
+    case 'REMOVE_NOTICE':
+      return Object(external_lodash_["reject"])(state, {
+>>>>>>> master
         id: action.id
       });
   }
 
   return state;
 });
+<<<<<<< HEAD
 /* harmony default export */ var store_reducer = (notices);
+=======
+/* harmony default export */ var reducer = (notices);
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/store/constants.js
 /**
@@ -304,14 +388,22 @@ var notices = on_sub_key('context')(function () {
  *
  * @type {string}
  */
+<<<<<<< HEAD
 var DEFAULT_CONTEXT = 'global';
+=======
+const DEFAULT_CONTEXT = 'global';
+>>>>>>> master
 /**
  * Default notice status.
  *
  * @type {string}
  */
 
+<<<<<<< HEAD
 var DEFAULT_STATUS = 'info';
+=======
+const DEFAULT_STATUS = 'info';
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/store/actions.js
 /**
@@ -355,10 +447,20 @@ var DEFAULT_STATUS = 'info';
  *                                                             readers.
  * @param {Array<WPNoticeAction>} [options.actions]            User actions to be
  *                                                             presented with notice.
+<<<<<<< HEAD
+=======
+ * @param {Object}                [options.icon]               An icon displayed with the notice.
+ * @param {boolean}               [options.explicitDismiss]    Whether the notice includes
+ *                                                             an explict dismiss button and
+ *                                                             can't be dismissed by clicking
+ *                                                             the body of the notice.
+ * @param {Function}              [options.onDismiss]          Called when the notice is dismissed.
+>>>>>>> master
  *
  * @return {Object} Action object.
  */
 
+<<<<<<< HEAD
 function createNotice() {
   var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATUS;
   var content = arguments.length > 1 ? arguments[1] : undefined;
@@ -376,12 +478,28 @@ function createNotice() {
       _options$type = options.type,
       type = _options$type === void 0 ? 'default' : _options$type,
       __unstableHTML = options.__unstableHTML; // The supported value shape of content is currently limited to plain text
+=======
+function createNotice(status = DEFAULT_STATUS, content, options = {}) {
+  const {
+    speak = true,
+    isDismissible = true,
+    context = DEFAULT_CONTEXT,
+    id = Object(external_lodash_["uniqueId"])(context),
+    actions = [],
+    type = 'default',
+    __unstableHTML,
+    icon = null,
+    explicitDismiss = false,
+    onDismiss = null
+  } = options; // The supported value shape of content is currently limited to plain text
+>>>>>>> master
   // strings. To avoid setting expectation that e.g. a WPElement could be
   // supported, cast to a string.
 
   content = String(content);
   return {
     type: 'CREATE_NOTICE',
+<<<<<<< HEAD
     context: context,
     notice: {
       id: id,
@@ -392,6 +510,21 @@ function createNotice() {
       isDismissible: isDismissible,
       actions: actions,
       type: type
+=======
+    context,
+    notice: {
+      id,
+      status,
+      content,
+      spokenMessage: speak ? content : null,
+      __unstableHTML,
+      isDismissible,
+      actions,
+      type,
+      icon,
+      explicitDismiss,
+      onDismiss
+>>>>>>> master
     }
   };
 }
@@ -465,12 +598,20 @@ function createWarningNotice(content, options) {
  * @return {Object} Action object.
  */
 
+<<<<<<< HEAD
 function removeNotice(id) {
   var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_CONTEXT;
   return {
     type: 'REMOVE_NOTICE',
     id: id,
     context: context
+=======
+function removeNotice(id, context = DEFAULT_CONTEXT) {
+  return {
+    type: 'REMOVE_NOTICE',
+    id,
+    context
+>>>>>>> master
   };
 }
 
@@ -491,7 +632,11 @@ function removeNotice(id) {
  * @type {Array}
  */
 
+<<<<<<< HEAD
 var DEFAULT_NOTICES = [];
+=======
+const DEFAULT_NOTICES = [];
+>>>>>>> master
 /**
  * @typedef {Object} WPNotice Notice object.
  *
@@ -528,8 +673,12 @@ var DEFAULT_NOTICES = [];
  * @return {WPNotice[]} Array of notices.
  */
 
+<<<<<<< HEAD
 function getNotices(state) {
   var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_CONTEXT;
+=======
+function getNotices(state, context = DEFAULT_CONTEXT) {
+>>>>>>> master
   return state[context] || DEFAULT_NOTICES;
 }
 
@@ -545,6 +694,7 @@ function getNotices(state) {
 
 
 
+<<<<<<< HEAD
 /* harmony default export */ var store = (Object(external_this_wp_data_["registerStore"])('core/notices', {
   reducer: store_reducer,
   actions: actions_namespaceObject,
@@ -555,11 +705,30 @@ function getNotices(state) {
 /**
  * Internal dependencies
  */
+=======
+/**
+ * Store definition for the notices namespace.
+ *
+ * @see https://github.com/WordPress/gutenberg/blob/HEAD/packages/data/README.md#createReduxStore
+ *
+ * @type {Object}
+ */
+
+const store = Object(external_wp_data_["createReduxStore"])('core/notices', {
+  reducer: reducer,
+  actions: actions_namespaceObject,
+  selectors: selectors_namespaceObject
+});
+Object(external_wp_data_["register"])(store);
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/notices/build-module/index.js
+>>>>>>> master
 
 
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -579,6 +748,12 @@ function _defineProperty(obj, key, value) {
 
   return obj;
 }
+=======
+/***/ "YLtl":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+>>>>>>> master
 
 /***/ })
 

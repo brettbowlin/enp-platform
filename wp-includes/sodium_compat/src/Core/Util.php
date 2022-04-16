@@ -287,6 +287,25 @@ abstract class ParagonIE_Sodium_Core_Util
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Catch hash_update() failures and throw instead of silently proceding
+     *
+     * @param HashContext|resource &$hs
+     * @param string $data
+     * @return void
+     * @throws SodiumException
+     * @psalm-suppress PossiblyInvalidArgument
+     */
+    protected static function hash_update(&$hs, $data)
+    {
+        if (!hash_update($hs, $data)) {
+            throw new SodiumException('hash_update() failed');
+        }
+    }
+
+    /**
+>>>>>>> master
      * Convert a hexadecimal string into a binary string without cache-timing
      * leaks
      *
@@ -903,6 +922,12 @@ abstract class ParagonIE_Sodium_Core_Util
      *
      * @internal You should not use this directly from another application
      *
+<<<<<<< HEAD
+=======
+     * Note: MB_OVERLOAD_STRING === 2, but we don't reference the constant
+     * (for nuisance-free PHP 8 support)
+     *
+>>>>>>> master
      * @return bool
      */
     protected static function isMbStringOverride()
@@ -911,8 +936,15 @@ abstract class ParagonIE_Sodium_Core_Util
 
         if ($mbstring === null) {
             $mbstring = extension_loaded('mbstring')
+<<<<<<< HEAD
                 &&
             ((int) (ini_get('mbstring.func_overload')) & MB_OVERLOAD_STRING);
+=======
+                && defined('MB_OVERLOAD_STRING')
+                &&
+            ((int) (ini_get('mbstring.func_overload')) & 2);
+            // MB_OVERLOAD_STRING === 2
+>>>>>>> master
         }
         /** @var bool $mbstring */
 

@@ -7,7 +7,11 @@
  *
  * See more documentation about our views templating system.
  *
+<<<<<<< HEAD
  * @link {INSERT_ARTCILE_LINK_HERE}
+=======
+ * @link http://evnt.is/1aiy
+>>>>>>> master
  *
  * @version 5.1.0
  */

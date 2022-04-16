@@ -12,8 +12,13 @@ require_once __DIR__ . '/entry.php';
 
 if ( ! class_exists( 'Translations', false ) ) :
 	class Translations {
+<<<<<<< HEAD
 		var $entries = array();
 		var $headers = array();
+=======
+		public $entries = array();
+		public $headers = array();
+>>>>>>> master
 
 		/**
 		 * Add entry to the PO structure
@@ -116,7 +121,11 @@ if ( ! class_exists( 'Translations', false ) ) :
 		 * This function should be overridden by the subclasses. For example MO/PO can derive the logic
 		 * from their headers.
 		 *
+<<<<<<< HEAD
 		 * @param integer $count number of items
+=======
+		 * @param int $count number of items
+>>>>>>> master
 		 */
 		function select_plural_form( $count ) {
 			return 1 == $count ? 0 : 1;
@@ -287,7 +296,11 @@ if ( ! class_exists( 'Translations', false ) ) :
 		 */
 		function set_header( $header, $value ) {
 			parent::set_header( $header, $value );
+<<<<<<< HEAD
 			if ( 'Plural-Forms' == $header ) {
+=======
+			if ( 'Plural-Forms' === $header ) {
+>>>>>>> master
 				list( $nplurals, $expression )     = $this->nplurals_and_expression_from_header( $this->get_header( 'Plural-Forms' ) );
 				$this->_nplurals                   = $nplurals;
 				$this->_gettext_select_plural_form = $this->make_plural_form_function( $nplurals, $expression );
@@ -301,8 +314,13 @@ if ( ! class_exists( 'NOOP_Translations', false ) ) :
 	 * Provides the same interface as Translations, but doesn't do anything
 	 */
 	class NOOP_Translations {
+<<<<<<< HEAD
 		var $entries = array();
 		var $headers = array();
+=======
+		public $entries = array();
+		public $headers = array();
+>>>>>>> master
 
 		function add_entry( $entry ) {
 			return true;

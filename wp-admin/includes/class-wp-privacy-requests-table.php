@@ -43,7 +43,11 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 			'email'             => __( 'Requester' ),
 			'status'            => __( 'Status' ),
 			'created_timestamp' => __( 'Requested' ),
+<<<<<<< HEAD
 			'next_steps'        => __( 'Next Steps' ),
+=======
+			'next_steps'        => __( 'Next steps' ),
+>>>>>>> master
 		);
 		return $columns;
 	}
@@ -179,6 +183,13 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 			$current_link_attributes = $status === $current_status ? ' class="current" aria-current="page"' : '';
 			$total_status_requests   = absint( $counts->{$status} );
 
+<<<<<<< HEAD
+=======
+			if ( ! $total_status_requests ) {
+				continue;
+			}
+
+>>>>>>> master
 			$status_label = sprintf(
 				translate_nooped_plural( $post_status->label_count, $total_status_requests ),
 				number_format_i18n( $total_status_requests )
@@ -202,12 +213,22 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 	 *
 	 * @since 4.9.6
 	 *
+<<<<<<< HEAD
 	 * @return string[] Array of bulk action labels keyed by their action.
 	 */
 	protected function get_bulk_actions() {
 		return array(
 			'delete' => __( 'Delete Requests' ),
 			'resend' => __( 'Resend Confirmation Requests' ),
+=======
+	 * @return array Array of bulk action labels keyed by their action.
+	 */
+	protected function get_bulk_actions() {
+		return array(
+			'resend'   => __( 'Resend confirmation requests' ),
+			'complete' => __( 'Mark requests as completed' ),
+			'delete'   => __( 'Delete requests' ),
+>>>>>>> master
 		);
 	}
 
@@ -215,11 +236,16 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 	 * Process bulk actions.
 	 *
 	 * @since 4.9.6
+<<<<<<< HEAD
+=======
+	 * @since 5.6.0 Added support for the `complete` action.
+>>>>>>> master
 	 */
 	public function process_bulk_action() {
 		$action      = $this->current_action();
 		$request_ids = isset( $_REQUEST['request_id'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['request_id'] ) ) : array();
 
+<<<<<<< HEAD
 		$count = 0;
 
 		if ( $request_ids ) {
@@ -242,23 +268,145 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 					'success'
 				);
 				break;
+=======
+		if ( empty( $request_ids ) ) {
+			return;
+		}
+
+		$count    = 0;
+		$failures = 0;
+
+		check_admin_referer( 'bulk-privacy_requests' );
+
+		switch ( $action ) {
+>>>>>>> master
 			case 'resend':
 				foreach ( $request_ids as $request_id ) {
 					$resend = _wp_privacy_resend_request( $request_id );
 
 					if ( $resend && ! is_wp_error( $resend ) ) {
 						$count++;
+<<<<<<< HEAD
+=======
+					} else {
+						$failures++;
+					}
+				}
+
+				if ( $failures ) {
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						sprintf(
+							/* translators: %d: Number of requests. */
+							_n(
+								'%d confirmation request failed to resend.',
+								'%d confirmation requests failed to resend.',
+								$failures
+							),
+							$failures
+						),
+						'error'
+					);
+				}
+
+				if ( $count ) {
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						sprintf(
+							/* translators: %d: Number of requests. */
+							_n(
+								'%d confirmation request re-sent successfully.',
+								'%d confirmation requests re-sent successfully.',
+								$count
+							),
+							$count
+						),
+						'success'
+					);
+				}
+
+				break;
+
+			case 'complete':
+				foreach ( $request_ids as $request_id ) {
+					$result = _wp_privacy_completed_request( $request_id );
+
+					if ( $result && ! is_wp_error( $result ) ) {
+						$count++;
+>>>>>>> master
 					}
 				}
 
 				add_settings_error(
 					'bulk_action',
 					'bulk_action',
+<<<<<<< HEAD
 					/* translators: %d: Number of requests. */
 					sprintf( _n( 'Re-sent %d request', 'Re-sent %d requests', $count ), $count ),
 					'success'
 				);
 				break;
+=======
+					sprintf(
+						/* translators: %d: Number of requests. */
+						_n(
+							'%d request marked as complete.',
+							'%d requests marked as complete.',
+							$count
+						),
+						$count
+					),
+					'success'
+				);
+				break;
+
+			case 'delete':
+				foreach ( $request_ids as $request_id ) {
+					if ( wp_delete_post( $request_id, true ) ) {
+						$count++;
+					} else {
+						$failures++;
+					}
+				}
+
+				if ( $failures ) {
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						sprintf(
+							/* translators: %d: Number of requests. */
+							_n(
+								'%d request failed to delete.',
+								'%d requests failed to delete.',
+								$failures
+							),
+							$failures
+						),
+						'error'
+					);
+				}
+
+				if ( $count ) {
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						sprintf(
+							/* translators: %d: Number of requests. */
+							_n(
+								'%d request deleted successfully.',
+								'%d requests deleted successfully.',
+								$count
+							),
+							$count
+						),
+						'success'
+					);
+				}
+
+				break;
+>>>>>>> master
 		}
 	}
 
@@ -391,6 +539,7 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 	 * Default column handler.
 	 *
 	 * @since 4.9.6
+<<<<<<< HEAD
 	 *
 	 * @param WP_User_Request $item        Item being shown.
 	 * @param string          $column_name Name of column being shown.
@@ -404,6 +553,38 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 		}
 
 		return $cell_value;
+=======
+	 * @since 5.7.0 Added `manage_{$this->screen->id}_custom_column` action.
+	 *
+	 * @param WP_User_Request $item        Item being shown.
+	 * @param string          $column_name Name of column being shown.
+	 */
+	public function column_default( $item, $column_name ) {
+		/**
+		 * Fires for each custom column of a specific request type in the Requests list table.
+		 *
+		 * Custom columns are registered using the {@see 'manage_export-personal-data_columns'}
+		 * and the {@see 'manage_erase-personal-data_columns'} filters.
+		 *
+		 * @since 5.7.0
+		 *
+		 * @param string          $column_name The name of the column to display.
+		 * @param WP_User_Request $item        The item being shown.
+		 */
+		do_action( "manage_{$this->screen->id}_custom_column", $column_name, $item );
+	}
+
+	/**
+	 * Created timestamp column. Overridden by children.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param WP_User_Request $item Item being shown.
+	 * @return string Human readable date.
+	 */
+	public function column_created_timestamp( $item ) {
+		return $this->get_timestamp_as_date( $item->created_timestamp );
+>>>>>>> master
 	}
 
 	/**

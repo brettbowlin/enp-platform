@@ -3,11 +3,19 @@
  * View: Month View - Single Multiday Event Hidden Title
  *
  * Override this template in your own theme by creating a file at:
+<<<<<<< HEAD
  * [your-theme]/tribe/events/v2/month/calendar-body/day/multiday-events/multiday-event/hidden/title.php
  *
  * See more documentation about our views templating system.
  *
  * @link {INSERT_ARTCILE_LINK_HERE}
+=======
+ * [your-theme]/tribe/events/v2/month/calendar-body/day/multiday-events/multiday-event/hidden/link.php
+ *
+ * See more documentation about our views templating system.
+ *
+ * @link http://evnt.is/1aiy
+>>>>>>> master
  *
  * @since 5.1.1
  *

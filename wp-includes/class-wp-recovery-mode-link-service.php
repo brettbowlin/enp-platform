@@ -65,6 +65,11 @@ class WP_Recovery_Mode_Link_Service {
 	 *
 	 * @since 5.2.0
 	 *
+<<<<<<< HEAD
+=======
+	 * @global string $pagenow
+	 *
+>>>>>>> master
 	 * @param int $ttl Number of seconds the link should be valid for.
 	 */
 	public function handle_begin_link( $ttl ) {
@@ -114,7 +119,11 @@ class WP_Recovery_Mode_Link_Service {
 		);
 
 		/**
+<<<<<<< HEAD
 		 * Filter the URL to begin recovery mode.
+=======
+		 * Filters the URL to begin recovery mode.
+>>>>>>> master
 		 *
 		 * @since 5.2.0
 		 *

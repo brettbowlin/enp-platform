@@ -25,6 +25,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 
 	<div class="about__header">
 		<div class="about__header-title">
+<<<<<<< HEAD
 			<p>
 				<?php _e( 'WordPress' ); ?>
 				<span><?php echo $display_version; ?></span>
@@ -35,6 +36,15 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 			<p>
 				<?php _e( 'Building more with blocks, faster and easier.' ); ?>
 			</p>
+=======
+			<h1>
+				<?php _e( 'The Four Freedoms' ); ?>
+			</h1>
+		</div>
+
+		<div class="about__header-text">
+			<?php _e( 'WordPress is free and open source software, built by a distributed community of mostly volunteer developers from around the world' ); ?>
+>>>>>>> master
 		</div>
 
 		<nav class="about__header-navigation nav-tab-wrapper wp-clearfix" aria-label="<?php esc_attr_e( 'Secondary menu' ); ?>">
@@ -45,6 +55,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 		</nav>
 	</div>
 
+<<<<<<< HEAD
 	<div class="about__section has-subtle-background-color is-feature">
 		<h1><?php _e( 'Freedoms' ); ?></h1>
 
@@ -98,6 +109,55 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 			?>
 			</p>
 
+=======
+	<div class="about__section is-feature">
+		<p class="about-description">
+		<?php
+		printf(
+			/* translators: %s: https://wordpress.org/about/license/ */
+			__( 'WordPress comes with some awesome, worldview-changing rights courtesy of its <a href="%s">license</a>, the GPL.' ),
+			__( 'https://wordpress.org/about/license/' )
+		);
+		?>
+		</p>
+	</div>
+
+	<div class="about__section has-2-columns">
+		<div class="column aligncenter">
+			<img class="freedom-image" src="<?php echo esc_url( admin_url( 'images/freedom-1.svg' ) ); ?>" alt="" />
+			<h2 class="is-smaller-heading"><?php _e( 'The 1st Freedom' ); ?></h2>
+			<p><?php _e( 'To run the program for any purpose.' ); ?></p>
+		</div>
+		<div class="column aligncenter">
+			<img class="freedom-image" src="<?php echo esc_url( admin_url( 'images/freedom-2.svg' ) ); ?>" alt="" />
+			<h2 class="is-smaller-heading"><?php _e( 'The 2nd Freedom' ); ?></h2>
+			<p><?php _e( 'To study how the program works and change it to make it do what you wish.' ); ?></p>
+		</div>
+		<div class="column aligncenter">
+			<img class="freedom-image" src="<?php echo esc_url( admin_url( 'images/freedom-3.svg' ) ); ?>" alt="" />
+			<h2 class="is-smaller-heading"><?php _e( 'The 3rd Freedom' ); ?></h2>
+			<p><?php _e( 'To redistribute.' ); ?></p>
+		</div>
+		<div class="column aligncenter">
+			<img class="freedom-image" src="<?php echo esc_url( admin_url( 'images/freedom-4.svg' ) ); ?>" alt="" />
+			<h2 class="is-smaller-heading"><?php _e( 'The 4th Freedom' ); ?></h2>
+			<p><?php _e( 'To distribute copies of your modified versions to others.' ); ?></p>
+		</div>
+	</div>
+
+	<div class="about__section has-1-column">
+		<div class="column">
+			<p>
+			<?php
+			printf(
+				/* translators: %s: https://wordpressfoundation.org/trademark-policy/ */
+				__( 'WordPress grows when people like you tell their friends about it, and the thousands of businesses and services that are built on and around WordPress share that fact with their users. We&#8217;re flattered every time someone spreads the good word, just make sure to <a href="%s">check out our trademark guidelines</a> first.' ),
+				'https://wordpressfoundation.org/trademark-policy/'
+			);
+			?>
+			</p>
+
+>>>>>>> master
 			<p>
 			<?php
 			$plugins_url = current_user_can( 'activate_plugins' ) ? admin_url( 'plugins.php' ) : __( 'https://wordpress.org/plugins/' );

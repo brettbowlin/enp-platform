@@ -13,6 +13,11 @@
  * @return string Rendered HTML of the referenced block.
  */
 function render_block_core_block( $attributes ) {
+<<<<<<< HEAD
+=======
+	static $seen_refs = array();
+
+>>>>>>> master
 	if ( empty( $attributes['ref'] ) ) {
 		return '';
 	}
@@ -22,17 +27,41 @@ function render_block_core_block( $attributes ) {
 		return '';
 	}
 
+<<<<<<< HEAD
+=======
+	if ( isset( $seen_refs[ $attributes['ref'] ] ) ) {
+		// WP_DEBUG_DISPLAY must only be honored when WP_DEBUG. This precedent
+		// is set in `wp_debug_mode()`.
+		$is_debug = defined( 'WP_DEBUG' ) && WP_DEBUG &&
+			defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY;
+
+		return $is_debug ?
+			// translators: Visible only in the front end, this warning takes the place of a faulty block.
+			__( '[block rendering halted]' ) :
+			'';
+	}
+
+>>>>>>> master
 	if ( 'publish' !== $reusable_block->post_status || ! empty( $reusable_block->post_password ) ) {
 		return '';
 	}
 
+<<<<<<< HEAD
 	return do_blocks( $reusable_block->post_content );
+=======
+	$seen_refs[ $attributes['ref'] ] = true;
+
+	$result = do_blocks( $reusable_block->post_content );
+	unset( $seen_refs[ $attributes['ref'] ] );
+	return $result;
+>>>>>>> master
 }
 
 /**
  * Registers the `core/block` block.
  */
 function register_block_core_block() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/block',
 		array(
@@ -41,6 +70,11 @@ function register_block_core_block() {
 					'type' => 'number',
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/block',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_block',
 		)
 	);

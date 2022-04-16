@@ -35,7 +35,11 @@ use Timber\Loader;
  */
 class Timber {
 
+<<<<<<< HEAD
 	public static $version = '1.16.0';
+=======
+	public static $version = '1.19.1';
+>>>>>>> master
 	public static $locations;
 	public static $dirname = 'views';
 	public static $twig_cache = false;
@@ -459,7 +463,7 @@ class Timber {
 	 * @param array   $data
 	 * @return string
 	 */
-	public static function get_sidebar_from_php( $sidebar = '', $data ) {
+	public static function get_sidebar_from_php( $sidebar = '', $data = array() ) {
 		$caller = LocationManager::get_calling_script_dir(1);
 		$uris = LocationManager::get_locations($caller);
 		ob_start();

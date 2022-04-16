@@ -82,11 +82,16 @@ this["wp"] = this["wp"] || {}; this["wp"]["viewport"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 436);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "PR0u");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 0:
 /***/ (function(module, exports) {
 
@@ -251,12 +256,61 @@ __webpack_require__.r(__webpack_exports__);
 var actions_namespaceObject = {};
 __webpack_require__.r(actions_namespaceObject);
 __webpack_require__.d(actions_namespaceObject, "setIsMatching", function() { return actions_setIsMatching; });
+=======
+/***/ "1ZqX":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["data"]; }());
+
+/***/ }),
+
+/***/ "GRId":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["element"]; }());
+
+/***/ }),
+
+/***/ "K9lf":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["compose"]; }());
+
+/***/ }),
+
+/***/ "PR0u":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "store", function() { return /* reexport */ store; });
+__webpack_require__.d(__webpack_exports__, "ifViewportMatches", function() { return /* reexport */ if_viewport_matches; });
+__webpack_require__.d(__webpack_exports__, "withViewportMatch", function() { return /* reexport */ with_viewport_match; });
+
+// NAMESPACE OBJECT: ./node_modules/@wordpress/viewport/build-module/store/actions.js
+var actions_namespaceObject = {};
+__webpack_require__.r(actions_namespaceObject);
+__webpack_require__.d(actions_namespaceObject, "setIsMatching", function() { return actions_setIsMatching; });
+
+// NAMESPACE OBJECT: ./node_modules/@wordpress/viewport/build-module/store/selectors.js
+>>>>>>> master
 var selectors_namespaceObject = {};
 __webpack_require__.r(selectors_namespaceObject);
 __webpack_require__.d(selectors_namespaceObject, "isViewportMatch", function() { return isViewportMatch; });
 
+<<<<<<< HEAD
 // EXTERNAL MODULE: external {"this":["wp","data"]}
 var external_this_wp_data_ = __webpack_require__(4);
+=======
+// EXTERNAL MODULE: external "lodash"
+var external_lodash_ = __webpack_require__("YLtl");
+
+// EXTERNAL MODULE: external ["wp","data"]
+var external_wp_data_ = __webpack_require__("1ZqX");
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/store/reducer.js
 /**
@@ -268,10 +322,14 @@ var external_this_wp_data_ = __webpack_require__(4);
  *
  * @return {Object} Updated state.
  */
+<<<<<<< HEAD
 function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
+=======
+function reducer(state = {}, action) {
+>>>>>>> master
   switch (action.type) {
     case 'SET_IS_MATCHING':
       return action.values;
@@ -295,7 +353,11 @@ function reducer() {
 function actions_setIsMatching(values) {
   return {
     type: 'SET_IS_MATCHING',
+<<<<<<< HEAD
     values: values
+=======
+    values
+>>>>>>> master
   };
 }
 
@@ -337,6 +399,7 @@ function isViewportMatch(state, query) {
 
 
 
+<<<<<<< HEAD
 /* harmony default export */ var store = (Object(external_this_wp_data_["registerStore"])('core/viewport', {
   reducer: store_reducer,
   actions: actions_namespaceObject,
@@ -345,6 +408,23 @@ function isViewportMatch(state, query) {
 
 // EXTERNAL MODULE: external {"this":"lodash"}
 var external_this_lodash_ = __webpack_require__(2);
+=======
+const STORE_NAME = 'core/viewport';
+/**
+ * Store definition for the viewport namespace.
+ *
+ * @see https://github.com/WordPress/gutenberg/blob/HEAD/packages/data/README.md#createReduxStore
+ *
+ * @type {Object}
+ */
+
+const store = Object(external_wp_data_["createReduxStore"])(STORE_NAME, {
+  reducer: store_reducer,
+  actions: actions_namespaceObject,
+  selectors: selectors_namespaceObject
+});
+Object(external_wp_data_["register"])(store);
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/listener.js
 /**
@@ -356,17 +436,33 @@ var external_this_lodash_ = __webpack_require__(2);
  */
 
 
+<<<<<<< HEAD
 
 var listener_addDimensionsEventListener = function addDimensionsEventListener(breakpoints, operators) {
+=======
+/**
+ * Internal dependencies
+ */
+
+
+
+const addDimensionsEventListener = (breakpoints, operators) => {
+>>>>>>> master
   /**
    * Callback invoked when media query state should be updated. Is invoked a
    * maximum of one time per call stack.
    */
+<<<<<<< HEAD
   var setIsMatching = Object(external_this_lodash_["debounce"])(function () {
     var values = Object(external_this_lodash_["mapValues"])(queries, function (query) {
       return query.matches;
     });
     Object(external_this_wp_data_["dispatch"])('core/viewport').setIsMatching(values);
+=======
+  const setIsMatching = Object(external_lodash_["debounce"])(() => {
+    const values = Object(external_lodash_["mapValues"])(queries, query => query.matches);
+    Object(external_wp_data_["dispatch"])(store).setIsMatching(values);
+>>>>>>> master
   }, {
     leading: true
   });
@@ -380,11 +476,19 @@ var listener_addDimensionsEventListener = function addDimensionsEventListener(br
    * @type {Object<string,MediaQueryList>}
    */
 
+<<<<<<< HEAD
   var queries = Object(external_this_lodash_["reduce"])(breakpoints, function (result, width, name) {
     Object(external_this_lodash_["forEach"])(operators, function (condition, operator) {
       var list = window.matchMedia("(".concat(condition, ": ").concat(width, "px)"));
       list.addListener(setIsMatching);
       var key = [operator, name].join(' ');
+=======
+  const queries = Object(external_lodash_["reduce"])(breakpoints, (result, width, name) => {
+    Object(external_lodash_["forEach"])(operators, (condition, operator) => {
+      const list = window.matchMedia(`(${condition}: ${width}px)`);
+      list.addListener(setIsMatching);
+      const key = [operator, name].join(' ');
+>>>>>>> master
       result[key] = list;
     });
     return result;
@@ -395,6 +499,7 @@ var listener_addDimensionsEventListener = function addDimensionsEventListener(br
   setIsMatching.flush();
 };
 
+<<<<<<< HEAD
 /* harmony default export */ var listener = (listener_addDimensionsEventListener);
 
 // EXTERNAL MODULE: external {"this":["wp","compose"]}
@@ -408,12 +513,27 @@ var slicedToArray = __webpack_require__(20);
 
 // EXTERNAL MODULE: external {"this":["wp","element"]}
 var external_this_wp_element_ = __webpack_require__(0);
+=======
+/* harmony default export */ var listener = (addDimensionsEventListener);
+
+// EXTERNAL MODULE: external ["wp","compose"]
+var external_wp_compose_ = __webpack_require__("K9lf");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+var esm_extends = __webpack_require__("wx14");
+
+// EXTERNAL MODULE: external ["wp","element"]
+var external_wp_element_ = __webpack_require__("GRId");
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/with-viewport-match.js
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 /**
  * External dependencies
  */
@@ -447,6 +567,7 @@ var external_this_wp_element_ = __webpack_require__(0);
  * @return {Function} Higher-order component.
  */
 
+<<<<<<< HEAD
 var with_viewport_match_withViewportMatch = function withViewportMatch(queries) {
   var useViewPortQueriesResult = function useViewPortQueriesResult() {
     return Object(external_this_lodash_["mapValues"])(queries, function (query) {
@@ -472,11 +593,37 @@ var with_viewport_match_withViewportMatch = function withViewportMatch(queries) 
     return Object(external_this_wp_compose_["pure"])(function (props) {
       var queriesResult = useViewPortQueriesResult();
       return Object(external_this_wp_element_["createElement"])(WrappedComponent, Object(esm_extends["a" /* default */])({}, props, queriesResult));
+=======
+const withViewportMatch = queries => {
+  const useViewPortQueriesResult = () => Object(external_lodash_["mapValues"])(queries, query => {
+    let [operator, breakpointName] = query.split(' ');
+
+    if (breakpointName === undefined) {
+      breakpointName = operator;
+      operator = '>=';
+    } // Hooks should unconditionally execute in the same order,
+    // we are respecting that as from the static query of the HOC we generate
+    // a hook that calls other hooks always in the same order (because the query never changes).
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+
+    return Object(external_wp_compose_["useViewportMatch"])(breakpointName, operator);
+  });
+
+  return Object(external_wp_compose_["createHigherOrderComponent"])(WrappedComponent => {
+    return Object(external_wp_compose_["pure"])(props => {
+      const queriesResult = useViewPortQueriesResult();
+      return Object(external_wp_element_["createElement"])(WrappedComponent, Object(esm_extends["a" /* default */])({}, props, queriesResult));
+>>>>>>> master
     });
   }, 'withViewportMatch');
 };
 
+<<<<<<< HEAD
 /* harmony default export */ var with_viewport_match = (with_viewport_match_withViewportMatch);
+=======
+/* harmony default export */ var with_viewport_match = (withViewportMatch);
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/if-viewport-matches.js
 /**
@@ -509,6 +656,7 @@ var with_viewport_match_withViewportMatch = function withViewportMatch(queries) 
  * @return {Function} Higher-order component.
  */
 
+<<<<<<< HEAD
 var if_viewport_matches_ifViewportMatches = function ifViewportMatches(query) {
   return Object(external_this_wp_compose_["createHigherOrderComponent"])(Object(external_this_wp_compose_["compose"])([with_viewport_match({
     isViewportMatch: query
@@ -522,6 +670,15 @@ var if_viewport_matches_ifViewportMatches = function ifViewportMatches(query) {
 // CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/index.js
 /* concated harmony reexport ifViewportMatches */__webpack_require__.d(__webpack_exports__, "ifViewportMatches", function() { return if_viewport_matches; });
 /* concated harmony reexport withViewportMatch */__webpack_require__.d(__webpack_exports__, "withViewportMatch", function() { return with_viewport_match; });
+=======
+const ifViewportMatches = query => Object(external_wp_compose_["createHigherOrderComponent"])(Object(external_wp_compose_["compose"])([with_viewport_match({
+  isViewportMatch: query
+}), Object(external_wp_compose_["ifCondition"])(props => props.isViewportMatch)]), 'ifViewportMatches');
+
+/* harmony default export */ var if_viewport_matches = (ifViewportMatches);
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/viewport/build-module/index.js
+>>>>>>> master
 /**
  * Internal dependencies
  */
@@ -537,7 +694,11 @@ var if_viewport_matches_ifViewportMatches = function ifViewportMatches(query) {
  * @type {Object}
  */
 
+<<<<<<< HEAD
 var BREAKPOINTS = {
+=======
+const BREAKPOINTS = {
+>>>>>>> master
   huge: 1440,
   wide: 1280,
   large: 960,
@@ -551,7 +712,11 @@ var BREAKPOINTS = {
  * @type {Object}
  */
 
+<<<<<<< HEAD
 var OPERATORS = {
+=======
+const OPERATORS = {
+>>>>>>> master
   '<': 'max-width',
   '>=': 'min-width'
 };
@@ -560,10 +725,42 @@ listener(BREAKPOINTS, OPERATORS);
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 8:
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["wp"]["compose"]; }());
+=======
+/***/ "YLtl":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ "wx14":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _extends; });
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+>>>>>>> master
 
 /***/ })
 

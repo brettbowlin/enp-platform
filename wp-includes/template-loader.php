@@ -24,7 +24,11 @@ if ( wp_using_themes() ) {
  * @param bool $exit Whether to exit without generating any content for 'HEAD' requests. Default true.
  */
 if ( 'HEAD' === $_SERVER['REQUEST_METHOD'] && apply_filters( 'exit_on_http_head', true ) ) {
+<<<<<<< HEAD
 	exit();
+=======
+	exit;
+>>>>>>> master
 }
 
 // Process feeds and trackbacks even if not using themes.

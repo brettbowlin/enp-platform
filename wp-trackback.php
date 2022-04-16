@@ -46,7 +46,11 @@ $request_array = 'HTTP_POST_VARS';
 
 if ( ! isset( $_GET['tb_id'] ) || ! $_GET['tb_id'] ) {
 	$tb_id = explode( '/', $_SERVER['REQUEST_URI'] );
+<<<<<<< HEAD
 	$tb_id = intval( $tb_id[ count( $tb_id ) - 1 ] );
+=======
+	$tb_id = (int) $tb_id[ count( $tb_id ) - 1 ];
+>>>>>>> master
 }
 
 $tb_url  = isset( $_POST['url'] ) ? $_POST['url'] : '';
@@ -84,7 +88,11 @@ if ( is_single() || is_page() ) {
 	$tb_id = $posts[0]->ID;
 }
 
+<<<<<<< HEAD
 if ( ! isset( $tb_id ) || ! intval( $tb_id ) ) {
+=======
+if ( ! isset( $tb_id ) || ! (int) $tb_id ) {
+>>>>>>> master
 	trackback_response( 1, __( 'I really need an ID for this to work.' ) );
 }
 

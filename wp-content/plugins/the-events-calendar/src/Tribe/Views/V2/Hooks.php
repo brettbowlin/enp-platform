@@ -20,7 +20,11 @@ namespace Tribe\Events\Views\V2;
 use Tribe\Events\Views\V2\Query\Abstract_Query_Controller;
 use Tribe\Events\Views\V2\Query\Event_Query_Controller;
 use Tribe\Events\Views\V2\Repository\Event_Period;
+use Tribe\Events\Views\V2\Template\Featured_Title;
 use Tribe\Events\Views\V2\Template\Title;
+use Tribe\Events\Views\V2\Utils\View as View_Utils;
+use Tribe__Context as Context;
+use Tribe__Customizer__Section as Customizer_Section;
 use Tribe__Events__Main as TEC;
 use Tribe__Rewrite as TEC_Rewrite;
 use Tribe__Utils__Array as Arr;
@@ -41,6 +45,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 */
 	public function register() {
 		$this->container->tag( [ Event_Query_Controller::class, ], 'query_controllers' );
+
 		$this->add_actions();
 		$this->add_filters();
 	}
@@ -53,6 +58,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	protected function add_actions() {
 		add_action( 'rest_api_init', [ $this, 'register_rest_endpoints' ] );
 		add_action( 'tribe_common_loaded', [ $this, 'on_tribe_common_loaded' ], 1 );
+		add_action( 'parse_query', [ $this, 'add_body_classes' ], 55 );
 		add_action( 'wp_head', [ $this, 'on_wp_head' ], 1000 );
 		add_action( 'tribe_events_pre_rewrite', [ $this, 'on_tribe_events_pre_rewrite' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_disable_assets_v1' ], 0 );
@@ -60,6 +66,8 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_action( 'updated_option', [ $this, 'action_save_wplang' ], 10, 3 );
 		add_action( 'the_post', [ $this, 'manage_sensitive_info' ] );
 		add_action( 'get_header', [ $this, 'print_single_json_ld' ] );
+		add_action( 'tribe_template_after_include:events/v2/components/after', [ $this, 'action_add_promo_banner' ], 10, 3 );
+		add_action( 'tribe_events_parse_query', [ $this, 'parse_query' ] );
 	}
 
 	/**
@@ -68,13 +76,15 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @since 4.9.2
 	 */
 	protected function add_filters() {
+		add_filter( 'tec_system_information', [ $this, 'filter_system_information' ] );
 		add_filter( 'wp_redirect', [ $this, 'filter_redirect_canonical' ], 10, 2 );
 		add_filter( 'redirect_canonical', [ $this, 'filter_redirect_canonical' ], 10, 2 );
-		add_action( 'tribe_events_parse_query', [ $this, 'parse_query' ] );
 		add_filter( 'template_include', [ $this, 'filter_template_include' ], 50 );
 		add_filter( 'embed_template', [ $this, 'filter_template_include' ], 50 );
 		add_filter( 'posts_pre_query', [ $this, 'filter_posts_pre_query' ], 20, 2 );
-		add_filter( 'body_class', [ $this, 'filter_body_class' ] );
+		add_filter( 'body_class', [ $this, 'filter_body_classes' ] );
+		add_filter( 'tribe_body_class_should_add_to_queue', [ $this, 'body_class_should_add_to_queue' ], 10, 3 );
+		add_filter( 'tribe_body_classes_should_add', [ $this, 'body_classes_should_add' ], 10, 3 );
 		add_filter( 'query_vars', [ $this, 'filter_query_vars' ], 15 );
 		add_filter( 'tribe_rewrite_canonical_query_args', [ $this, 'filter_map_canonical_query_args' ], 15, 3 );
 		add_filter( 'admin_post_thumbnail_html', [ $this, 'filter_admin_post_thumbnail_html' ] );
@@ -95,6 +105,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		add_filter( 'tribe_field_value', [ $this, 'filter_live_filters_option_value' ], 10, 2 );
 
 		if ( tribe_context()->doing_php_initial_state() ) {
+			add_filter( 'tribe_events_filter_views_v2_wp_title_plural_events_label', [ $this, 'filter_wp_title_plural_events_label' ], 10, 2 );
 			add_filter( 'wp_title', [ $this, 'filter_wp_title' ], 10, 2 );
 			add_filter( 'document_title_parts', [ $this, 'filter_document_title_parts' ] );
 			add_filter( 'pre_get_document_title', [ $this, 'pre_get_document_title' ], 20 );
@@ -105,12 +116,36 @@ class Hooks extends \tad_DI52_ServiceProvider {
 			add_filter( 'get_post_time', [ 'Tribe__Events__Templates', 'event_date_to_pubDate' ], 10, 3 );
 		}
 
+<<<<<<< HEAD
 		add_filter( 'tribe_customizer_inline_stylesheets', [ $this, 'customizer_inline_stylesheets' ], 12, 2 );
+=======
+		add_filter( 'tribe_events_views_v2_view_data', [ View_Utils::class, 'clean_data' ] );
+
+		// Customizer.
+		add_filter( 'tribe_customizer_print_styles_action', [ $this, 'print_inline_styles_in_footer' ] );
+		add_filter( 'tribe_customizer_global_elements_css_template', [ $this, 'filter_global_elements_css_template' ], 10, 3 );
+		add_filter( 'tribe_customizer_single_event_css_template', [ $this, 'filter_single_event_css_template' ], 10, 3 );
+
+		// Add filters to change the display of website links on the Single Event template.
+		add_filter( 'tribe_get_event_website_link_label', [ $this, 'filter_single_event_details_event_website_label' ], 10, 2 );
+		add_filter( 'tribe_events_get_event_website_title', '__return_empty_string' );
+
+		add_filter( 'tribe_get_venue_website_link_label', [ $this, 'filter_single_event_details_venue_website_label' ], 10, 2 );
+		add_filter( 'tribe_events_get_venue_website_title', '__return_empty_string' );
+
+		add_filter( 'tribe_get_organizer_website_link_label', [ $this, 'filter_single_event_details_organizer_website_label' ], 10, 2 );
+		add_filter( 'tribe_events_get_organizer_website_title', '__return_empty_string' );
+
+		// iCalendar export request handling.
+		add_filter( 'tribe_ical_template_event_ids', [ $this, 'inject_ical_event_ids' ] );
+
+		add_filter( 'tec_events_query_default_view', [ $this, 'filter_tec_events_query_default_view' ] );
+>>>>>>> master
 	}
 
 	/**
 	 * Includes includes edge cases for filtering when we need to manually overwrite theme's read
-	 * more link when excerpt is cut programatically.
+	 * more link when excerpt is cut programmatically.
 	 *
 	 * @see   tribe_events_get_the_excerpt
 	 *
@@ -296,11 +331,77 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @return array $classes
 	 */
-	public function filter_body_class( $classes ) {
-		$classes = $this->container->make( Theme_Compatibility::class )->filter_add_body_classes( $classes );
+	public function filter_body_classes( $classes ) {
 		$classes = $this->container->make( Template_Bootstrap::class )->filter_add_body_classes( $classes );
 
 		return $classes;
+	}
+
+	/**
+	 * Add body classes.
+	 *
+	 * @since 5.1.5
+	 *
+	 * @return void
+	 */
+	public function add_body_classes() {
+		$this->container->make( Theme_Compatibility::class )->add_body_classes();
+		$this->container->make( Template_Bootstrap::class )->add_body_classes();
+	}
+
+	/**
+	 * Contains hooks to the logic for if this object's classes should be added to the queue.
+	 *
+	 * @since 5.1.5
+	 *
+	 * @param boolean $add   Whether to add the class to the queue or not.
+	 * @param array   $class The array of body class names to add.
+	 * @param string  $queue The queue we want to get 'admin', 'display', 'all'.
+	 * @return boolean
+	 */
+	public function body_class_should_add_to_queue( $add, $class, $queue ) {
+		$add = $this->container->make( Template_Bootstrap::class )->should_add_body_class_to_queue( $add, $class, $queue );
+		$add = $this->container->make( Theme_Compatibility::class )->should_add_body_class_to_queue( $add, $class, $queue );
+
+		return $add;
+	}
+
+	/**
+	 * Logic for if body classes should be added.
+	 *
+	 * @since 5.1.5
+	 *
+	 * @param boolean $add   Whether to add classes or not.
+	 * @param string  $queue The queue we want to get 'admin', 'display', 'all'.
+	 *
+	 * @return boolean Whether to add classes or not.
+	 */
+	public function body_classes_should_add( $add, $queue ) {
+		$context = tribe_context();
+
+		if (
+			$context->get( 'event_post_type', false )
+			|| $context->get( 'shortcode', false )
+		) {
+			return true;
+		}
+
+		return $add;
+	}
+
+	/**
+	 * Filter the plural events label for Featured V2 Views.
+	 *
+	 * @since 5.1.5
+	 *
+	 * @param string  $label   The plural events label as it's been generated thus far.
+	 * @param Context $context The context used to build the title, it could be the global one, or one externally
+	 *                         set.
+	 *
+	 * @return string the original label or updated label for virtual archives.
+	 */
+	public function filter_wp_title_plural_events_label( $label, Context $context ) {
+		return $this->container->make( Featured_Title::class )->filter_views_v2_wp_title_plural_events_label( $label, $context );
 	}
 
 	/**
@@ -417,13 +518,23 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @since 4.9.13
 	 *
-	 * @param mixed $redirect_url URL which we will redirect to.
+	 * @param mixed      $redirect_url URL which we will redirect to.
+	 * @param string|int $original_url The original URL if this method runs on the `redirect_canonical` filter, else
+	 *                                 the redirect status (e.g. `301`) if this method runs in the context of the
+	 *                                 `wp_redirect` filter.
 	 *
 	 * @return string A redirection URL, or `false` to prevent redirection.
 	 */
 	public function filter_redirect_canonical( $redirect_url = null, $original_url = null ) {
-		if ( trailingslashit( $original_url ) === trailingslashit( $redirect_url ) ) {
-			return $redirect_url;
+		if ( doing_filter( 'redirect_canonical' ) ) {
+			/*
+			 * If we're not running in the context of the `redirect_canonical` filter, skip this check
+			 * as it would happen between a string (`$redirect_url`) and an integer (the redirect HTTP
+			 * status code).
+			 */
+			if ( trailingslashit( $original_url ) === trailingslashit( $redirect_url ) ) {
+				return $redirect_url;
+			}
 		}
 
 		$context = tribe_context();
@@ -467,7 +578,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @since  4.9.13
 	 *
-	 * @param  array $fields  Fields that were passed for the Settigns tab.
+	 * @param  array $fields  Fields that were passed for the Settings tab.
 	 *
 	 * @return array          Fields after changing the tooltip.
 	 */
@@ -486,7 +597,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 *
 	 * @since  4.9.13
 	 *
-	 * @param array $plugins List of plugisn to be checked.
+	 * @param array $plugins List of plugins to be checked.
 	 *
 	 * @return array
 	 */
@@ -588,6 +699,21 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
+	 * Include the promo banner after the after component.
+	 *
+	 * @since 5.1.5
+	 *
+	 * @param string   $file     Complete path to include the PHP File.
+	 * @param array    $name     Template name.
+	 * @param Template $template Current instance of the Template.
+	 *
+	 * @return void  Template render has no return.
+	 */
+	public function action_add_promo_banner( $file, $name, $template ) {
+		$this->container->make( Template\Promo::class )->action_add_promo_banner( $file, $name, $template );
+	}
+
+	/**
 	 * Updates and modifies the properties added to the event post object by the `tribe_get_event` function to
 	 * hide some sensitive information, if required.
 	 *
@@ -635,20 +761,26 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	 * @return string Which value we are converting to.
 	 */
 	public function filter_get_stylesheet_option( $value, $key ) {
+		// Bail early if possible. No need to do the shuffle below if
+		if (
+			'stylesheetOption' !== $key
+			&& ( 'stylesheet_mode' !== $key )
+		) {
+			return $value;
+		}
+
 		// Remove this filter so we don't loop infinitely.
 		remove_filter( 'tribe_get_option', [ $this, 'filter_get_stylesheet_option' ], 10 );
 
 		$default = 'tribe';
 
-		if ( 'stylesheet_mode' === $key && empty( $value ) ) {
+		if ( 'stylesheetOption' === $key ) {
+			$value = tribe_get_option( 'stylesheet_mode', $default );
+		} else if ( 'stylesheet_mode' === $key && empty( $value ) ) {
 			$value = tribe_get_option( 'stylesheetOption', $default );
 			if ( 'full' === $value ) {
 				$value = $default;
 			}
-		}
-
-		if ( 'stylesheetOption' === $key ) {
-			$value = tribe_get_option( 'stylesheet_mode', $default );
 		}
 
 		// Add the filter back
@@ -717,6 +849,7 @@ class Hooks extends \tad_DI52_ServiceProvider {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Add views stylesheets to customizer styles array to check.
 	 * Remove unused legacy stylesheets.
 	 *
@@ -742,5 +875,238 @@ class Hooks extends \tad_DI52_ServiceProvider {
 		}
 
 		return array_merge( $sheets, $v2_sheets );
+=======
+	 * Changes the action the Customizer should use to try and print inline styles to print the inline
+	 * styles in the footer.
+	 *
+	 * @since 5.3.1
+	 *
+	 * @return string The action the Customizer should use to print inline styles.
+	 */
+	public function print_inline_styles_in_footer() {
+		return 'wp_print_footer_scripts';
+	}
+
+	/**
+	 * Filter the website link label and change it for Single Event Classic Editor.
+	 * Use the following in functions.php to disable:
+	 * remove_filter( 'tribe_get_venue_website_link_label', [ tribe( 'events.views.v2.hooks' ), 'filter_single_event_details_website_label' ] );
+	 *
+	 * @since 5.5.0
+	 *
+	 * @param string     $label The filtered label.
+	 * @param null|string|int $post_id The current post ID.
+	 *
+	 * @return string
+	 */
+	public function filter_single_event_details_event_website_label( $label, $post_id = null ) {
+		// If not V2 or not Classic Editor, return the website url.
+		if ( $this->is_v1_or_blocks( $post_id ) ) {
+			return $label;
+		}
+
+		if ( 'Website' !== $label ) {
+			return $label;
+		}
+
+		return sprintf(
+			_x(
+				'View %s Website',
+				'Capitalized label for the event website link.',
+				'the-events-calendar'
+			),
+			tribe_get_event_label_singular()
+		);
+	}
+
+	/**
+	 * Filter the website link label and change it for Single Event Classic Editor.
+	 * Use the following in functions.php to disable:
+	 * remove_filter( 'tribe_get_venue_website_link_label', [ tribe( 'events.views.v2.hooks' ), 'filter_single_event_details_venue_website_label' ] );
+	 *
+	 * @since 5.5.0
+	 *
+	 * @param string     $label The filtered label.
+	 * @param null|string|int $post_id The current post ID.
+	 *
+	 * @return string
+	 */
+	public function filter_single_event_details_venue_website_label( $label, $post_id = null ) {
+		// If not V2 or not Classic Editor, return the website url.
+		if ( $this->is_v1_or_blocks( $post_id ) ) {
+			return $label;
+		}
+
+		return sprintf(
+			_x(
+				'View %s Website',
+				'Capitalized label for the venue website link.',
+				'the-events-calendar'
+			),
+			tribe_get_venue_label_singular()
+		);
+	}
+
+	/**
+	 * Filter the website link label and change it for Single Event Classic Editor.
+	 * Use the following in functions.php to disable:
+	 * remove_filter( 'tribe_get_organizer_website_link_label', [ tribe( 'events.views.v2.hooks' ), 'filter_single_event_details_organizer_website_label' ] );
+	 *
+	 * @since 5.5.0
+	 *
+	 * @param string     $label The filtered label.
+	 * @param null|string|int $post_id The current post ID.
+	 *
+	 * @return string
+	 */
+	public function filter_single_event_details_organizer_website_label( $label, $post_id = null ) {
+		// If not V2 or not Classic Editor, return the website url.
+		if ( $this->is_v1_or_blocks( $post_id ) ) {
+			return $label;
+		}
+
+		return sprintf(
+			_x(
+				'View %s Website',
+				'Capitalized label for the organizer website link.',
+				'the-events-calendar'
+			),
+			tribe_get_organizer_label_singular()
+		);
+	}
+
+	public function filter_tec_events_query_default_view( $default_view ) {
+		return tribe( Manager::class )->get_default_view();
+	}
+
+	/**
+	 * Sugar function for the above that determines if the labels should be filtered.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param null|string|int $post_id The current post ID.
+	 *
+	 * @return boolean
+	 */
+	public function is_v1_or_blocks( $post_id = null ) {
+		return is_null( $post_id )
+				|| ! tribe_events_single_view_v2_is_enabled()
+				|| has_blocks( $post_id );
+	}
+
+	/**
+	 * Overrides the default iCalendar export link logic to inject a list of event
+	 * post IDs fitting the Views V2 criteria.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param array<int>|false $event_ids Either a list of event post IDs that has been
+	 *                                    explicitly requested or `false` to indicate the
+	 *                                    iCalendar export link did not indicate a specific
+	 *                                    set of event post IDs.
+	 *
+	 * @return array<int> Either the original input value if a specific set of event post IDs
+	 *                    was requested as part of the iCalendar export link, or a filtered
+	 *                    set of event post IDs compiled depending on the current View context
+	 *                    and request arguments.
+	 */
+	public function inject_ical_event_ids( $event_ids = null ) {
+		if ( false !== $event_ids ) {
+			// The request already specifies a set of Event post IDs to return, bail.
+			return $event_ids;
+		}
+
+		return $this->container->make( iCalendar\Request::class )->get_event_ids();
+	}
+
+	/* DEPRECATED */
+
+	/**
+	 * Adds new Global Elements settings via the hook in common.
+	 *
+	 * @since 5.3.1
+	 * @deprecated 5.9.0
+	 *
+	 * @param \Tribe__Customizer__Section $section    The Global Elements Customizer section.
+	 * @param WP_Customize_Manager        $manager    The settings manager.
+	 * @param \Tribe__Customizer          $customizer The Customizer object.
+	 */
+	public function action_include_global_elements_settings( $section, $manager, $customizer ) {
+		_deprecated_function( __METHOD__, '5.9.0' );
+		tribe( 'customizer' )->include_global_elements_settings( $section, $manager, $customizer );
+	}
+
+	/**
+	 * Adds new Single Event settings via the hook in common.
+	 *
+	 * @since 5.3.1
+	 * @deprecated 5.9.0
+	 *
+	 * @param \Tribe__Customizer__Section $section    The Single Event Customizer section.
+	 * @param WP_Customize_Manager        $manager    The settings manager.
+	 * @param \Tribe__Customizer          $customizer The Customizer object.
+	 */
+	public function action_include_single_event_settings( $section, $manager, $customizer ) {
+		_deprecated_function( __METHOD__, '5.9.0' );
+		tribe( 'customizer' )->include_single_event_settings( $section, $manager, $customizer );
+	}
+
+	/**
+	 * Filters the Global Elements section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.3.1
+	 * @deprecated 5.9.0
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Global Elements section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_global_elements_css_template( $css_template, $section ) {
+		_deprecated_function( __METHOD__, '5.9.0' );
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section ) ) {
+			return $css_template;
+		}
+
+		return tribe( 'customizer' )->filter_global_elements_css_template( $css_template, $section );
+	}
+
+	/**
+	 * Filters the Single Event section CSS template to add Views v2 related style templates to it.
+	 *
+	 * @since 5.3.1
+	 * @deprecated 5.9.0
+	 *
+	 * @param string                      $css_template The CSS template, as produced by the Global Elements.
+	 * @param \Tribe__Customizer__Section $section      The Single Event section.
+	 * @param \Tribe__Customizer          $customizer   The current Customizer instance.
+	 *
+	 * @return string The filtered CSS template.
+	 */
+	public function filter_single_event_css_template( $css_template, $section ) {
+		_deprecated_function( __METHOD__, '5.9.0' );
+		if ( ! ( is_string( $css_template ) && $section instanceof Customizer_Section ) ) {
+			return $css_template;
+		}
+
+		return tribe( 'customizer' )->filter_single_event_css_template( $css_template, $section );
+	}
+
+	/**
+	 * Add the views v2 status in a more prominent way in the Troubleshooting page system info panel.
+	 *
+	 * @since 5.12.4
+	 *
+	 * @param array $info Existing information that will be displayed.
+	 *
+	 * @return array
+	 */
+	public function filter_system_information( array $info = [] ) {
+		$views_v2_status = [
+			'Views V2 Status' => tribe_events_views_v2_is_enabled() ? esc_html__( 'Enabled', 'the-events-calendar' ) : esc_html__( 'Disabled', 'the-events-calendar' ),
+		];
+		return \Tribe__Main::array_insert_before_key( 'Settings', $info, $views_v2_status );
+>>>>>>> master
 	}
 }

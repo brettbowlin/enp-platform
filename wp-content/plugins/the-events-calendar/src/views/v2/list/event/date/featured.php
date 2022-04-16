@@ -7,7 +7,11 @@
  *
  * See more documentation about our views templating system.
  *
+<<<<<<< HEAD
  * @link {INSERT_ARTCILE_LINK_HERE}
+=======
+ * @link http://evnt.is/1aiy
+>>>>>>> master
  *
  * @since 5.1.1
  *
@@ -23,10 +27,17 @@ if ( empty( $event->featured ) ) {
 }
 ?>
 <em
+<<<<<<< HEAD
 	class="tribe-events-calendar-list__event-datetime-featured-icon tribe-common-svgicon tribe-common-svgicon--featured"
 	aria-label="<?php esc_attr_e( 'Featured', 'the-events-calendar' ); ?>"
 	title="<?php esc_attr_e( 'Featured', 'the-events-calendar' ); ?>"
 >
+=======
+	class="tribe-events-calendar-list__event-datetime-featured-icon"
+	title="<?php esc_attr_e( 'Featured', 'the-events-calendar' ); ?>"
+>
+	<?php $this->template( 'components/icons/featured', [ 'classes' => [ 'tribe-events-calendar-list__event-datetime-featured-icon-svg' ] ] ); ?>
+>>>>>>> master
 </em>
 <span class="tribe-events-calendar-list__event-datetime-featured-text tribe-common-a11y-visual-hide">
 	<?php esc_html_e( 'Featured', 'the-events-calendar' ); ?>

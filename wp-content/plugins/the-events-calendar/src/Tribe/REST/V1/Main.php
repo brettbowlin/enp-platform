@@ -13,7 +13,7 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 	/**
 	 * The Events Calendar REST API URL prefix.
 	 *
-	 * This prefx is appended to the Modern Tribe REST API URL ones.
+	 * This prefix is appended to the The Events Calendar REST API URL ones.
 	 *
 	 * @var string
 	 */
@@ -152,14 +152,14 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 		/** @var Tribe__Documentation__Swagger__Builder_Interface $documentation */
 		$documentation = tribe( 'tec.rest-v1.endpoints.documentation' );
 		$documentation->register_documentation_provider( '/doc', $endpoint );
+		$documentation->register_definition_provider( 'ImageSize', new Tribe__Documentation__Swagger__Image_Size_Definition_Provider() );
+		$documentation->register_definition_provider( 'CostDetails', new Tribe__Documentation__Swagger__Cost_Details_Definition_Provider() );
+		$documentation->register_definition_provider( 'Term', new Tribe__Documentation__Swagger__Term_Definition_Provider() );
+		$documentation->register_definition_provider( 'Image', new Tribe__Documentation__Swagger__Image_Definition_Provider() );
+		$documentation->register_definition_provider( 'DateDetails', new Tribe__Documentation__Swagger__Date_Details_Definition_Provider() );
 		$documentation->register_definition_provider( 'Event', new Tribe__Events__REST__V1__Documentation__Event_Definition_Provider() );
 		$documentation->register_definition_provider( 'Venue', new Tribe__Events__REST__V1__Documentation__Venue_Definition_Provider() );
 		$documentation->register_definition_provider( 'Organizer', new Tribe__Events__REST__V1__Documentation__Organizer_Definition_Provider() );
-		$documentation->register_definition_provider( 'Image', new Tribe__Documentation__Swagger__Image_Definition_Provider() );
-		$documentation->register_definition_provider( 'ImageSize', new Tribe__Documentation__Swagger__Image_Size_Definition_Provider() );
-		$documentation->register_definition_provider( 'DateDetails', new Tribe__Documentation__Swagger__Date_Details_Definition_Provider() );
-		$documentation->register_definition_provider( 'CostDetails', new Tribe__Documentation__Swagger__Cost_Details_Definition_Provider() );
-		$documentation->register_definition_provider( 'Term', new Tribe__Documentation__Swagger__Term_Definition_Provider() );
 	}
 
 	protected function get_semantic_version() {
@@ -238,9 +238,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/events/(?P<id>\\d+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -298,9 +299,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/events/by-slug/(?P<slug>[^/]+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -327,7 +329,7 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 	 * @return string
 	 */
 	public function get_reference_url() {
-		return esc_attr( 'https://theeventscalendar.com/' );
+		return esc_html( 'alternate' );
 	}
 
 	/**
@@ -427,9 +429,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/venues/(?P<id>\\d+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -486,9 +489,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/venues/by-slug/(?P<slug>[^/]+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -534,9 +538,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/organizers/(?P<id>\\d+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -593,9 +598,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/organizers/by-slug/(?P<slug>[^/]+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'args'     => $endpoint->READ_args(),
-						'callback' => [ $endpoint, 'get' ],
+						'methods'             => WP_REST_Server::READABLE,
+						'args'                => $endpoint->READ_args(),
+						'callback'            => [ $endpoint, 'get' ],
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::DELETABLE,
@@ -695,9 +701,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/categories',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'callback' => [ $archive_endpoint, 'get' ],
-						'args'     => $archive_endpoint->READ_args(),
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => [ $archive_endpoint, 'get' ],
+						'args'                => $archive_endpoint->READ_args(),
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::CREATABLE,
@@ -713,9 +720,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/categories/(?P<id>\\d+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'callback' => [ $single_endpoint, 'get' ],
-						'args'     => $single_endpoint->READ_args(),
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => [ $single_endpoint, 'get' ],
+						'args'                => $single_endpoint->READ_args(),
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::EDITABLE,
@@ -763,9 +771,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/tags',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'callback' => [ $archive_endpoint, 'get' ],
-						'args'     => $archive_endpoint->READ_args(),
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => [ $archive_endpoint, 'get' ],
+						'args'                => $archive_endpoint->READ_args(),
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::CREATABLE,
@@ -781,9 +790,10 @@ class Tribe__Events__REST__V1__Main extends Tribe__REST__Main {
 				'/tags/(?P<id>\\d+)',
 				[
 					[
-						'methods'  => WP_REST_Server::READABLE,
-						'callback' => [ $single_endpoint, 'get' ],
-						'args'     => $single_endpoint->READ_args(),
+						'methods'             => WP_REST_Server::READABLE,
+						'callback'            => [ $single_endpoint, 'get' ],
+						'args'                => $single_endpoint->READ_args(),
+						'permission_callback' => '__return_true',
 					],
 					[
 						'methods'             => WP_REST_Server::EDITABLE,

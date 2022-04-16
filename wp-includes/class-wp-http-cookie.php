@@ -93,13 +93,21 @@ class WP_Http_Cookie {
 	 */
 	public function __construct( $data, $requested_url = '' ) {
 		if ( $requested_url ) {
+<<<<<<< HEAD
 			$arrURL = @parse_url( $requested_url );
+=======
+			$arrURL = parse_url( $requested_url );
+>>>>>>> master
 		}
 		if ( isset( $arrURL['host'] ) ) {
 			$this->domain = $arrURL['host'];
 		}
 		$this->path = isset( $arrURL['path'] ) ? $arrURL['path'] : '/';
+<<<<<<< HEAD
 		if ( '/' != substr( $this->path, -1 ) ) {
+=======
+		if ( '/' !== substr( $this->path, -1 ) ) {
+>>>>>>> master
 			$this->path = dirname( $this->path ) . '/';
 		}
 
@@ -127,7 +135,11 @@ class WP_Http_Cookie {
 
 				list( $key, $val ) = strpos( $pair, '=' ) ? explode( '=', $pair ) : array( $pair, '' );
 				$key               = strtolower( trim( $key ) );
+<<<<<<< HEAD
 				if ( 'expires' == $key ) {
+=======
+				if ( 'expires' === $key ) {
+>>>>>>> master
 					$val = strtotime( $val );
 				}
 				$this->$key = $val;
@@ -174,7 +186,11 @@ class WP_Http_Cookie {
 
 		// Get details on the URL we're thinking about sending to.
 		$url         = parse_url( $url );
+<<<<<<< HEAD
 		$url['port'] = isset( $url['port'] ) ? $url['port'] : ( 'https' == $url['scheme'] ? 443 : 80 );
+=======
+		$url['port'] = isset( $url['port'] ) ? $url['port'] : ( 'https' === $url['scheme'] ? 443 : 80 );
+>>>>>>> master
 		$url['path'] = isset( $url['path'] ) ? $url['path'] : '/';
 
 		// Values to use for comparison against the URL.
@@ -186,13 +202,21 @@ class WP_Http_Cookie {
 		}
 
 		// Host - very basic check that the request URL ends with the domain restriction (minus leading dot).
+<<<<<<< HEAD
 		$domain = substr( $domain, 0, 1 ) == '.' ? substr( $domain, 1 ) : $domain;
+=======
+		$domain = ( '.' === substr( $domain, 0, 1 ) ) ? substr( $domain, 1 ) : $domain;
+>>>>>>> master
 		if ( substr( $url['host'], -strlen( $domain ) ) != $domain ) {
 			return false;
 		}
 
 		// Port - supports "port-lists" in the format: "80,8000,8080".
+<<<<<<< HEAD
 		if ( ! empty( $port ) && ! in_array( $url['port'], explode( ',', $port ) ) ) {
+=======
+		if ( ! empty( $port ) && ! in_array( $url['port'], array_map( 'intval', explode( ',', $port ) ), true ) ) {
+>>>>>>> master
 			return false;
 		}
 
@@ -244,11 +268,17 @@ class WP_Http_Cookie {
 	 * @since 4.6.0
 	 *
 	 * @return array {
-	 *    List of attributes.
+	 *     List of attributes.
 	 *
+<<<<<<< HEAD
 	 *    @type string|int|null $expires When the cookie expires. Unix timestamp or formatted date.
 	 *    @type string          $path    Cookie URL path.
 	 *    @type string          $domain  Cookie domain.
+=======
+	 *     @type string|int|null $expires When the cookie expires. Unix timestamp or formatted date.
+	 *     @type string          $path    Cookie URL path.
+	 *     @type string          $domain  Cookie domain.
+>>>>>>> master
 	 * }
 	 */
 	public function get_attributes() {

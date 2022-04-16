@@ -7,7 +7,11 @@
  * @since 3.1.0
  */
 
+<<<<<<< HEAD
 if ( isset( $_GET['tab'] ) && ( 'theme-information' == $_GET['tab'] ) ) {
+=======
+if ( isset( $_GET['tab'] ) && ( 'theme-information' === $_GET['tab'] ) ) {
+>>>>>>> master
 	define( 'IFRAME_REQUEST', true );
 }
 

@@ -249,11 +249,19 @@ var paste = (function (domGlobals) {
 
     var global$7 = tinymce.util.Tools.resolve('tinymce.html.DomParser');
 
+<<<<<<< HEAD
     var global$8 = tinymce.util.Tools.resolve('tinymce.html.Node');
 
     var global$9 = tinymce.util.Tools.resolve('tinymce.html.Schema');
 
     var global$a = tinymce.util.Tools.resolve('tinymce.html.Serializer');
+=======
+    var global$8 = tinymce.util.Tools.resolve('tinymce.html.Serializer');
+
+    var global$9 = tinymce.util.Tools.resolve('tinymce.html.Node');
+
+    var global$a = tinymce.util.Tools.resolve('tinymce.html.Schema');
+>>>>>>> master
 
     function filter(content, items) {
       global$4.each(items, function (v) {
@@ -266,7 +274,11 @@ var paste = (function (domGlobals) {
       return content;
     }
     function innerText(html) {
+<<<<<<< HEAD
       var schema = global$9();
+=======
+      var schema = global$a();
+>>>>>>> master
       var domParser = global$7({}, schema);
       var text = '';
       var shortEndedElements = schema.getShortEndedElements();
@@ -426,7 +438,11 @@ var paste = (function (domGlobals) {
         }
         if (!currentListNode || currentListNode.name !== listName) {
           prevListNode = prevListNode || currentListNode;
+<<<<<<< HEAD
           currentListNode = new global$8(listName, 1);
+=======
+          currentListNode = new global$9(listName, 1);
+>>>>>>> master
           if (start > 1) {
             currentListNode.attr('start', '' + start);
           }
@@ -538,11 +554,19 @@ var paste = (function (domGlobals) {
       });
       if (/(bold)/i.test(outputStyles['font-weight'])) {
         delete outputStyles['font-weight'];
+<<<<<<< HEAD
         node.wrap(new global$8('b', 1));
       }
       if (/(italic)/i.test(outputStyles['font-style'])) {
         delete outputStyles['font-style'];
         node.wrap(new global$8('i', 1));
+=======
+        node.wrap(new global$9('b', 1));
+      }
+      if (/(italic)/i.test(outputStyles['font-style'])) {
+        delete outputStyles['font-style'];
+        node.wrap(new global$9('i', 1));
+>>>>>>> master
       }
       outputStyles = editor.dom.serializeStyle(outputStyles, node.name);
       if (outputStyles) {
@@ -577,7 +601,11 @@ var paste = (function (domGlobals) {
         ]
       ]);
       var validElements = Settings.getWordValidElements(editor);
+<<<<<<< HEAD
       var schema = global$9({
+=======
+      var schema = global$a({
+>>>>>>> master
         valid_elements: validElements,
         valid_children: '-li[p]'
       });
@@ -653,7 +681,11 @@ var paste = (function (domGlobals) {
       if (Settings.shouldConvertWordFakeLists(editor)) {
         convertFakeListsToProperLists(rootNode);
       }
+<<<<<<< HEAD
       content = global$a({ validate: editor.settings.validate }, schema).serialize(rootNode);
+=======
+      content = global$8({ validate: editor.settings.validate }, schema).serialize(rootNode);
+>>>>>>> master
       return content;
     };
     var preProcess = function (editor, content) {
@@ -664,6 +696,22 @@ var paste = (function (domGlobals) {
       isWordContent: isWordContent
     };
 
+<<<<<<< HEAD
+=======
+    var preProcess$1 = function (editor, html) {
+      var parser = global$7({}, editor.schema);
+      parser.addNodeFilter('meta', function (nodes) {
+        global$4.each(nodes, function (node) {
+          return node.remove();
+        });
+      });
+      var fragment = parser.parse(html, {
+        forced_root_block: false,
+        isRootContent: true
+      });
+      return global$8({ validate: editor.settings.validate }, editor.schema).serialize(fragment);
+    };
+>>>>>>> master
     var processResult = function (content, cancelled) {
       return {
         content: content,
@@ -677,10 +725,18 @@ var paste = (function (domGlobals) {
     };
     var filterContent = function (editor, content, internal, isWordHtml) {
       var preProcessArgs = Events.firePastePreProcess(editor, content, internal, isWordHtml);
+<<<<<<< HEAD
       if (editor.hasEventListeners('PastePostProcess') && !preProcessArgs.isDefaultPrevented()) {
         return postProcessFilter(editor, preProcessArgs.content, internal, isWordHtml);
       } else {
         return processResult(preProcessArgs.content, preProcessArgs.isDefaultPrevented());
+=======
+      var filteredContent = preProcess$1(editor, preProcessArgs.content);
+      if (editor.hasEventListeners('PastePostProcess') && !preProcessArgs.isDefaultPrevented()) {
+        return postProcessFilter(editor, filteredContent, internal, isWordHtml);
+      } else {
+        return processResult(filteredContent, preProcessArgs.isDefaultPrevented());
+>>>>>>> master
       }
     };
     var process = function (editor, html, internal) {
@@ -690,6 +746,7 @@ var paste = (function (domGlobals) {
     };
     var ProcessFilters = { process: process };
 
+<<<<<<< HEAD
     var removeMeta = function (editor, html) {
       var body = editor.dom.create('body', {}, html);
       global$4.each(body.querySelectorAll('meta'), function (elm) {
@@ -699,6 +756,10 @@ var paste = (function (domGlobals) {
     };
     var pasteHtml = function (editor, html) {
       editor.insertContent(removeMeta(editor, html), {
+=======
+    var pasteHtml = function (editor, html) {
+      editor.insertContent(html, {
+>>>>>>> master
         merge: Settings.shouldMergeFormats(editor),
         paste: true
       });
@@ -754,6 +815,11 @@ var paste = (function (domGlobals) {
       insertContent: insertContent
     };
 
+<<<<<<< HEAD
+=======
+    var noop = function () {
+    };
+>>>>>>> master
     var constant = function (value) {
       return function () {
         return value;
@@ -776,8 +842,11 @@ var paste = (function (domGlobals) {
     var never = constant(false);
     var always = constant(true);
 
+<<<<<<< HEAD
     var never$1 = never;
     var always$1 = always;
+=======
+>>>>>>> master
     var none = function () {
       return NONE;
     };
@@ -791,6 +860,7 @@ var paste = (function (domGlobals) {
       var id = function (n) {
         return n;
       };
+<<<<<<< HEAD
       var noop = function () {
       };
       var nul = function () {
@@ -799,18 +869,27 @@ var paste = (function (domGlobals) {
       var undef = function () {
         return undefined;
       };
+=======
+>>>>>>> master
       var me = {
         fold: function (n, s) {
           return n();
         },
+<<<<<<< HEAD
         is: never$1,
         isSome: never$1,
         isNone: always$1,
+=======
+        is: never,
+        isSome: never,
+        isNone: always,
+>>>>>>> master
         getOr: id,
         getOrThunk: call,
         getOrDie: function (msg) {
           throw new Error(msg || 'error: getOrDie called on none.');
         },
+<<<<<<< HEAD
         getOrNull: nul,
         getOrUndefined: undef,
         or: id,
@@ -822,6 +901,17 @@ var paste = (function (domGlobals) {
         flatten: none,
         exists: never$1,
         forall: always$1,
+=======
+        getOrNull: constant(null),
+        getOrUndefined: constant(undefined),
+        or: id,
+        orThunk: call,
+        map: none,
+        each: noop,
+        bind: none,
+        exists: never,
+        forall: always,
+>>>>>>> master
         filter: none,
         equals: eq,
         equals_: eq,
@@ -836,6 +926,7 @@ var paste = (function (domGlobals) {
       return me;
     }();
     var some = function (a) {
+<<<<<<< HEAD
       var constant_a = function () {
         return a;
       };
@@ -845,6 +936,12 @@ var paste = (function (domGlobals) {
       var map = function (f) {
         return some(f(a));
       };
+=======
+      var constant_a = constant(a);
+      var self = function () {
+        return me;
+      };
+>>>>>>> master
       var bind = function (f) {
         return f(a);
       };
@@ -855,8 +952,13 @@ var paste = (function (domGlobals) {
         is: function (v) {
           return a === v;
         },
+<<<<<<< HEAD
         isSome: always$1,
         isNone: never$1,
+=======
+        isSome: always,
+        isNone: never,
+>>>>>>> master
         getOr: constant_a,
         getOrThunk: constant_a,
         getOrDie: constant_a,
@@ -864,22 +966,31 @@ var paste = (function (domGlobals) {
         getOrUndefined: constant_a,
         or: self,
         orThunk: self,
+<<<<<<< HEAD
         map: map,
         ap: function (optfab) {
           return optfab.fold(none, function (fab) {
             return some(fab(a));
           });
+=======
+        map: function (f) {
+          return some(f(a));
+>>>>>>> master
         },
         each: function (f) {
           f(a);
         },
         bind: bind,
+<<<<<<< HEAD
         flatten: constant_a,
+=======
+>>>>>>> master
         exists: bind,
         forall: bind,
         filter: function (f) {
           return f(a) ? me : NONE;
         },
+<<<<<<< HEAD
         equals: function (o) {
           return o.is(a);
         },
@@ -888,11 +999,24 @@ var paste = (function (domGlobals) {
             return elementEq(a, b);
           });
         },
+=======
+>>>>>>> master
         toArray: function () {
           return [a];
         },
         toString: function () {
           return 'some(' + a + ')';
+<<<<<<< HEAD
+=======
+        },
+        equals: function (o) {
+          return o.is(a);
+        },
+        equals_: function (o, elementEq) {
+          return o.fold(never, function (b) {
+            return elementEq(a, b);
+          });
+>>>>>>> master
         }
       };
       return me;
@@ -926,34 +1050,54 @@ var paste = (function (domGlobals) {
     };
     var isFunction = isType('function');
 
+<<<<<<< HEAD
     var slice = Array.prototype.slice;
+=======
+    var nativeSlice = Array.prototype.slice;
+>>>>>>> master
     var map = function (xs, f) {
       var len = xs.length;
       var r = new Array(len);
       for (var i = 0; i < len; i++) {
         var x = xs[i];
+<<<<<<< HEAD
         r[i] = f(x, i, xs);
+=======
+        r[i] = f(x, i);
+>>>>>>> master
       }
       return r;
     };
     var each = function (xs, f) {
       for (var i = 0, len = xs.length; i < len; i++) {
         var x = xs[i];
+<<<<<<< HEAD
         f(x, i, xs);
+=======
+        f(x, i);
+>>>>>>> master
       }
     };
     var filter$1 = function (xs, pred) {
       var r = [];
       for (var i = 0, len = xs.length; i < len; i++) {
         var x = xs[i];
+<<<<<<< HEAD
         if (pred(x, i, xs)) {
+=======
+        if (pred(x, i)) {
+>>>>>>> master
           r.push(x);
         }
       }
       return r;
     };
     var from$1 = isFunction(Array.from) ? Array.from : function (x) {
+<<<<<<< HEAD
       return slice.call(x);
+=======
+      return nativeSlice.call(x);
+>>>>>>> master
     };
 
     var exports$1 = {}, module = { exports: exports$1 };
@@ -1597,10 +1741,17 @@ var paste = (function (domGlobals) {
     var par$1 = function (futures) {
       return par(futures, Future.nu);
     };
+<<<<<<< HEAD
     var mapM = function (array, fn) {
       var futures = map(array, fn);
       return par$1(futures);
     };
+=======
+    var traverse = function (array, fn) {
+      return par$1(map(array, fn));
+    };
+    var mapM = traverse;
+>>>>>>> master
 
     var value = function () {
       var subject = Cell(Option.none());
@@ -2045,7 +2196,11 @@ var paste = (function (domGlobals) {
       };
     };
 
+<<<<<<< HEAD
     var noop = function () {
+=======
+    var noop$1 = function () {
+>>>>>>> master
     };
     var hasWorkingClipboardApi = function (clipboardData) {
       return global$2.iOS === false && clipboardData !== undefined && typeof clipboardData.setData === 'function' && Utils.isMsEdge() !== true;
@@ -2128,7 +2283,11 @@ var paste = (function (domGlobals) {
     var copy = function (editor) {
       return function (evt) {
         if (hasSelectedContent(editor)) {
+<<<<<<< HEAD
           setClipboardData(evt, getData(editor), fallback(editor), noop);
+=======
+          setClipboardData(evt, getData(editor), fallback(editor), noop$1);
+>>>>>>> master
         }
       };
     };

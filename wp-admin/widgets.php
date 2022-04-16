@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget administration panel
+ * Widget administration screen.
  *
  * @package WordPress
  * @subpackage Administration
@@ -20,6 +20,7 @@ if ( ! current_user_can( 'edit_theme_options' ) ) {
 	);
 }
 
+<<<<<<< HEAD
 $widgets_access = get_user_setting( 'widgets_access' );
 if ( isset( $_GET['widgets-access'] ) ) {
 	check_admin_referer( 'widgets-access' );
@@ -511,9 +512,21 @@ $sidebars_count       = count( $theme_sidebars );
 
 if ( $sidebars_count > 1 ) {
 	$split = (int) ceil( $sidebars_count / 2 );
-} else {
-	$single_sidebar_class = ' single-sidebar';
+=======
+if ( ! current_theme_supports( 'widgets' ) ) {
+	wp_die( __( 'The theme you are currently using isn&#8217;t widget-aware, meaning that it has no sidebars that you are able to change. For information on making your theme widget-aware, please <a href="https://developer.wordpress.org/themes/functionality/widgets/">follow these instructions</a>.' ) );
 }
+
+$title       = __( 'Widgets' );
+$parent_file = 'themes.php';
+
+if ( wp_use_widgets_block_editor() ) {
+	require ABSPATH . 'wp-admin/widgets-form-blocks.php';
+>>>>>>> master
+} else {
+	require ABSPATH . 'wp-admin/widgets-form.php';
+}
+<<<<<<< HEAD
 
 ?>
 <div class="widget-liquid-right">
@@ -576,3 +589,5 @@ foreach ( $theme_sidebars as $sidebar => $registered_sidebar ) {
  */
 do_action( 'sidebar_admin_page' );
 require_once ABSPATH . 'wp-admin/admin-footer.php';
+=======
+>>>>>>> master

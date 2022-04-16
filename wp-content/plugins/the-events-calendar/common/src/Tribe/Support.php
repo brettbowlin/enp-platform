@@ -16,6 +16,15 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		public        $rewrite_rules_purged = false;
 
 		/**
+		 * The wp_options key used to store the optin_key
+		 *
+		 * @since 4.14.5
+		 *
+		 * @var string
+		 */
+		public static $option_key = 'tribe_systeminfo_optin';
+
+		/**
 		 * @var Tribe__Support__Obfuscator
 		 */
 		protected $obfuscator;
@@ -26,20 +35,23 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		 *
 		 * @var array
 		 */
-		protected $must_escape = array(
+		protected $must_escape = [
 			'tribeEventsAfterHTML',
 			'tribeEventsBeforeHTML',
-		);
+			'dateWithYearFormat',
+			'dateWithoutYearFormat',
+			'monthAndYearFormat',
+		];
 
 		/**
 		 * Field prefixes here should be partially obfuscated before being printed.
 		 *
 		 * @var array
 		 */
-		protected $must_obfuscate_prefixes = array(
+		protected $must_obfuscate_prefixes = [
 			'pue_install_key_',
 			'google_maps_js_api_key',
-		);
+		];
 
 		private function __construct() {
 			/**
@@ -49,11 +61,11 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			 */
 			$this->must_escape = (array) apply_filters( 'tribe_help_must_escape_fields', $this->must_escape );
 
-			add_action( 'tribe_help_pre_get_sections', array( $this, 'append_system_info' ), 10 );
-			add_action( 'delete_option_rewrite_rules', array( $this, 'log_rewrite_rule_purge' ) );
+			add_action( 'tribe_help_pre_get_sections', [ $this, 'append_system_info' ], 10 );
+			add_action( 'delete_option_rewrite_rules', [ $this, 'log_rewrite_rule_purge' ] );
 
-			add_action( 'rest_api_init', array( __CLASS__, 'create_sysinfo_endpoint' ) );
-			add_action( 'wp_ajax_tribe_toggle_sysinfo_optin', array( __CLASS__, 'ajax_sysinfo_optin' ) );
+			add_action( 'rest_api_init', [ __CLASS__, 'create_sysinfo_endpoint' ] );
+			add_action( 'wp_ajax_tribe_toggle_sysinfo_optin', [ __CLASS__, 'ajax_sysinfo_optin' ] );
 		}
 
 		/**
@@ -74,7 +86,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			global $wpdb;
 			$user = wp_get_current_user();
 
-			$plugins = array();
+			$plugins = [];
 			if ( function_exists( 'get_plugin_data' ) ) {
 				$plugins_raw = wp_get_active_and_valid_plugins();
 				foreach ( $plugins_raw as $k => $v ) {
@@ -93,7 +105,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				}
 			}
 
-			$network_plugins = array();
+			$network_plugins = [];
 			if ( is_multisite() && function_exists( 'get_plugin_data' ) ) {
 				$plugins_raw = wp_get_active_network_plugins();
 				foreach ( $plugins_raw as $k => $v ) {
@@ -112,7 +124,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				}
 			}
 
-			$mu_plugins = array();
+			$mu_plugins = [];
 			if ( function_exists( 'get_mu_plugins' ) ) {
 				$mu_plugins_raw = get_mu_plugins();
 				foreach ( $mu_plugins_raw as $k => $v ) {
@@ -130,10 +142,10 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				}
 			}
 
-			$keys = apply_filters( 'tribe-pue-install-keys', array() );
+			$keys = apply_filters( 'tribe-pue-install-keys', [] );
 			//Obfuscate the License Keys for Security
 			if ( is_array( $keys ) && ! empty( $keys ) ) {
-				$secure_keys = array();
+				$secure_keys = [];
 				foreach ( $keys as $plugin => $license ) {
 					$secure_keys[ $plugin ] = preg_replace( '/^(.{4}).*(.{4})$/', '$1' . str_repeat( '#', 32 ) . '$2', $license );
 				}
@@ -145,15 +157,15 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			$server = explode( '/', reset( $server ) );
 
 			//PHP Information
-			$php_info = array();
-			$php_vars = array(
+			$php_info = [];
+			$php_vars = [
 				'max_execution_time',
 				'memory_limit',
 				'upload_max_filesize',
 				'post_max_size',
 				'display_errors',
 				'log_errors',
-			);
+			];
 
 			foreach ( $php_vars as $php_var ) {
 				if ( isset( $wpdb->qm_php_vars ) && isset( $wpdb->qm_php_vars[ $php_var ] ) ) {
@@ -176,7 +188,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			}
 
 			$site_url = get_site_url();
-			$systeminfo = array(
+			$systeminfo = [
 				'Home URL'               => get_home_url(),
 				'Site URL'               => $site_url,
 				'Site Language'          => get_option( 'WPLANG' ) ? get_option( 'WPLANG' ) : esc_html__( 'English', 'tribe-common' ),
@@ -206,7 +218,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				'Week Starts On'         => get_option( 'start_of_week' ),
 				'Common Library Dir'     => $GLOBALS['tribe-common-info']['dir'],
 				'Common Library Version' => $GLOBALS['tribe-common-info']['version'],
-			);
+			];
 
 			if ( $this->rewrite_rules_purged ) {
 				$systeminfo['rewrite rules purged'] = esc_html__( 'Rewrite rules were purged on load of this help page. Chances are there is a rewrite rule flush occurring in a plugin or theme!', 'tribe-common' );
@@ -216,8 +228,20 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			 * Allow for customization of the array of information that's turned into the "System Information" screen in the "Help" admin page.
 			 *
 			 * @param array $systeminfo The array of information turned into the "System Information" screen.
+			 *
+			 * @deprecated TBD Using a newer format of filter.
 			 */
 			$systeminfo = apply_filters( 'tribe-events-pro-support', $systeminfo );
+
+			/**
+			 * Allow for customization of the array of information that's turned into the "System Information" screen in the "Help" admin page.
+			 *
+			 * @since TBD
+			 *
+			 * @param array $systeminfo The array of information turned into the "System Information" screen.
+			 *
+			 */
+			$systeminfo = apply_filters( 'tec_system_information', $systeminfo );
 
 			return $systeminfo;
 		}
@@ -256,28 +280,25 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				if ( empty( $v ) ) {
 					$output .= '<dd class="support-stats-null">-</dd>';
 				} elseif ( is_bool( $v ) ) {
-					$output .= sprintf( '<dd class="support-stats-bool">%s</dd>', $v );
+					$output .= sprintf( '<dd class="support-stats-bool">%s</dd>', esc_html( $v ) );
 				} elseif ( is_string( $v ) ) {
-					$output .= sprintf( '<dd class="support-stats-string">%s</dd>', $v );
+					$output .= sprintf( '<dd class="support-stats-string">%s</dd>', esc_html( $v ) );
 				} elseif ( is_array( $v ) && $is_numeric_array ) {
 					$output .= sprintf( '<dd class="support-stats-array"><ul><li>%s</li></ul></dd>', join( '</li><li>', $v ) );
 				} else {
-					$formatted_v = array();
+					$formatted_v = [];
 					foreach ( $v as $obj_key => $obj_val ) {
-						if ( in_array( $obj_key, $this->must_escape ) ) {
-							$obj_val = esc_html( $obj_val );
-						}
-
 						$obj_val = $this->obfuscator->obfuscate( $obj_key, $obj_val );
 
 						if ( is_array( $obj_val ) ) {
-							$formatted_v[] = sprintf( '<li>%s = <pre>%s</pre></li>', $obj_key, print_r( $obj_val, true ) );
+							$formatted_v[] = sprintf( '<li>%s = <pre>%s</pre></li>', $obj_key, esc_html( print_r( $obj_val, true ) ) );
 						} else {
+							$obj_val = esc_html( $obj_val );
 							$formatted_v[] = sprintf( '<li>%s = %s</li>', $obj_key, $obj_val );
 						}
 					}
 					$v = join( "\n", $formatted_v );
-					$output .= sprintf( '<dd class="support-stats-object"><ul>%s</ul></dd>', print_r( $v, true ) );
+					$output .= sprintf( '<dd class="support-stats-object"><ul>%s</ul></dd>',  wp_kses_post( print_r( $v, true ) ) );
 				}
 			}
 
@@ -309,14 +330,11 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		 */
 		public static function opt_in() {
 
-			$checked   = '';
-			$optin_key = get_option( 'tribe_systeminfo_optin' );
-			if ( $optin_key ) {
-				$checked = 'checked';
-			}
 
-			$opt_in = '<p class="system-info"><input name="tribe_auto_sysinfo_opt_in" id="tribe_auto_sysinfo_opt_in" type="checkbox" value="optin" ' . esc_attr( $checked ) . '/><label for="tribe_auto_sysinfo_opt_in">' . esc_html__( 'Yes, automatically share my system information with the Modern Tribe support team', 'tribe-common' ) . '</label></p>';
-			$opt_in .= '<p class="tooltip description">' . esc_html__( 'Your system information will only be used by the Modern Tribe support team. All information is stored securely. We do not share this information with any third parties.', 'tribe-common' ) . '</p>';
+			$optin_key = ! empty( get_option( self::$option_key ) );
+
+			$opt_in = '<p class="system-info"><input name="tribe_auto_sysinfo_opt_in" id="tribe_auto_sysinfo_opt_in" type="checkbox" value="optin" ' . checked( $optin_key ) . '/><label for="tribe_auto_sysinfo_opt_in">' . esc_html__( 'Yes, automatically share my system information with The Events Calendar\'s support team', 'tribe-common' ) . '</label></p>';
+			$opt_in .= '<p class="tooltip description">' . esc_html__( 'Your system information will only be used by The Events Calendar\'s support team. All information is stored securely. We do not share this information with any third parties.', 'tribe-common' ) . '</p>';
 			$opt_in .= '<p class="tribe-sysinfo-optin-msg"></p>';
 
 			return $opt_in;
@@ -332,7 +350,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		 */
 		public static function sysinfo_query( $query ) {
 
-			$optin_key = get_option( 'tribe_systeminfo_optin' );
+			$optin_key = get_option( self::$option_key );
 
 			if ( ! $optin_key ) {
 				wp_send_json_error( __( 'Invalid Key', 'tribe-common' ) );
@@ -350,15 +368,20 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		}
 
 		/*
-		 * Create Unique Enpoint Per Site
+		 * Create Unique Endpoint Per Site
 		 */
 		public static function create_sysinfo_endpoint() {
-			$optin_key = get_option( 'tribe_systeminfo_optin' );
+			$optin_key = get_option( self::$option_key );
 			if ( $optin_key ) {
-				register_rest_route( 'tribe_events/v2', '/(?P<key>[a-z0-9\-]+)/sysinfo/', array(
-					'methods'  => 'GET',
-					'callback' => array( 'Tribe__Support', 'sysinfo_query' ),
-				) );
+				register_rest_route(
+					'tribe_events/v2',
+					'/(?P<key>[a-z0-9\-]+)/sysinfo/',
+					[
+						'methods'              => 'GET',
+						'callback'            => [ 'Tribe__Support', 'sysinfo_query' ],
+						'permission_callback' => '__return_true',
+					]
+				);
 			}
 		}
 
@@ -372,25 +395,25 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 			}
 
 			if ( 'generate' == $_POST['generate_key'] ) {
-
 				$random    = base_convert( rand( 0, getrandmax() ), 10, 36 );
 				$optin_key = hash( 'sha1', $random );
-				update_option( 'tribe_systeminfo_optin', $optin_key );
+
+				update_option( self::$option_key, $optin_key );
 
 				//Only Connect If a License Exists
-				$keys = apply_filters( 'tribe-pue-install-keys', array() );
+				$keys = apply_filters( 'tribe-pue-install-keys', [] );
 				if ( is_array( $keys ) && ! empty( $keys ) ) {
-					Tribe__Support::send_sysinfo_key( $optin_key );
+					self::send_sysinfo_key( $optin_key );
 				} else {
 					wp_send_json_success( __( 'Unique System Info Key Generated', 'tribe-common' ) );
 				}
 
 			} elseif ( 'remove' == $_POST['generate_key'] ) {
-				$optin_key = get_option( 'tribe_systeminfo_optin' );
+				$optin_key = get_option( self::$option_key );
 
-				delete_option( 'tribe_systeminfo_optin' );
+				delete_option( self::$option_key );
 
-				Tribe__Support::send_sysinfo_key( $optin_key, null, 'remove' );
+				self::send_sysinfo_key( $optin_key, null, 'remove' );
 
 			}
 
@@ -406,16 +429,9 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 		 * @param null $pueadd boolean to disable messaging when coming from pue script
 		 */
 		public static function send_sysinfo_key( $optin_key = null, $url = null, $remove = null, $pueadd = false ) {
-
-			$url   = $url ? $url : urlencode( str_replace( array( 'http://', 'https://' ), '', get_site_url() ) );
-
-			$teccom_url = 'https://theeventscalendar.com/';
-
-			if ( defined( 'TEC_URL' ) ) {
-				$teccom_url = trailingslashit( TEC_URL );
-			}
-
-			$query = $teccom_url . 'wp-json/tribe_system/v2/customer-info/' . $optin_key . '/' . $url;
+			$url        = $url ? $url : urlencode( str_replace( [ 'http://', 'https://' ], '', get_site_url() ) );
+			$teccom_url = defined( 'TEC_URL' ) ? TEC_URL : 'https://theeventscalendar.com';
+			$query      = trailingslashit( $teccom_url ) . 'wp-json/tribe_system/v2/customer-info/' . $optin_key . '/' . $url;
 
 			if ( $remove ) {
 				$query .= '?status=remove';
@@ -429,7 +445,7 @@ if ( ! class_exists( 'Tribe__Support' ) ) {
 				// make sure the response came back okay
 				if ( ! isset( $response->success ) ) {
 					//on error delete the key
-					delete_option( 'tribe_systeminfo_optin' );
+					delete_option( self::$option_key );
 
 					//send error response
 					wp_send_json_error( $response );

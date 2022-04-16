@@ -27,7 +27,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Registers the routes for the objects of the controller.
+	 * Registers the routes for post types.
 	 *
 	 * @since 4.7.0
 	 *
@@ -60,9 +60,16 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller {
 					),
 				),
 				array(
+<<<<<<< HEAD
 					'methods'  => WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_item' ),
 					'args'     => array(
+=======
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => '__return_true',
+					'args'                => array(
+>>>>>>> master
 						'context' => $this->get_context_param( array( 'default' => 'view' ) ),
 					),
 				),
@@ -240,7 +247,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller {
 		);
 
 		/**
-		 * Filters a post type returned from the API.
+		 * Filters a post type returned from the REST API.
 		 *
 		 * Allows modification of the post type data right before it is returned.
 		 *

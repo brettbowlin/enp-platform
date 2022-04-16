@@ -4,6 +4,9 @@
  */
 
 // Don't load directly
+
+use Tribe\DB_Lock;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -17,7 +20,11 @@ class Tribe__Main {
 	const OPTIONNAME          = 'tribe_events_calendar_options';
 	const OPTIONNAMENETWORK   = 'tribe_events_calendar_network_options';
 
+<<<<<<< HEAD
 	const VERSION             = '4.12.3';
+=======
+	const VERSION             = '4.14.12';
+>>>>>>> master
 
 	const FEED_URL            = 'https://theeventscalendar.com/feed/';
 
@@ -65,12 +72,7 @@ class Tribe__Main {
 			return;
 		}
 
-		// the 5.2 compatible autoload file
-		if ( version_compare( PHP_VERSION, '5.2.17', '<=' ) ) {
-			require_once realpath( dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload_52.php' );
-		} else {
-			require_once realpath( dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php' );
-		}
+		require_once realpath( dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php' );
 
 		// the DI container class
 		require_once dirname( __FILE__ ) . '/Container.php';
@@ -143,14 +145,14 @@ class Tribe__Main {
 	}
 
 	/**
-	 * Get's the instantiated context of this class. I.e. the object that instantiated this one.
+	 * Gets the instantiated context of this class. I.e. the object that instantiated this one.
 	 */
 	public function context() {
 		return $this->plugin_context;
 	}
 
 	/**
-	 * Get's the class name of the instantiated plugin context of this class. I.e. the class name of the object that instantiated this one.
+	 * Gets the class name of the instantiated plugin context of this class. I.e. the class name of the object that instantiated this one.
 	 */
 	public function context_class() {
 		return $this->plugin_context_class;
@@ -175,7 +177,6 @@ class Tribe__Main {
 		tribe( 'settings.manager' );
 		tribe( 'tracker' );
 		tribe( 'plugins.api' );
-		tribe( 'pue.notices' );
 		tribe( 'ajax.dropdown' );
 		tribe( 'logger' );
 	}
@@ -196,6 +197,7 @@ class Tribe__Main {
 				[ 'tribe-select2-css', 'vendor/tribe-selectWoo/dist/css/selectWoo.css' ],
 				[ 'tribe-utils-camelcase', 'utils-camelcase.js', [ 'underscore' ] ],
 				[ 'tribe-moment', 'vendor/momentjs/moment.js' ],
+				[ 'tribe-moment-locales', 'vendor/momentjs/locale.min.js' ],
 				[ 'tribe-tooltipster', 'vendor/tooltipster/tooltipster.bundle.js', [ 'jquery' ] ],
 				[ 'tribe-tooltipster-css', 'vendor/tooltipster/tooltipster.bundle.css' ],
 				[ 'datatables-css', 'datatables.css' ],
@@ -214,8 +216,10 @@ class Tribe__Main {
 		tribe_assets(
 			$this,
 			[
-				[ 'tribe-common-skeleton-style', 'common-skeleton.css' ],
-				[ 'tribe-common-full-style', 'common-full.css', [ 'tribe-common-skeleton-style' ] ],
+				[ 'tec-variables-skeleton', 'variables-skeleton.css', ],
+				[ 'tribe-common-skeleton-style', 'common-skeleton.css', [ 'tec-variables-skeleton' ] ],
+				[ 'tec-variables-full', 'variables-full.css', ],
+				[ 'tribe-common-full-style', 'common-full.css', [ 'tec-variables-full', 'tribe-common-skeleton-style' ] ],
 			],
 			null
 		);
@@ -224,11 +228,15 @@ class Tribe__Main {
 		tribe_assets(
 			$this,
 			[
+<<<<<<< HEAD
 				[ 'tribe-ui', 'tribe-ui.css' ],
+=======
+				[ 'tribe-ui', 'tribe-ui.css', [ 'tec-variables-full' ] ],
+>>>>>>> master
 				[ 'tribe-buttonset', 'buttonset.js', [ 'jquery', 'underscore' ] ],
-				[ 'tribe-common-admin', 'tribe-common-admin.css', [ 'tribe-dependency-style', 'tribe-bumpdown-css', 'tribe-buttonset-style', 'tribe-select2-css' ] ],
+				[ 'tribe-common-admin', 'tribe-common-admin.css', [ 'tec-variables-full', 'tribe-dependency-style', 'tribe-bumpdown-css', 'tribe-buttonset-style', 'tribe-select2-css' ] ],
 				[ 'tribe-validation', 'validation.js', [ 'jquery', 'underscore', 'tribe-common', 'tribe-utils-camelcase', 'tribe-tooltipster' ] ],
-				[ 'tribe-validation-style', 'validation.css', [ 'tribe-tooltipster-css' ] ],
+				[ 'tribe-validation-style', 'validation.css', [ 'tec-variables-full', 'tribe-tooltipster-css' ] ],
 				[ 'tribe-dependency', 'dependency.js', [ 'jquery', 'underscore', 'tribe-common' ] ],
 				[ 'tribe-dependency-style', 'dependency.css', [ 'tribe-select2-css' ] ],
 				[ 'tribe-pue-notices', 'pue-notices.js', [ 'jquery' ] ],
@@ -262,6 +270,15 @@ class Tribe__Main {
 				'conditionals' => [ $this, 'should_load_common_admin_css' ],
 				'priority'     => 5,
 			]
+		);
+
+		// Register the asset for Customizer controls.
+		tribe_asset(
+			$this,
+			'tribe-customizer-controls',
+			'customizer-controls.css',
+			[ 'tec-variables-full' ],
+			'customize_controls_print_styles'
 		);
 
 		tribe( Tribe__Admin__Help_Page::class )->register_assets();
@@ -426,11 +443,14 @@ class Tribe__Main {
 		// Are we on the Plugins page?
 		$is_plugins = $helper->is_screen( 'plugins' );
 
+		// Are we on the Widgets page?
+		$is_widgets = $helper->is_screen( 'widgets' );
+
 		// Are we viewing a generic Tribe screen?
 		// Includes: Events > Settings, Events > Help, App Shop page, and more.
 		$is_tribe_screen = $helper->is_screen();
 
-		return $is_post_type || $is_plugins || $is_tribe_screen;
+		return $is_post_type || $is_plugins || $is_widgets || $is_tribe_screen;
 	}
 
 	/**
@@ -548,7 +568,20 @@ class Tribe__Main {
 	public static function post_id_helper( $candidate = null ) {
 		$candidate_post = get_post( $candidate );
 
-		return $candidate_post instanceof WP_Post ? $candidate_post->ID : false;
+		$post_id = $candidate_post instanceof WP_Post ? $candidate_post->ID : false;
+
+		/**
+		 * Allows modifying the post ID in order to allow redirection of values before any other additional
+		 * WordPress action is called from on result.
+		 *
+		 * @since 4.12.13
+		 *
+		 * @param int|bool         $post_id   The ID of the post if the $candidate value is a valid WP_Post Object, `false` otherwise.
+		 * @param null|int|WP_Post $candidate Post ID or object, `null` to get the ID of the global post object.
+		 *
+		 * @return  int|bool The ID of the post.
+		 */
+		return apply_filters( 'tribe_post_id', $post_id, $candidate );
 	}
 
 	/**
@@ -559,7 +592,7 @@ class Tribe__Main {
 		if ( 'plugins.php' !== $page ) {
 			return;
 		}
-		$notices = apply_filters( 'tribe_plugin_notices', array() );
+		$notices = apply_filters( 'tribe_plugin_notices', [] );
 		wp_localize_script( 'tribe-pue-notices', 'tribe_plugin_notices', $notices );
 	}
 
@@ -567,14 +600,12 @@ class Tribe__Main {
 	 * Runs tribe_plugins_loaded action, should be hooked to the end of plugins_loaded
 	 */
 	public function tribe_plugins_loaded() {
-		tribe( 'admin.notice.php.version' );
 		tribe( 'cache' );
 		tribe_singleton( 'feature-detection', 'Tribe__Feature_Detection' );
 		tribe_register_provider( 'Tribe__Service_Providers__Processes' );
 
-		if ( ! defined( 'TRIBE_HIDE_MARKETING_NOTICES' ) ) {
-			tribe( 'admin.notice.marketing' );
-		}
+		tribe( \Tribe\Admin\Notice\WP_Version::class );
+		tribe( \Tribe\Admin\Troubleshooting::class );
 
 		/**
 		 * Runs after all plugins including Tribe ones have loaded
@@ -589,7 +620,7 @@ class Tribe__Main {
 	 *
 	 * @since 4.4
 	 *
-	 * @return void Implementation of components loader doesnt return anything.
+	 * @return void Implementation of components loader doesn't return anything.
 	 */
 	public function bind_implementations() {
 		tribe_singleton( 'settings.manager', 'Tribe__Settings_Manager' );
@@ -611,17 +642,14 @@ class Tribe__Main {
 		tribe_singleton( 'context', 'Tribe__Context' );
 		tribe_singleton( 'post-transient', 'Tribe__Post_Transient' );
 		tribe_singleton( 'db', 'Tribe__Db' );
+		tribe_singleton( 'db-lock', DB_Lock::class );
 		tribe_singleton( 'freemius', 'Tribe__Freemius' );
-
+		tribe_singleton( 'customizer', 'Tribe__Customizer' );
 		tribe_singleton( Tribe__Dependency::class, Tribe__Dependency::class );
+		tribe_singleton( \Tribe\Admin\Troubleshooting::class, \Tribe\Admin\Troubleshooting::class, [ 'hook' ] );
 
 		tribe_singleton( 'callback', 'Tribe__Utils__Callback' );
-		tribe_singleton( 'pue.notices', 'Tribe__PUE__Notices' );
-
 		tribe_singleton( Tribe__Admin__Help_Page::class, Tribe__Admin__Help_Page::class );
-
-		tribe_singleton( 'admin.notice.php.version', 'Tribe__Admin__Notice__Php_Version', [ 'hook' ] );
-		tribe_singleton( 'admin.notice.marketing', 'Tribe__Admin__Notice__Marketing', [ 'hook' ] );
 
 		tribe_register_provider( Tribe__Editor__Provider::class );
 		tribe_register_provider( Tribe__Service_Providers__Debug_Bar::class );
@@ -630,7 +658,16 @@ class Tribe__Main {
 		tribe_register_provider( Tribe\Service_Providers\Dialog::class );
 		tribe_register_provider( Tribe\Service_Providers\PUE::class );
 		tribe_register_provider( Tribe\Service_Providers\Shortcodes::class );
+<<<<<<< HEAD
+=======
+		tribe_register_provider( Tribe\Service_Providers\Body_Classes::class );
+>>>>>>> master
 		tribe_register_provider( Tribe\Log\Service_Provider::class );
+		tribe_register_provider( Tribe\Service_Providers\Crons::class );
+		tribe_register_provider( Tribe\Service_Providers\Widgets::class );
+		tribe_register_provider( Tribe\Service_Providers\Onboarding::class );
+		tribe_register_provider( Tribe\Admin\Notice\Service_Provider::class );
+		tribe_register_provider( Tribe\Admin\Conditional_Content\Service_Provider::class );
 	}
 
 	/**

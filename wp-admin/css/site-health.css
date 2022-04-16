@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .site-health #wpcontent,
 .site-health.auto-fold #wpcontent {
 	padding-left: 0;
@@ -15,6 +16,13 @@
 
 .health-check-body h2 {
 	padding: 1rem 0;
+=======
+/* Note: Any Site Health selectors that use
+duplicate styling from the Privacy settings screen
+are styled in the Privacy section of edit.css */
+
+.health-check-body h2 {
+>>>>>>> master
 	line-height: 1.4;
 }
 
@@ -23,6 +31,7 @@
 	font-weight: 400;
 }
 
+<<<<<<< HEAD
 .health-check-header {
 	text-align: center;
 	margin: 0 0 1rem;
@@ -35,6 +44,10 @@
 	align-items: center;
 	justify-content: center;
 	clear: both;
+=======
+.health-check-widget-title-section {
+	text-align: center;
+>>>>>>> master
 }
 
 .site-health-progress-wrapper {
@@ -68,19 +81,28 @@
 
 .loading .site-health-progress svg #bar {
 	stroke-dashoffset: 0;
+<<<<<<< HEAD
 	stroke: #adc5d2;
+=======
+	stroke: #c3c4c7;
+>>>>>>> master
 	animation: loadingPulse 3s infinite ease-in-out;
 }
 
 .site-health-progress svg circle {
 	stroke-dashoffset: 0;
 	transition: stroke-dashoffset 1s linear;
+<<<<<<< HEAD
 	stroke: #ccc;
+=======
+	stroke: #c3c4c7;
+>>>>>>> master
 	stroke-width: 2em;
 }
 
 .site-health-progress svg #bar {
 	stroke-dashoffset: 565;
+<<<<<<< HEAD
 	stroke: #dc3232;
 }
 
@@ -96,6 +118,23 @@
 }
 .orange .site-health-progress .site-health-progress-label {
 	color: #ffb900;
+=======
+	stroke: #d63638;
+}
+
+.green .site-health-progress #bar {
+	stroke: #00a32a;
+}
+.green .site-health-progress .site-health-progress-label {
+	color: #00a32a;
+}
+
+.orange .site-health-progress #bar {
+	stroke: #dba617;
+}
+.orange .site-health-progress .site-health-progress-label {
+	color: #dba617;
+>>>>>>> master
 }
 
 .site-health-progress-label {
@@ -106,6 +145,7 @@
 
 @keyframes loadingPulse {
 	0% {
+<<<<<<< HEAD
 		stroke: #adc5d2;
 	}
 	50% {
@@ -113,18 +153,46 @@
 	}
 	100% {
 		stroke: #adc5d2;
+=======
+		stroke: #c3c4c7;
+	}
+	50% {
+		stroke: #72aee6;
+	}
+	100% {
+		stroke: #c3c4c7;
+>>>>>>> master
 	}
 }
 
 .health-check-tabs-wrapper {
 	/* IE 11 */
 	display: -ms-inline-grid;
+<<<<<<< HEAD
 	-ms-grid-columns: 1fr 1fr;
 	vertical-align: top;
 	/* modern browsers */
 	display: inline-grid;
 	grid-template-columns: 1fr 1fr;
 }
+=======
+	-ms-grid-columns: 1fr 1fr 1fr 1fr;
+	vertical-align: top;
+	/* modern browsers */
+	display: inline-grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.health-check-tabs-wrapper.tab-count-1 {
+	grid-template-columns: 1fr;
+}
+.health-check-tabs-wrapper.tab-count-2 {
+	grid-template-columns: 1fr 1fr;
+}
+.health-check-tabs-wrapper.tab-count-3 {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+>>>>>>> master
 
 .health-check-tab {
 	display: block; /* IE 11 */
@@ -135,6 +203,7 @@
 	transition: box-shadow 0.5s ease-in-out;
 }
 
+<<<<<<< HEAD
 .health-check-tab:nth-child(1) {
 	-ms-grid-column: 1; /* IE 11 */
 }
@@ -151,6 +220,47 @@
 
 .health-check-tab.active {
 	box-shadow: inset 0 -3px #007cba;
+=======
+.health-check-offscreen-nav-wrapper {
+	position: relative;
+	background: transparent;
+	border: none;
+}
+.health-check-offscreen-nav-wrapper:focus .health-check-offscreen-nav {
+	left: initial;
+}
+
+.health-check-offscreen-nav {
+	display: none;
+	position: absolute;
+	padding-top: 10px;
+	right: 0;
+	top: 100%;
+	width: 13rem;
+}
+.health-check-offscreen-nav-wrapper.visible .health-check-offscreen-nav {
+	display: inline-block;
+}
+.health-check-offscreen-nav:before {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 10px 5px 10px;
+	border-color: transparent transparent #ffffff transparent;
+	right: 20px;
+	top: 5px;
+}
+
+.health-check-offscreen-nav .health-check-tab {
+	background: #fff;
+	box-shadow: 0 2px 5px 0 rgba( 0, 0, 0, 0.75 );
+}
+
+.health-check-offscreen-nav .health-check-tab.active {
+	box-shadow: inset 3px 0 #3582c4;
+>>>>>>> master
 	font-weight: 600;
 }
 
@@ -179,23 +289,39 @@
 .health-check-body .pass::before,
 .health-check-body .good::before {
 	content: "\f147";
+<<<<<<< HEAD
 	color: #46b450;
+=======
+	color: #00a32a;
+>>>>>>> master
 }
 
 .health-check-body .warning::before {
 	content: "\f460";
+<<<<<<< HEAD
 	color: #ffb900;
+=======
+	color: #dba617;
+>>>>>>> master
 }
 
 .health-check-body .info::before {
 	content: "\f348";
+<<<<<<< HEAD
 	color: #00a0d2;
+=======
+	color: #72aee6;
+>>>>>>> master
 }
 
 .health-check-body .fail::before,
 .health-check-body .error::before {
 	content: "\f335";
+<<<<<<< HEAD
 	color: #dc3232;
+=======
+	color: #d63638;
+>>>>>>> master
 }
 
 .site-health-copy-buttons {
@@ -203,10 +329,16 @@
 }
 
 .site-health-copy-buttons .copy-button-wrapper {
+<<<<<<< HEAD
+=======
+	display: inline-flex;
+	align-items: center;
+>>>>>>> master
 	margin: 0.5rem 0 1rem;
 }
 
 .site-health-copy-buttons .success {
+<<<<<<< HEAD
 	display: none;
 	color: #40860a;
 	line-height: 1.8;
@@ -219,6 +351,12 @@
 	line-height: 2.30769231;
 }
 
+=======
+	color: #008a20;
+	margin-left: 0.5rem;
+}
+
+>>>>>>> master
 .site-status-has-issues.hide {
 	display: none;
 }
@@ -272,6 +410,7 @@
 	margin: 0;
 }
 
+<<<<<<< HEAD
 .health-check-accordion {
 	border: 1px solid #ccd0d4;
 }
@@ -306,12 +445,15 @@
 	justify-content: space-between;
 }
 
+=======
+>>>>>>> master
 .wp-core-ui .button.site-health-view-passed {
 	position: relative;
 	padding-right: 40px;
 	padding-left: 20px;
 }
 
+<<<<<<< HEAD
 .health-check-accordion-trigger:hover,
 .health-check-accordion-trigger:active {
 	background: #f8f9f9;
@@ -394,6 +536,8 @@
 .health-check-accordion-panel a .dashicons {
 	text-decoration: none;
 }
+=======
+>>>>>>> master
 
 /* Better position for the WordPress admin notices and update nag. */
 .site-health .notice {
@@ -412,6 +556,7 @@
 	flex-shrink: 0;
 }
 
+<<<<<<< HEAD
 @media screen and (max-width: 782px) {
 	.health-check-body {
 		margin: 0 12px;
@@ -426,6 +571,31 @@
 		margin-right: 10px;
 		margin-left: 10px;
 	}
+=======
+/* Styling unique to the dashboard widget. */
+#dashboard_site_health .site-health-details {
+	padding-left: 16px;
+}
+
+#dashboard_site_health .health-check-widget {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-auto-rows: minmax(64px, auto);
+	column-gap: 16px;
+	align-items: center;
+}
+#dashboard_site_health .site-health-progress-label {
+	margin-left: 0;
+}
+
+@media screen and (max-width: 480px) {
+	#dashboard_site_health .health-check-widget {
+		grid-template-columns: 100%;
+	}
+}
+
+@media screen and (max-width: 782px) {
+>>>>>>> master
 
 	.site-health-issues-wrapper .health-check-accordion-trigger {
 		flex-direction: column;
@@ -452,6 +622,7 @@
 		padding-bottom: 0;
 		font-weight: 600;
 	}
+<<<<<<< HEAD
 }
 
 /* The breakpoint is usually at 960px, the additional space is to allow for the margin. */
@@ -461,3 +632,11 @@
 		width: auto;
 	}
 }
+=======
+
+	.wp-core-ui .site-health-copy-buttons .copy-button {
+		margin-bottom: 0;
+	}
+}
+
+>>>>>>> master

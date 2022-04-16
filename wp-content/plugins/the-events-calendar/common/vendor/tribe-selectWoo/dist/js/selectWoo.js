@@ -3532,7 +3532,11 @@ S2.define('select2/data/ajax',[
 
     if (this._request != null) {
       // JSONP requests cannot always be aborted
+<<<<<<< HEAD
       if ($.isFunction(this._request.abort)) {
+=======
+      if ( 'function' === typeof this._request.abort ) {
+>>>>>>> master
         this._request.abort();
       }
 
@@ -3557,7 +3561,11 @@ S2.define('select2/data/ajax',[
 
         if (self.options.get('debug') && window.console && console.error) {
           // Check to make sure that the response included a `results` key.
+<<<<<<< HEAD
           if (!results || !results.results || !$.isArray(results.results)) {
+=======
+          if (!results || !results.results || !Array.isArray(results.results)) {
+>>>>>>> master
             console.error(
               'Select2: The AJAX results did not return an array in the ' +
               '`results` key of the response.'
@@ -3616,7 +3624,11 @@ S2.define('select2/data/tags',[
 
     decorated.call(this, $element, options);
 
+<<<<<<< HEAD
     if ($.isArray(tags)) {
+=======
+    if (Array.isArray(tags)) {
+>>>>>>> master
       for (var t = 0; t < tags.length; t++) {
         var tag = tags[t];
         var item = this._normalizeItem(tag);
@@ -3692,7 +3704,15 @@ S2.define('select2/data/tags',[
   };
 
   Tags.prototype.createTag = function (decorated, params) {
+<<<<<<< HEAD
     var term = $.trim(params.term);
+=======
+  	if ( 'string' !== typeof params.term ) {
+  		return null;
+	}
+
+    var term = params.term.trim();
+>>>>>>> master
 
     if (term === '') {
       return null;
@@ -4863,7 +4883,11 @@ S2.define('select2/defaults',[
       }
     }
 
+<<<<<<< HEAD
     if ($.isArray(options.language)) {
+=======
+    if (Array.isArray(options.language)) {
+>>>>>>> master
       var languages = new Translation();
       options.language.push('en');
 
@@ -4926,7 +4950,11 @@ S2.define('select2/defaults',[
 
     function matcher (params, data) {
       // Always return the object if there is nothing to compare
+<<<<<<< HEAD
       if ($.trim(params.term) === '') {
+=======
+      if ( 'string' !== typeof params.term || params.term.trim() === '') {
+>>>>>>> master
         return data;
       }
 
@@ -5710,7 +5738,11 @@ S2.define('select2/core',[
 
     var newVal = args[0];
 
+<<<<<<< HEAD
     if ($.isArray(newVal)) {
+=======
+    if (Array.isArray(newVal)) {
+>>>>>>> master
       newVal = $.map(newVal, function (obj) {
         return obj.toString();
       });
@@ -5795,11 +5827,19 @@ S2.define('jquery.select2',[
   './select2/core',
   './select2/defaults'
 ], function ($, _, Select2, Defaults) {
+<<<<<<< HEAD
   if ($.fn.selectWoo == null) {
     // All methods that should return the element
     var thisMethods = ['open', 'close', 'destroy'];
 
     $.fn.selectWoo = function (options) {
+=======
+  if ($.fn.select2TEC == null) {
+    // All methods that should return the element
+    var thisMethods = ['open', 'close', 'destroy'];
+
+    $.fn.select2TEC = function (options) {
+>>>>>>> master
       options = options || {};
 
       if (typeof options === 'object') {
@@ -5840,6 +5880,7 @@ S2.define('jquery.select2',[
   }
 
   if ($.fn.select2 != null && $.fn.select2.defaults != null) {
+<<<<<<< HEAD
     $.fn.selectWoo.defaults = $.fn.select2.defaults;
   }
 
@@ -5849,6 +5890,17 @@ S2.define('jquery.select2',[
 
   // Also register selectWoo under select2 if select2 is not already present.
   $.fn.select2 = $.fn.select2 || $.fn.selectWoo;
+=======
+    $.fn.select2TEC.defaults = $.fn.select2.defaults;
+  }
+
+  if ($.fn.select2TEC.defaults == null) {
+    $.fn.select2TEC.defaults = Defaults;
+  }
+
+  // Also register select2TEC under select2 if select2 is not already present.
+  $.fn.select2 = $.fn.select2 || $.fn.select2TEC;
+>>>>>>> master
 
   return Select2;
 });
@@ -5868,7 +5920,11 @@ S2.define('jquery.select2',[
   // This allows Select2 to use the internal loader outside of this file, such
   // as in the language files.
   jQuery.fn.select2.amd = S2;
+<<<<<<< HEAD
   jQuery.fn.selectWoo.amd = S2;
+=======
+  jQuery.fn.select2TEC.amd = S2;
+>>>>>>> master
 
   // Return the Select2 instance for anyone who is importing it.
   return select2;

@@ -15,21 +15,68 @@
  */
 class WP_Upgrader_Skin {
 
+	/**
+	 * Holds the upgrader data.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var WP_Upgrader
+	 */
 	public $upgrader;
+
+	/**
+	 * Whether header is done.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var bool
+	 */
 	public $done_header = false;
+
+	/**
+	 * Whether footer is done.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var bool
+	 */
 	public $done_footer = false;
 
 	/**
 	 * Holds the result of an upgrade.
 	 *
 	 * @since 2.8.0
+	 *
 	 * @var string|bool|WP_Error
 	 */
+<<<<<<< HEAD
 	public $result  = false;
 	public $options = array();
 
 	/**
 	 * @param array $args
+=======
+	public $result = false;
+
+	/**
+	 * Holds the options of an upgrade.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @var array
+	 */
+	public $options = array();
+
+	/**
+	 * Constructor.
+	 *
+	 * Sets up the generic skin for the WordPress Upgrader classes.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param array $args Optional. The WordPress upgrader skin arguments to
+	 *                    override default options. Default empty array.
+>>>>>>> master
 	 */
 	public function __construct( $args = array() ) {
 		$defaults      = array(
@@ -42,6 +89,11 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * @since 2.8.0
+	 *
+>>>>>>> master
 	 * @param WP_Upgrader $upgrader
 	 */
 	public function set_upgrader( &$upgrader ) {
@@ -52,6 +104,7 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+	 * @since 3.0.0
 	 */
 	public function add_strings() {
 	}
@@ -98,6 +151,7 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+	 * @since 2.8.0
 	 */
 	public function header() {
 		if ( $this->done_header ) {
@@ -109,6 +163,7 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+	 * @since 2.8.0
 	 */
 	public function footer() {
 		if ( $this->done_footer ) {
@@ -119,6 +174,11 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * @since 2.8.0
+	 *
+>>>>>>> master
 	 * @param string|WP_Error $errors
 	 */
 	public function error( $errors ) {
@@ -139,6 +199,11 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * @since 2.8.0
+	 *
+>>>>>>> master
 	 * @param string $string
 	 * @param mixed  ...$args Optional text replacements.
 	 */
@@ -161,10 +226,16 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+	 * Action to perform before an update.
+	 *
+	 * @since 2.8.0
 	 */
 	public function before() {}
 
 	/**
+	 * Action to perform following an update.
+	 *
+	 * @since 2.8.0
 	 */
 	public function after() {}
 
@@ -199,10 +270,24 @@ class WP_Upgrader_Skin {
 	}
 
 	/**
+	 * @since 3.0.0
 	 */
 	public function bulk_header() {}
 
 	/**
+	 * @since 3.0.0
 	 */
 	public function bulk_footer() {}
+
+	/**
+	 * Hides the `process_failed` error message when updating by uploading a zip file.
+	 *
+	 * @since 5.5.0
+	 *
+	 * @param WP_Error $wp_error WP_Error object.
+	 * @return bool
+	 */
+	public function hide_process_failed( $wp_error ) {
+		return false;
+	}
 }

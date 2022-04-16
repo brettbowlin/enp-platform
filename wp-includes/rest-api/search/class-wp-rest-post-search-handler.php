@@ -71,7 +71,11 @@ class WP_REST_Post_Search_Handler extends WP_REST_Search_Handler {
 		}
 
 		/**
+<<<<<<< HEAD
 		 * Filters the query arguments for a search request.
+=======
+		 * Filters the query arguments for a REST API search request.
+>>>>>>> master
 		 *
 		 * Enables adding extra arguments or setting defaults for a post search request.
 		 *
@@ -148,7 +152,11 @@ class WP_REST_Post_Search_Handler extends WP_REST_Search_Handler {
 
 		$links = array();
 
+<<<<<<< HEAD
 		$item_route = $this->detect_rest_item_route( $post );
+=======
+		$item_route = rest_get_route_for_post( $post );
+>>>>>>> master
 		if ( ! empty( $item_route ) ) {
 			$links['self'] = array(
 				'href'       => rest_url( $item_route ),
@@ -182,11 +190,17 @@ class WP_REST_Post_Search_Handler extends WP_REST_Search_Handler {
 	 * Attempts to detect the route to access a single item.
 	 *
 	 * @since 5.0.0
+<<<<<<< HEAD
+=======
+	 * @deprecated 5.5.0 Use rest_get_route_for_post()
+	 * @see rest_get_route_for_post()
+>>>>>>> master
 	 *
 	 * @param WP_Post $post Post object.
 	 * @return string REST route relative to the REST base URI, or empty string if unknown.
 	 */
 	protected function detect_rest_item_route( $post ) {
+<<<<<<< HEAD
 		$post_type = get_post_type_object( $post->post_type );
 		if ( ! $post_type ) {
 			return '';
@@ -201,6 +215,11 @@ class WP_REST_Post_Search_Handler extends WP_REST_Search_Handler {
 		$rest_base = ! empty( $post_type->rest_base ) ? $post_type->rest_base : $post_type->name;
 
 		return sprintf( '%s/%s/%d', $namespace, $rest_base, $post->ID );
+=======
+		_deprecated_function( __METHOD__, '5.5.0', 'rest_get_route_for_post()' );
+
+		return rest_get_route_for_post( $post );
+>>>>>>> master
 	}
 
 }

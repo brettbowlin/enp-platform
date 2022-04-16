@@ -143,7 +143,11 @@ class Walker {
 
 		$this->start_el( $output, $element, $depth, ...array_values( $args ) );
 
+<<<<<<< HEAD
 		// Descend only when the depth is right and there are childrens for this element.
+=======
+		// Descend only when the depth is right and there are children for this element.
+>>>>>>> master
 		if ( ( 0 == $max_depth || $max_depth > $depth + 1 ) && isset( $children_elements[ $id ] ) ) {
 
 			foreach ( $children_elements[ $id ] as $child ) {
@@ -342,7 +346,11 @@ class Walker {
 		$top_level_elements = array();
 		$children_elements  = array();
 		foreach ( $elements as $e ) {
+<<<<<<< HEAD
 			if ( 0 == $e->$parent_field ) {
+=======
+			if ( empty( $e->$parent_field ) ) {
+>>>>>>> master
 				$top_level_elements[] = $e;
 			} else {
 				$children_elements[ $e->$parent_field ][] = $e;
@@ -412,7 +420,11 @@ class Walker {
 		$parent_field = $this->db_fields['parent'];
 
 		foreach ( $elements as $e ) {
+<<<<<<< HEAD
 			if ( 0 == $e->$parent_field ) {
+=======
+			if ( empty( $e->$parent_field ) ) {
+>>>>>>> master
 				$num++;
 			}
 		}
@@ -425,7 +437,7 @@ class Walker {
 	 * @since 2.7.0
 	 *
 	 * @param object $e
-	 * @param array $children_elements
+	 * @param array  $children_elements
 	 */
 	public function unset_children( $e, &$children_elements ) {
 		if ( ! $e || ! $children_elements ) {

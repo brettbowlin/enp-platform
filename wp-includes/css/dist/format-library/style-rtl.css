@@ -5,16 +5,52 @@
  * Breakpoints & Media Queries
  */
 /**
+<<<<<<< HEAD
  * Colors
  */
 /**
  * Often re-used variables
+=======
+ * SCSS Variables.
+ *
+ * Please use variables from this sheet to ensure consistency across the UI.
+ * Don't add to this sheet unless you're pretty sure the value will be reused in many places.
+ * For example, don't add rules to this sheet that affect block visuals. It's purely for UI.
+ */
+/**
+ * Colors
+ */
+/**
+ * Fonts & basic variables.
+>>>>>>> master
  */
 /**
  * Grid System.
  * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
  */
 /**
+<<<<<<< HEAD
+=======
+ * Dimensions.
+ */
+/**
+ * Shadows.
+ */
+/**
+ * Editor widths.
+ */
+/**
+ * Block & Editor UI.
+ */
+/**
+ * Block paddings.
+ */
+/**
+ * React Native specific.
+ * These variables do not appear to be used anywhere else.
+ */
+/**
+>>>>>>> master
  * Breakpoint mixins
  */
 /**
@@ -24,7 +60,11 @@
  * than the space allows.
  */
 /**
+<<<<<<< HEAD
  * Button states and focus styles
+=======
+ * Focus styles.
+>>>>>>> master
  */
 /**
  * Applies editor left position to the selector passed as argument
@@ -42,6 +82,7 @@
 /**
  * Reset the WP Admin page styles for Gutenberg-like pages.
  */
+<<<<<<< HEAD
 .block-editor-format-toolbar__image-container-content {
   display: flex; }
   .block-editor-format-toolbar__image-container-content .components-button {
@@ -50,6 +91,34 @@
     margin-bottom: 8px;
     margin-left: 8px;
     padding: 0 6px; }
+=======
+:root {
+  --wp-admin-theme-color: #007cba;
+  --wp-admin-theme-color-darker-10: #006ba1;
+  --wp-admin-theme-color-darker-20: #005a87;
+  --wp-admin-border-width-focus: 2px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  :root {
+    --wp-admin-border-width-focus: 1.5px;
+  }
+}
+
+.block-editor-format-toolbar__image-popover {
+  z-index: 159990;
+}
+
+.block-editor-format-toolbar__image-container-content {
+  display: flex;
+}
+.block-editor-format-toolbar__image-container-content .components-button {
+  align-self: flex-end;
+  height: 30px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  padding: 0 6px;
+}
+>>>>>>> master
 
 .block-editor-format-toolbar__image-container-value {
   margin: 7px;
@@ -57,6 +126,7 @@
   flex-shrink: 1;
   white-space: nowrap;
   min-width: 150px;
+<<<<<<< HEAD
   max-width: 500px; }
   .block-editor-format-toolbar__image-container-value.components-base-control .components-base-control__field {
     margin-bottom: 0; }
@@ -65,6 +135,20 @@
 
 .block-editor-format-toolbar__link-container-content {
   display: flex; }
+=======
+  max-width: 500px;
+}
+.block-editor-format-toolbar__image-container-value.components-base-control .components-base-control__field {
+  margin-bottom: 0;
+}
+.block-editor-format-toolbar__image-container-value.components-base-control .components-base-control__label {
+  display: block;
+}
+
+.block-editor-format-toolbar__link-container-content {
+  display: flex;
+}
+>>>>>>> master
 
 .block-editor-format-toolbar__link-container-value {
   margin: 7px;
@@ -74,9 +158,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   min-width: 150px;
+<<<<<<< HEAD
   max-width: 500px; }
   .block-editor-format-toolbar__link-container-value.has-invalid-link {
     color: #d94f4f; }
+=======
+  max-width: 500px;
+}
+.block-editor-format-toolbar__link-container-value.has-invalid-link {
+  color: #cc1818;
+}
+>>>>>>> master
 
 .components-inline-color__indicator {
   position: absolute;
@@ -86,6 +178,7 @@
   bottom: 6px;
   right: auto;
   left: auto;
+<<<<<<< HEAD
   margin: 0 5px; }
 
 .components-inline-color-popover .components-popover__content {
@@ -102,10 +195,40 @@
 
 .format-library-text-color-button {
   position: relative; }
+=======
+  margin: 0 5px;
+}
+
+.components-inline-color-popover .components-popover__content > div {
+  padding: 20px 18px;
+}
+.components-inline-color-popover .components-popover__content .components-color-palette {
+  margin-top: 0.6rem;
+}
+.components-inline-color-popover .components-popover__content .components-base-control__title {
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #191e23;
+}
+.components-inline-color-popover .components-popover__content .component-color-indicator {
+  vertical-align: text-bottom;
+}
+
+.format-library-text-color-button {
+  position: relative;
+}
+>>>>>>> master
 
 .format-library-text-color-button__indicator {
   height: 4px;
   width: 20px;
   position: absolute;
+<<<<<<< HEAD
   bottom: 6px;
   right: 8px; }
+=======
+  bottom: 10px;
+  right: 8px;
+}
+>>>>>>> master

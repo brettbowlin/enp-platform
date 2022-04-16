@@ -170,7 +170,11 @@ class WP_Object_Cache {
 	 *
 	 * @since 3.0.0
 	 *
+<<<<<<< HEAD
 	 * @param array $groups List of groups that are global.
+=======
+	 * @param string|string[] $groups List of groups that are global.
+>>>>>>> master
 	 */
 	public function add_global_groups( $groups ) {
 		$groups = (array) $groups;
@@ -270,12 +274,21 @@ class WP_Object_Cache {
 	 *
 	 * @since 2.0.0
 	 *
+<<<<<<< HEAD
 	 * @param int|string $key    What the contents in the cache are called.
 	 * @param string     $group  Optional. Where the cache contents are grouped. Default 'default'.
 	 * @param bool       $force  Optional. Unused. Whether to force a refetch rather than relying on the local
 	 *                           cache. Default false.
 	 * @param bool       $found  Optional. Whether the key was found in the cache (passed by reference).
 	 *                           Disambiguates a return of false, a storable value. Default null.
+=======
+	 * @param int|string $key   The key under which the cache contents are stored.
+	 * @param string     $group Optional. Where the cache contents are grouped. Default 'default'.
+	 * @param bool       $force Optional. Unused. Whether to force an update of the local cache
+	 *                          from the persistent cache. Default false.
+	 * @param bool       $found Optional. Whether the key was found in the cache (passed by reference).
+	 *                          Disambiguates a return of false, a storable value. Default null.
+>>>>>>> master
 	 * @return mixed|false The cache contents on success, false on failure to retrieve contents.
 	 */
 	public function get( $key, $group = 'default', $force = false, &$found = null ) {
@@ -303,6 +316,30 @@ class WP_Object_Cache {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Retrieves multiple values from the cache in one call.
+	 *
+	 * @since 5.5.0
+	 *
+	 * @param array  $keys  Array of keys under which the cache contents are stored.
+	 * @param string $group Optional. Where the cache contents are grouped. Default 'default'.
+	 * @param bool   $force Optional. Whether to force an update of the local cache
+	 *                      from the persistent cache. Default false.
+	 * @return array Array of values organized into groups.
+	 */
+	public function get_multiple( $keys, $group = 'default', $force = false ) {
+		$values = array();
+
+		foreach ( $keys as $key ) {
+			$values[ $key ] = $this->get( $key, $group, $force );
+		}
+
+		return $values;
+	}
+
+	/**
+>>>>>>> master
 	 * Increments numeric cache item's value.
 	 *
 	 * @since 3.3.0
@@ -393,7 +430,11 @@ class WP_Object_Cache {
 	 * Sets the data contents into the cache.
 	 *
 	 * The cache contents are grouped by the $group parameter followed by the
+<<<<<<< HEAD
 	 * $key. This allows for duplicate ids in unique groups. Therefore, naming of
+=======
+	 * $key. This allows for duplicate IDs in unique groups. Therefore, naming of
+>>>>>>> master
 	 * the group should be used with care and should follow normal function
 	 * naming guidelines outside of core WordPress usage.
 	 *

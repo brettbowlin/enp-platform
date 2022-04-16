@@ -18,7 +18,8 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 	 */
 	protected static function display_timezones() {
 		if ( tribe_get_option( 'tribe_events_timezones_show_zone' ) ) {
-			add_filter( 'tribe_events_event_schedule_details_inner', array( __CLASS__, 'append_timezone' ), 10, 2 );
+			add_filter( 'tribe_events_event_schedule_details_inner', [ __CLASS__, 'append_timezone' ], 10, 2 );
+			add_filter( 'tribe_events_event_short_schedule_details_inner', [ __CLASS__, 'append_timezone' ], 10, 2 );
 		}
 	}
 
@@ -92,7 +93,6 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 			? $timezone_string
 			: $abbr;
 	}
-
 
 	/**
 	 * Returns a timestamp for the event start date that can be passed to tribe_format_date()
@@ -180,7 +180,6 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 
 		return $timestamps[ $cache_key ];
 	}
-
 
 	/**
 	 * Returns a string representing the timezone/offset currently desired for

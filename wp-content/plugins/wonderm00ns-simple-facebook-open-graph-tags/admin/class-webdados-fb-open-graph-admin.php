@@ -127,7 +127,7 @@ class Webdados_FB_Admin {
 			<input id="webdados_fb_open_graph_specific_image_button" class="button" type="button" value="<?php echo esc_attr( __('Upload/Choose','wonderm00ns-simple-facebook-open-graph-tags') ); ?>"/>
 			<input id="webdados_fb_open_graph_specific_image_button_clear" class="button" type="button" value="<?php echo esc_attr( __('Clear field','wonderm00ns-simple-facebook-open-graph-tags') ); ?>"/>
 			<br/>
-			<?php printf( __( 'Recommended size: %dx%dpx', 'wonderm00ns-simple-facebook-open-graph-tags' ), WEBDADOS_FB_W, WEBDADOS_FB_H); ?>
+			<?php printf( __( 'Recommended size: %dx%dpx', 'wonderm00ns-simple-facebook-open-graph-tags' ), $webdados_fb->img_w, $webdados_fb->img_h ); ?>
 			<script type="text/javascript">
 			jQuery(document).ready(function($){
 				// Instantiates the variable that holds the media library frame.
@@ -423,18 +423,18 @@ class Webdados_FB_Admin {
 	public function validate_options( $options ) {
 		global $webdados_fb;
 		$all_options = $webdados_fb->all_options();
-		foreach($all_options as $key => $temp) {
-			if ( isset($options[$key]) ) {
-				switch($temp) {
+		foreach( $all_options as $key => $temp ) {
+			if ( isset( $options[$key] ) ) {
+				switch( $temp ) {
 					case 'intval':
-						$options[$key] = intval($options[$key]);
+						$options[$key] = intval( $options[$key] );
 						break;
 					case 'trim':
-						$options[$key] = trim($options[$key]);
+						$options[$key] = trim( $options[$key] );
 						break;
 				}
 			} else {
-				switch($temp) {
+				switch( $temp ) {
 					case 'intval':
 						$options[$key] = 0;
 						break;

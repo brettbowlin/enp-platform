@@ -52,6 +52,7 @@ function allow_subdomain_install() {
  */
 function allow_subdirectory_install() {
 	global $wpdb;
+<<<<<<< HEAD
 		/**
 		 * Filters whether to enable the subdirectory installation feature in Multisite.
 		 *
@@ -66,6 +67,24 @@ function allow_subdirectory_install() {
 	if ( defined( 'ALLOW_SUBDIRECTORY_INSTALL' ) && ALLOW_SUBDIRECTORY_INSTALL ) {
 		return true;
 	}
+=======
+
+	/**
+	 * Filters whether to enable the subdirectory installation feature in Multisite.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param bool $allow Whether to enable the subdirectory installation feature in Multisite.
+	 *                    Default false.
+	 */
+	if ( apply_filters( 'allow_subdirectory_install', false ) ) {
+		return true;
+	}
+
+	if ( defined( 'ALLOW_SUBDIRECTORY_INSTALL' ) && ALLOW_SUBDIRECTORY_INSTALL ) {
+		return true;
+	}
+>>>>>>> master
 
 	$post = $wpdb->get_row( "SELECT ID FROM $wpdb->posts WHERE post_date < DATE_SUB(NOW(), INTERVAL 1 MONTH) AND post_status = 'publish'" );
 	if ( empty( $post ) ) {
@@ -97,14 +116,20 @@ function get_clean_basedomain() {
 /**
  * Prints step 1 for Network installation process.
  *
+<<<<<<< HEAD
  * @todo Realistically, step 1 should be a welcome screen explaining what a Network is and such. Navigating to Tools > Network
  *  should not be a sudden "Welcome to a new install process! Fill this out and click here." See also contextual help todo.
+=======
+ * @todo Realistically, step 1 should be a welcome screen explaining what a Network is and such.
+ *       Navigating to Tools > Network should not be a sudden "Welcome to a new install process!
+ *       Fill this out and click here." See also contextual help todo.
+>>>>>>> master
  *
  * @since 3.0.0
  *
  * @global bool $is_apache
  *
- * @param WP_Error $errors
+ * @param false|WP_Error $errors Optional. Error object. Default false.
  */
 function network_step1( $errors = false ) {
 	global $is_apache;
@@ -135,14 +160,18 @@ function network_step1( $errors = false ) {
 
 	$hostname  = get_clean_basedomain();
 	$has_ports = strstr( $hostname, ':' );
+<<<<<<< HEAD
 	if ( ( false !== $has_ports && ! in_array( $has_ports, array( ':80', ':443' ) ) ) ) {
+=======
+	if ( ( false !== $has_ports && ! in_array( $has_ports, array( ':80', ':443' ), true ) ) ) {
+>>>>>>> master
 		echo '<div class="error"><p><strong>' . __( 'Error:' ) . '</strong> ' . __( 'You cannot install a network of sites with your server address.' ) . '</p></div>';
 		echo '<p>' . sprintf(
 			/* translators: %s: Port number. */
 			__( 'You cannot use port numbers such as %s.' ),
 			'<code>' . $has_ports . '</code>'
 		) . '</p>';
-		echo '<a href="' . esc_url( admin_url() ) . '">' . __( 'Return to Dashboard' ) . '</a>';
+		echo '<a href="' . esc_url( admin_url() ) . '">' . __( 'Go to Dashboard' ) . '</a>';
 		echo '</div>';
 		require_once ABSPATH . 'wp-admin/admin-footer.php';
 		die();
@@ -162,14 +191,14 @@ function network_step1( $errors = false ) {
 		$error_codes = $errors->get_error_codes();
 	}
 
-	if ( ! empty( $_POST['sitename'] ) && ! in_array( 'empty_sitename', $error_codes ) ) {
+	if ( ! empty( $_POST['sitename'] ) && ! in_array( 'empty_sitename', $error_codes, true ) ) {
 		$site_name = $_POST['sitename'];
 	} else {
 		/* translators: %s: Default network title. */
 		$site_name = sprintf( __( '%s Sites' ), get_option( 'blogname' ) );
 	}
 
-	if ( ! empty( $_POST['email'] ) && ! in_array( 'invalid_email', $error_codes ) ) {
+	if ( ! empty( $_POST['email'] ) && ! in_array( 'invalid_email', $error_codes, true ) ) {
 		$admin_email = $_POST['email'];
 	} else {
 		$admin_email = get_option( 'admin_email' );
@@ -378,12 +407,13 @@ function network_step1( $errors = false ) {
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb     WordPress database abstraction object.
+ * @global bool $is_nginx Whether the server software is Nginx or something else.
  *
- * @param WP_Error $errors
+ * @param false|WP_Error $errors Optional. Error object. Default false.
  */
 function network_step2( $errors = false ) {
-	global $wpdb;
+	global $wpdb, $is_nginx;
 
 	$hostname          = get_clean_basedomain();
 	$slashed_home      = trailingslashit( get_option( 'home' ) );
@@ -483,12 +513,21 @@ function network_step2( $errors = false ) {
 		?>
 		</p>
 		<textarea class="code" readonly="readonly" cols="100" rows="7">
+<<<<<<< HEAD
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', <?php echo $subdomain_install ? 'true' : 'false'; ?>);
 define('DOMAIN_CURRENT_SITE', '<?php echo $hostname; ?>');
 define('PATH_CURRENT_SITE', '<?php echo $base; ?>');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);
+=======
+define( 'MULTISITE', true );
+define( 'SUBDOMAIN_INSTALL', <?php echo $subdomain_install ? 'true' : 'false'; ?> );
+define( 'DOMAIN_CURRENT_SITE', '<?php echo $hostname; ?>' );
+define( 'PATH_CURRENT_SITE', '<?php echo $base; ?>' );
+define( 'SITE_ID_CURRENT_SITE', 1 );
+define( 'BLOG_ID_CURRENT_SITE', 1 );
+>>>>>>> master
 </textarea>
 		<?php
 		$keys_salts = array(
@@ -614,9 +653,25 @@ define('BLOG_ID_CURRENT_SITE', 1);
 		<textarea class="code" readonly="readonly" cols="100" rows="20"><?php echo esc_textarea( $web_config_file ); ?></textarea>
 		</li>
 	</ol>
+<<<<<<< HEAD
 
 		<?php
 	else : // End iis7_supports_permalinks(). Construct an .htaccess file instead:
+=======
+
+		<?php
+	elseif ( $is_nginx ) : // End iis7_supports_permalinks(). Link to Nginx documentation instead:
+
+		echo '<li><p>';
+		printf(
+			/* translators: %s: Documentation URL. */
+			__( 'It seems your network is running with Nginx web server. <a href="%s">Learn more about further configuration</a>.' ),
+			__( 'https://wordpress.org/support/article/nginx/' )
+		);
+		echo '</p></li>';
+
+	else : // End $is_nginx. Construct an .htaccess file instead:
+>>>>>>> master
 
 		$ms_files_rewriting = '';
 		if ( is_multisite() && get_site_option( 'ms_files_rewriting' ) ) {
@@ -626,6 +681,7 @@ define('BLOG_ID_CURRENT_SITE', 1);
 
 		$htaccess_file = <<<EOF
 RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteBase {$base}
 RewriteRule ^index\.php$ - [L]
 {$ms_files_rewriting}
@@ -658,7 +714,11 @@ EOF;
 	</ol>
 
 		<?php
+<<<<<<< HEAD
 	endif; // End IIS/Apache code branches.
+=======
+	endif; // End IIS/Nginx/Apache code branches.
+>>>>>>> master
 
 	if ( ! is_multisite() ) {
 		?>

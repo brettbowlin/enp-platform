@@ -27,14 +27,22 @@ global $opml;
  * @global array $descriptions
  * @global array $feeds
  *
+<<<<<<< HEAD
  * @param resource $parser XML Parser resource.
  * @param string $tagName XML element name.
  * @param array $attrs XML element attributes.
  */
 function startElement( $parser, $tagName, $attrs ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+=======
+ * @param resource $parser   XML Parser resource.
+ * @param string   $tag_name XML element name.
+ * @param array    $attrs    XML element attributes.
+ */
+function startElement( $parser, $tag_name, $attrs ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+>>>>>>> master
 	global $names, $urls, $targets, $descriptions, $feeds;
 
-	if ( 'OUTLINE' === $tagName ) {
+	if ( 'OUTLINE' === $tag_name ) {
 		$name = '';
 		if ( isset( $attrs['TEXT'] ) ) {
 			$name = $attrs['TEXT'];
@@ -65,10 +73,17 @@ function startElement( $parser, $tagName, $attrs ) { // phpcs:ignore WordPress.N
  * @since 0.71
  * @access private
  *
+<<<<<<< HEAD
  * @param resource $parser XML Parser resource.
  * @param string $tagName XML tag name.
  */
 function endElement( $parser, $tagName ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+=======
+ * @param resource $parser   XML Parser resource.
+ * @param string   $tag_name XML tag name.
+ */
+function endElement( $parser, $tag_name ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+>>>>>>> master
 	// Nothing to do.
 }
 
@@ -94,3 +109,7 @@ if ( ! xml_parse( $xml_parser, $opml, true ) ) {
 
 // Free up memory used by the XML parser.
 xml_parser_free( $xml_parser );
+<<<<<<< HEAD
+=======
+unset( $xml_parser );
+>>>>>>> master

@@ -67,7 +67,11 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 
 		$this->parent_controller    = $parent_controller;
 		$this->revisions_controller = new WP_REST_Revisions_Controller( $parent_post_type );
+<<<<<<< HEAD
 		$this->rest_namespace       = 'wp/v2';
+=======
+		$this->namespace            = 'wp/v2';
+>>>>>>> master
 		$this->rest_base            = 'autosaves';
 		$this->parent_base          = ! empty( $post_type_object->rest_base ) ? $post_type_object->rest_base : $post_type_object->name;
 	}
@@ -81,12 +85,20 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 */
 	public function register_routes() {
 		register_rest_route(
+<<<<<<< HEAD
 			$this->rest_namespace,
+=======
+			$this->namespace,
+>>>>>>> master
 			'/' . $this->parent_base . '/(?P<id>[\d]+)/' . $this->rest_base,
 			array(
 				'args'   => array(
 					'parent' => array(
+<<<<<<< HEAD
 						'description' => __( 'The ID for the parent of the object.' ),
+=======
+						'description' => __( 'The ID for the parent of the autosave.' ),
+>>>>>>> master
 						'type'        => 'integer',
 					),
 				),
@@ -107,16 +119,28 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 		);
 
 		register_rest_route(
+<<<<<<< HEAD
 			$this->rest_namespace,
+=======
+			$this->namespace,
+>>>>>>> master
 			'/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)',
 			array(
 				'args'   => array(
 					'parent' => array(
+<<<<<<< HEAD
 						'description' => __( 'The ID for the parent of the object.' ),
 						'type'        => 'integer',
 					),
 					'id'     => array(
 						'description' => __( 'The ID for the object.' ),
+=======
+						'description' => __( 'The ID for the parent of the autosave.' ),
+						'type'        => 'integer',
+					),
+					'id'     => array(
+						'description' => __( 'The ID for the autosave.' ),
+>>>>>>> master
 						'type'        => 'integer',
 					),
 				),
@@ -160,9 +184,13 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 			return $parent;
 		}
 
+<<<<<<< HEAD
 		$parent_post_type_obj = get_post_type_object( $parent->post_type );
 
 		if ( ! current_user_can( $parent_post_type_obj->cap->edit_post, $parent->ID ) ) {
+=======
+		if ( ! current_user_can( 'edit_post', $parent->ID ) ) {
+>>>>>>> master
 			return new WP_Error(
 				'rest_cannot_read',
 				__( 'Sorry, you are not allowed to view autosaves of this post.' ),
@@ -401,7 +429,10 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 *
 	 * @param WP_Post         $post    Post revision object.
 	 * @param WP_REST_Request $request Request object.
+<<<<<<< HEAD
 	 *
+=======
+>>>>>>> master
 	 * @return WP_REST_Response Response object.
 	 */
 	public function prepare_item_for_response( $post, $request ) {
@@ -428,7 +459,11 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 		$response->data = $this->filter_response_by_context( $response->data, $context );
 
 		/**
+<<<<<<< HEAD
 		 * Filters a revision returned from the API.
+=======
+		 * Filters a revision returned from the REST API.
+>>>>>>> master
 		 *
 		 * Allows modification of the revision right before it is returned.
 		 *

@@ -52,11 +52,26 @@
 }
 
 .menu__main-menu {
-	@include media($tablet) {
-		grid-column: 2;
-		grid-row: 2;
-		align-self: end;
-		justify-self: end;
+	align-self: end;
+	justify-self: end;
+	padding-bottom: 30px;
+	width: 100%;
+	&.searchform {
+		background-color: $white;
+	}
+	&:not(.searchform) {
+		@include media("max", $tablet) {
+			position: absolute;
+			background-color: $white;
+		}
+	}
+	@include media($laptop) {
+		position: relative;
+		padding-bottom: unset;
+	}
+	@include media($desktop) {
+		float: right;
+		clear: right;
 	}
 
 	.menu__item {
@@ -78,12 +93,18 @@
 
 .menu__secondary {
 	font-size: 0.8rem;
-	@include media($tablet) {
-		grid-column: 2;
-		grid-row: 1;
-		align-self: center;
-		justify-self: end;
-		display: flex;
+	align-items: center;
+	@include media($laptop) {
+		float: right;
+		margin-bottom: 1em;
+	}
+	.menu {
+		@include media($tablet) {
+			padding-right: $spacer;
+		}
+	}
+	input[type="text"] {
+		margin-right: $spacer-xs;
 	}
 	.btn {
 		&:hover a:before {
@@ -129,8 +150,9 @@
 		margin-left: $spacer-sm;
 		margin-bottom: 0;
 	}
+	// END .menu__secondary base styles
 }
-// END menu__secondary
+// END .menu__secondary
 
 .navbar-toggle {
 	@include btn-reset;
@@ -142,7 +164,6 @@
 	@include media($mobile) {
 		top: 10px;
 	}
-
 	&:hover {
 		background: transparent;
 	}
@@ -240,17 +261,15 @@
 .menu__sublist {
 	z-index: 999;
 	position: absolute;
-	max-width: 8.9rem;
 	display: none;
 	padding: 5px 0 5px 15px;
 	text-align: left;
 	border-top: none;
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: $dropdown-shadow;
 	@include media($tablet) {
-		left: 50%;
-		transform: translate(-50%, 0%);
+		white-space: nowrap;
 	}
 	@include media("max", $tablet) {
 		padding: 5px 0 5px 10px;
@@ -318,3 +337,105 @@
 .sidebar-menu {
 	margin-top: 20px;
 }
+
+// search bar
+.searchform {
+	// when in main menu
+	&.menu__main-menu {
+		display: block;
+		padding-left: $spacer-sm;
+		box-shadow: $mobile-menu-shadow;
+		@include media($tablet) {
+			display: none;
+		}
+	}
+	// when in quick links
+	&.menu__quick-links {
+		display: none;
+		@include media($tablet) {
+			display: inline-block;
+		}
+	}
+}
+// @supports queries
+// @supports queries
+// @supports queries
+@supports not (display: flex) {
+	.menu__main-menu {
+		@include media($tablet) {
+			margin: $spacer-sm auto;
+			float: right;
+		}
+		&:not(.searchform) {
+			@include media($desktop) {
+				width: 70%;
+			}
+			.menu__list {
+				@include media($laptop) {
+					float: right;
+				}
+			}
+		}
+	}
+	.menu__secondary {
+		@include media($tablet) {
+			float: right;
+		}
+		.menu {
+			@include media($tablet) {
+				display: inline-block;
+			}
+		}
+		.menu__list {
+			float: right;
+			@include media($laptop) {
+				float: none;
+			}
+		}
+	}
+} // END not (display: flex)
+
+@supports (display: flex) {
+	.menu__main-menu {
+		&:not(.searchform) {
+			@include media("max", $tablet) {
+				top: 85px;
+			}
+			@include media($tablet) {
+				margin-top: $spacer-sm;
+			}
+			@include media($laptop) {
+				flex: 0 0 75%;
+			}
+		}
+		.menu__list {
+			@include media($tablet) {
+				display: flex;
+				justify-content: flex-end;
+			}
+		}
+	}
+	.menu__secondary {
+		display: flex;
+		flex: 1 100%;
+		align-items: center;
+		justify-content: flex-end;
+	}
+}
+
+@supports (display: grid) {
+	.menu__main-menu {
+		@include media($tablet) {
+			grid-column: 2;
+			grid-row: 2;
+		}
+	}
+	.menu__secondary {
+		@include media($tablet) {
+			grid-column: 2;
+			grid-row: 1;
+			align-self: center;
+			justify-self: end;
+		}
+	}
+} // END (display: grid)

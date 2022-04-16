@@ -21,19 +21,22 @@ jQuery(document).ready(function($) {
 			$(this).html(title);
 		}
 	});
-
-
-	$("#content-slider").lightSlider({
-		loop: true,
-		mode: 'fade',
-		item: 1,
-		controls: true,
-		keyPress: true,
-		adaptiveHeight: false,
-		enableDrag: false,
-		enableTouch: true,
-		prevHtml: '<svg><use xlink:href="#chevron-left"></use></svg>',
-		nextHtml: '<svg><use xlink:href="#chevron-right"></use></svg>'
-	});
-
 });
+
+
+// initiate Flickity
+// https://flickity.metafizzy.co/#initialize-with-vanilla-javascript
+
+var elem = document.querySelector('.carousel-main');
+var flkty = new Flickity( elem, {
+  // options
+	wrapAround: true,
+	fullscreen: true,
+	imagesLoaded: true,
+	lazyLoad: 1,
+	percentPosition: false,
+  contain: true
+});
+
+
+

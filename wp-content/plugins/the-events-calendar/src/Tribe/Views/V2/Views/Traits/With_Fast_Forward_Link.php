@@ -23,7 +23,11 @@ trait With_Fast_Forward_Link {
 	/**
 	 * Creates a HTML link and "fast forward" message to append to the "no events found" message.
 	 *
+<<<<<<< HEAD
 	 * @since 5.1.0
+=======
+	 * @since 5.4.0
+>>>>>>> master
 	 *
 	 * @param bool  $canonical         Whether to return the canonical (pretty) version of the URL or not.
 	 * @param array $passthru_vars     An optional array of query variables that should pass thru the method untouched
@@ -53,9 +57,16 @@ trait With_Fast_Forward_Link {
 		$url      = $this->build_url_for_date( $url_date, $canonical, $passthru_vars );
 
 		$link = sprintf(
+<<<<<<< HEAD
 		/* translators: 1: opening href tag 2: closing href tag */
 			__( 'Jump to the %1$snext upcoming event(s)%2$s.', 'the-events-calendar' ),
 			'<a href="' . esc_url( $url ) . '" class="tribe-events-c-messages__message-list-item-link tribe-common-anchor-thin-alt" data-js="tribe-events-view-link">',
+=======
+		/* translators: 1: opening href tag 2: event label plural 3: closing href tag */
+			__( 'Jump to the %1$snext upcoming %2$s%3$s.', 'the-events-calendar' ),
+			'<a href="' . esc_url( $url ) . '" class="tribe-events-c-messages__message-list-item-link tribe-common-anchor-thin-alt" data-js="tribe-events-view-link">',
+			tribe_get_event_label_plural_lowercase(),
+>>>>>>> master
 			'</a>'
 		);
 
@@ -83,7 +94,11 @@ trait With_Fast_Forward_Link {
 
 		// Don't do filter checks if taxonomy check has failed.
 		if ( $use_ff_link ) {
+<<<<<<< HEAD
 			// @todo move this to Filterbar @stephen
+=======
+			// @todo [BTRIA-598]: @stephen Move this to Filterbar.
+>>>>>>> master
 			$filters = array_filter( (array) $this->context->get( 'view_data' ) );
 
 			if ( isset( $filters['url'] ) ) {

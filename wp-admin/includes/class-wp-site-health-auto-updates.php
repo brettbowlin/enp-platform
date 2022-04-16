@@ -10,6 +10,10 @@
 class WP_Site_Health_Auto_Updates {
 	/**
 	 * WP_Site_Health_Auto_Updates constructor.
+<<<<<<< HEAD
+=======
+	 *
+>>>>>>> master
 	 * @since 5.2.0
 	 */
 	public function __construct() {
@@ -26,7 +30,11 @@ class WP_Site_Health_Auto_Updates {
 	 */
 	public function run_tests() {
 		$tests = array(
+<<<<<<< HEAD
 			$this->test_constants( 'WP_AUTO_UPDATE_CORE', true ),
+=======
+			$this->test_constants( 'WP_AUTO_UPDATE_CORE', array( true, 'beta', 'rc', 'development', 'branch-development', 'minor' ) ),
+>>>>>>> master
 			$this->test_wp_version_check_attached(),
 			$this->test_filters_automatic_updater_disabled(),
 			$this->test_wp_automatic_updates_disabled(),
@@ -59,6 +67,7 @@ class WP_Site_Health_Auto_Updates {
 	 * Test if auto-updates related constants are set correctly.
 	 *
 	 * @since 5.2.0
+<<<<<<< HEAD
 	 *
 	 * @param string $constant The name of the constant to check.
 	 * @param bool   $value    The value that the constant should be, if set.
@@ -66,6 +75,19 @@ class WP_Site_Health_Auto_Updates {
 	 */
 	public function test_constants( $constant, $value ) {
 		if ( defined( $constant ) && constant( $constant ) != $value ) {
+=======
+	 * @since 5.5.1 The `$value` parameter can accept an array.
+	 *
+	 * @param string $constant         The name of the constant to check.
+	 * @param bool|string|array $value The value that the constant should be, if set,
+	 *                                 or an array of acceptable values.
+	 * @return array The test results.
+	 */
+	public function test_constants( $constant, $value ) {
+		$acceptable_values = (array) $value;
+
+		if ( defined( $constant ) && ! in_array( constant( $constant ), $acceptable_values, true ) ) {
+>>>>>>> master
 			return array(
 				'description' => sprintf(
 					/* translators: %s: Name of the constant used. */
@@ -85,6 +107,7 @@ class WP_Site_Health_Auto_Updates {
 	 * @return array The test results.
 	 */
 	public function test_wp_version_check_attached() {
+<<<<<<< HEAD
 		if ( ! is_main_site() ) {
 			return;
 		}
@@ -125,6 +148,11 @@ class WP_Site_Health_Auto_Updates {
 		$response = wp_remote_retrieve_body( $test );
 
 		if ( 'yes' !== $response ) {
+=======
+		if ( ( ! is_multisite() || is_main_site() && is_network_admin() )
+			&& ! has_filter( 'wp_version_check', 'wp_version_check' )
+		) {
+>>>>>>> master
 			return array(
 				'description' => sprintf(
 					/* translators: %s: Name of the filter used. */
@@ -162,11 +190,19 @@ class WP_Site_Health_Auto_Updates {
 	 *
 	 * @since 5.3.0
 	 *
+<<<<<<< HEAD
 	 * @return array|bool The test results. False if auto updates are enabled.
 	 */
 	public function test_wp_automatic_updates_disabled() {
 		if ( ! class_exists( 'WP_Automatic_Updater' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-automatic-updates.php';
+=======
+	 * @return array|false The test results. False if auto-updates are enabled.
+	 */
+	public function test_wp_automatic_updates_disabled() {
+		if ( ! class_exists( 'WP_Automatic_Updater' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-automatic-updater.php';
+>>>>>>> master
 		}
 
 		$auto_updates = new WP_Automatic_Updater();
@@ -186,7 +222,11 @@ class WP_Site_Health_Auto_Updates {
 	 *
 	 * @since 5.2.0
 	 *
+<<<<<<< HEAD
 	 * @return array|bool The test results. False if the auto updates failed.
+=======
+	 * @return array|false The test results. False if the auto-updates failed.
+>>>>>>> master
 	 */
 	function test_if_failed_update() {
 		$failed = get_site_option( 'auto_core_update_failed' );
@@ -198,7 +238,11 @@ class WP_Site_Health_Auto_Updates {
 		if ( ! empty( $failed['critical'] ) ) {
 			$description  = __( 'A previous automatic background update ended with a critical failure, so updates are now disabled.' );
 			$description .= ' ' . __( 'You would have received an email because of this.' );
+<<<<<<< HEAD
 			$description .= ' ' . __( "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts." );
+=======
+			$description .= ' ' . __( "When you've been able to update using the \"Update now\" button on Dashboard > Updates, we'll clear this error for future update attempts." );
+>>>>>>> master
 			$description .= ' ' . sprintf(
 				/* translators: %s: Code of error shown. */
 				__( 'The error code was %s.' ),
@@ -245,7 +289,11 @@ class WP_Site_Health_Auto_Updates {
 				$check_dirs[] = $context_dir;
 
 				// Once we've hit '/' or 'C:\', we need to stop. dirname will keep returning the input here.
+<<<<<<< HEAD
 				if ( dirname( $context_dir ) == $context_dir ) {
+=======
+				if ( dirname( $context_dir ) === $context_dir ) {
+>>>>>>> master
 					break;
 				}
 
@@ -305,6 +353,14 @@ class WP_Site_Health_Auto_Updates {
 	 * @return array The test results.
 	 */
 	function test_check_wp_filesystem_method() {
+<<<<<<< HEAD
+=======
+		// Make sure the `request_filesystem_credentials()` function is available during our REST API call.
+		if ( ! function_exists( 'request_filesystem_credentials' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+		}
+
+>>>>>>> master
 		$skin    = new Automatic_Upgrader_Skin;
 		$success = $skin->request_filesystem_credentials( false, ABSPATH );
 
@@ -331,7 +387,11 @@ class WP_Site_Health_Auto_Updates {
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
 	 *
+<<<<<<< HEAD
 	 * @return array|bool The test results. False if they're not writeable.
+=======
+	 * @return array|false The test results. False if they're not writeable.
+>>>>>>> master
 	 */
 	function test_all_files_writable() {
 		global $wp_filesystem;
@@ -347,10 +407,22 @@ class WP_Site_Health_Auto_Updates {
 
 		WP_Filesystem();
 
+<<<<<<< HEAD
 		if ( 'direct' != $wp_filesystem->method ) {
 			return false;
 		}
 
+=======
+		if ( 'direct' !== $wp_filesystem->method ) {
+			return false;
+		}
+
+		// Make sure the `get_core_checksums()` function is available during our REST API call.
+		if ( ! function_exists( 'get_core_checksums' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/update.php';
+		}
+
+>>>>>>> master
 		$checksums = get_core_checksums( $wp_version, 'en_US' );
 		$dev       = ( false !== strpos( $wp_version, '-' ) );
 		// Get the last stable version's files and test against that.
@@ -378,7 +450,11 @@ class WP_Site_Health_Auto_Updates {
 
 		$unwritable_files = array();
 		foreach ( array_keys( $checksums ) as $file ) {
+<<<<<<< HEAD
 			if ( 'wp-content' == substr( $file, 0, 10 ) ) {
+=======
+			if ( 'wp-content' === substr( $file, 0, 10 ) ) {
+>>>>>>> master
 				continue;
 			}
 			if ( ! file_exists( ABSPATH . $file ) ) {
@@ -411,7 +487,11 @@ class WP_Site_Health_Auto_Updates {
 	 *
 	 * @since 5.2.0
 	 *
+<<<<<<< HEAD
 	 * @return array|bool The test results. False if it isn't a development version.
+=======
+	 * @return array|false The test results. False if it isn't a development version.
+>>>>>>> master
 	 */
 	function test_accepts_dev_updates() {
 		require ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z

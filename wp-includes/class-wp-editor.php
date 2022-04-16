@@ -249,7 +249,7 @@ final class _WP_Editors {
 				$toolbar_id = 'qt_' . $editor_id_attr . '_toolbar';
 			}
 
-			$quicktags_toolbar = '<div id="' . $toolbar_id . '" class="quicktags-toolbar"></div>';
+			$quicktags_toolbar = '<div id="' . $toolbar_id . '" class="quicktags-toolbar hide-if-no-js"></div>';
 		}
 
 		/**
@@ -310,14 +310,20 @@ final class _WP_Editors {
 	/**
 	 * @since 3.3.0
 	 *
+<<<<<<< HEAD
 	 * @global string $tinymce_version
 	 *
+=======
+>>>>>>> master
 	 * @param string $editor_id Unique editor identifier, e.g. 'content'.
 	 * @param array  $set       Array of editor arguments.
 	 */
 	public static function editor_settings( $editor_id, $set ) {
+<<<<<<< HEAD
 		global $tinymce_version;
 
+=======
+>>>>>>> master
 		if ( empty( self::$first_init ) ) {
 			if ( is_admin() ) {
 				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'editor_js' ), 50 );
@@ -459,7 +465,11 @@ final class _WP_Editors {
 					 */
 					$plugins = array_unique( apply_filters( 'tiny_mce_plugins', $plugins, $editor_id ) );
 
+<<<<<<< HEAD
 					$key = array_search( 'spellchecker', $plugins );
+=======
+					$key = array_search( 'spellchecker', $plugins, true );
+>>>>>>> master
 					if ( false !== $key ) {
 						// Remove 'spellchecker' from the internal plugins if added with 'tiny_mce_plugins' filter to prevent errors.
 						// It can be added with 'mce_external_plugins'.
@@ -524,7 +534,7 @@ final class _WP_Editors {
 									$strings .= @file_get_contents( $path . $mce_locale . '_dlg.js' ) . "\n";
 								}
 
-								if ( 'en' != $mce_locale && empty( $strings ) ) {
+								if ( 'en' !== $mce_locale && empty( $strings ) ) {
 									if ( @is_file( $path . 'en.js' ) ) {
 										$str1     = @file_get_contents( $path . 'en.js' );
 										$strings .= preg_replace( '/([\'"])en\./', '$1' . $mce_locale . '.', $str1, 1 ) . "\n";
@@ -834,8 +844,13 @@ final class _WP_Editors {
 				$options .= $key . ':' . $val . ',';
 				continue;
 			} elseif ( ! empty( $value ) && is_string( $value ) && (
+<<<<<<< HEAD
 				( '{' == $value[0] && '}' == $value[ strlen( $value ) - 1 ] ) ||
 				( '[' == $value[0] && ']' == $value[ strlen( $value ) - 1 ] ) ||
+=======
+				( '{' === $value[0] && '}' === $value[ strlen( $value ) - 1 ] ) ||
+				( '[' === $value[0] && ']' === $value[ strlen( $value ) - 1 ] ) ||
+>>>>>>> master
 				preg_match( '/^\(?function ?\(/', $value ) ) ) {
 
 				$options .= $key . ':' . $value . ',';
@@ -1304,8 +1319,13 @@ final class _WP_Editors {
 
 				'Row'                                  => __( 'Row' ),
 				'Rows'                                 => __( 'Rows' ),
+<<<<<<< HEAD
 				'Column'                               => _x( 'Column', 'table column' ),
 				'Cols'                                 => _x( 'Cols', 'table columns' ),
+=======
+				'Column'                               => __( 'Column' ),
+				'Cols'                                 => __( 'Columns' ),
+>>>>>>> master
 				'Cell'                                 => _x( 'Cell', 'table cell' ),
 				'Header cell'                          => __( 'Header cell' ),
 				'Header'                               => _x( 'Header', 'table header' ),
@@ -1453,7 +1473,8 @@ final class _WP_Editors {
 	 * @since 3.9.0
 	 *
 	 * @param string $mce_locale The locale used for the editor.
-	 * @param bool $json_only optional Whether to include the JavaScript calls to tinymce.addI18n() and tinymce.ScriptLoader.markDone().
+	 * @param bool   $json_only  Optional. Whether to include the JavaScript calls to tinymce.addI18n() and
+	 *                           tinymce.ScriptLoader.markDone().
 	 * @return string Translation object, JSON encoded.
 	 */
 	public static function wp_mce_translation( $mce_locale = '', $json_only = false ) {
@@ -1539,9 +1560,13 @@ final class _WP_Editors {
 	 *
 	 * @since 4.8.0
 	 *
+<<<<<<< HEAD
 	 * @global string $tinymce_version
 	 * @global bool   $concatenate_scripts
 	 * @global bool   $compress_scripts
+=======
+	 * @global bool $concatenate_scripts
+>>>>>>> master
 	 */
 	public static function print_tinymce_scripts() {
 		global $concatenate_scripts;
@@ -1668,24 +1693,47 @@ final class _WP_Editors {
 		?>
 
 		( function() {
-			var init, id, $wrap;
+			var initialized = [];
+			var initialize  = function() {
+				var init, id, inPostbox, $wrap;
+				var readyState = document.readyState;
 
-			if ( typeof tinymce !== 'undefined' ) {
-				if ( tinymce.Env.ie && tinymce.Env.ie < 11 ) {
-					tinymce.$( '.wp-editor-wrap ' ).removeClass( 'tmce-active' ).addClass( 'html-active' );
+				if ( readyState !== 'complete' && readyState !== 'interactive' ) {
 					return;
 				}
 
 				for ( id in tinyMCEPreInit.mceInit ) {
-					init = tinyMCEPreInit.mceInit[id];
-					$wrap = tinymce.$( '#wp-' + id + '-wrap' );
+					if ( initialized.indexOf( id ) > -1 ) {
+						continue;
+					}
 
-					if ( ( $wrap.hasClass( 'tmce-active' ) || ! tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) && ! init.wp_skip_init ) {
+					init      = tinyMCEPreInit.mceInit[id];
+					$wrap     = tinymce.$( '#wp-' + id + '-wrap' );
+					inPostbox = $wrap.parents( '.postbox' ).length > 0;
+
+					if (
+						! init.wp_skip_init &&
+						( $wrap.hasClass( 'tmce-active' ) || ! tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) &&
+						( readyState === 'complete' || ( ! inPostbox && readyState === 'interactive' ) )
+					) {
 						tinymce.init( init );
+						initialized.push( id );
 
 						if ( ! window.wpActiveEditor ) {
 							window.wpActiveEditor = id;
 						}
+					}
+				}
+			}
+
+			if ( typeof tinymce !== 'undefined' ) {
+				if ( tinymce.Env.ie && tinymce.Env.ie < 11 ) {
+					tinymce.$( '.wp-editor-wrap ' ).removeClass( 'tmce-active' ).addClass( 'html-active' );
+				} else {
+					if ( document.readyState === 'complete' ) {
+						initialize();
+					} else {
+						document.addEventListener( 'readystatechange', initialize );
 					}
 				}
 			}
@@ -1776,7 +1824,11 @@ final class _WP_Editors {
 		// Build results.
 		$results = array();
 		foreach ( $posts as $post ) {
+<<<<<<< HEAD
 			if ( 'post' == $post->post_type ) {
+=======
+			if ( 'post' === $post->post_type ) {
+>>>>>>> master
 				$info = mysql2date( __( 'Y/m/d' ), $post->post_date );
 			} else {
 				$info = $pts[ $post->post_type ]->labels->singular_name;
@@ -1800,9 +1852,9 @@ final class _WP_Editors {
 		 * @see 'wp_link_query_args' filter
 		 *
 		 * @param array $results {
-		 *     An associative array of query results.
+		 *     An array of associative arrays of query results.
 		 *
-		 *     @type array {
+		 *     @type array ...$0 {
 		 *         @type int    $ID        Post ID.
 		 *         @type string $title     The trimmed, escaped post title.
 		 *         @type string $permalink Post permalink.

@@ -45,6 +45,16 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://wordpress.org/support/article/network-admin-sites-screen/">Documentation on Site Management</a>' ) . '</p>' .
 	'<p>' . __( '<a href="https://wordpress.org/support/forum/multisite/">Support Forums</a>' ) . '</p>'
 );
+<<<<<<< HEAD
+
+get_current_screen()->set_screen_reader_content(
+	array(
+		'heading_pagination' => __( 'Sites list navigation' ),
+		'heading_list'       => __( 'Sites list' ),
+	)
+);
+=======
+>>>>>>> master
 
 get_current_screen()->set_screen_reader_content(
 	array(
@@ -53,7 +63,7 @@ get_current_screen()->set_screen_reader_content(
 	)
 );
 
-$id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+$id = isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0;
 
 if ( isset( $_GET['action'] ) ) {
 	/** This action is documented in wp-admin/network/edit.php */
@@ -117,13 +127,17 @@ if ( isset( $_GET['action'] ) ) {
 					<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
 					<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( wp_get_referer() ); ?>" />
 					<?php wp_nonce_field( $site_action . '_' . $id, '_wpnonce', false ); ?>
-					<p><?php echo sprintf( $manage_actions[ $site_action ], $site_address ); ?></p>
+					<p><?php printf( $manage_actions[ $site_action ], $site_address ); ?></p>
 					<?php submit_button( __( 'Confirm' ), 'primary' ); ?>
 				</form>
 			</div>
 		<?php
 		require_once ABSPATH . 'wp-admin/admin-footer.php';
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 	} elseif ( array_key_exists( $_GET['action'], $manage_actions ) ) {
 		$action = $_GET['action'];
 		check_admin_referer( $action . '_' . $id );
@@ -177,8 +191,13 @@ if ( isset( $_GET['action'] ) ) {
 			break;
 
 		case 'allblogs':
+<<<<<<< HEAD
 			if ( ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) && isset( $_POST['allblogs'] ) ) {
 				$doaction = -1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
+=======
+			if ( isset( $_POST['action'] ) && isset( $_POST['allblogs'] ) ) {
+				$doaction = $_POST['action'];
+>>>>>>> master
 
 				foreach ( (array) $_POST['allblogs'] as $key => $val ) {
 					if ( '0' != $val && get_network()->site_id != $val ) {
@@ -210,7 +229,11 @@ if ( isset( $_GET['action'] ) ) {
 								</div>
 								<?php
 								require_once ABSPATH . 'wp-admin/admin-footer.php';
+<<<<<<< HEAD
 								exit();
+=======
+								exit;
+>>>>>>> master
 							break;
 
 							case 'spam':
@@ -223,13 +246,21 @@ if ( isset( $_GET['action'] ) ) {
 						wp_die( __( 'Sorry, you are not allowed to change the current site.' ) );
 					}
 				}
+
 				if ( ! in_array( $doaction, array( 'delete', 'spam', 'notspam' ), true ) ) {
 					$redirect_to = wp_get_referer();
 					$blogs       = (array) $_POST['allblogs'];
+<<<<<<< HEAD
 					/** This action is documented in wp-admin/network/site-themes.php */
 					$redirect_to = apply_filters( 'handle_network_bulk_actions-' . get_current_screen()->id, $redirect_to, $doaction, $blogs, $id ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+=======
+
+					/** This action is documented in wp-admin/network/site-themes.php */
+					$redirect_to = apply_filters( 'handle_network_bulk_actions-' . get_current_screen()->id, $redirect_to, $doaction, $blogs, $id ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+
+>>>>>>> master
 					wp_safe_redirect( $redirect_to );
-					exit();
+					exit;
 				}
 			} else {
 				// Process query defined by WP_MS_Site_List_Table::extra_table_nav().
@@ -237,6 +268,10 @@ if ( isset( $_GET['action'] ) ) {
 					array( '_wp_http_referer', '_wpnonce' ),
 					add_query_arg( $_POST, network_admin_url( 'sites.php' ) )
 				);
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 				wp_redirect( $location );
 				exit;
 			}
@@ -270,6 +305,7 @@ if ( isset( $_GET['action'] ) ) {
 			 * @param string $id The ID of the site being deactivated.
 			 */
 			do_action( 'deactivate_blog', $id );
+
 			update_blog_status( $id, 'deleted', '1' );
 			break;
 
@@ -290,7 +326,7 @@ if ( isset( $_GET['action'] ) ) {
 
 	if ( ! empty( $updated_action ) ) {
 		wp_safe_redirect( add_query_arg( array( 'updated' => $updated_action ), wp_get_referer() ) );
-		exit();
+		exit;
 	}
 }
 
@@ -361,13 +397,27 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 <h1 class="wp-heading-inline"><?php _e( 'Sites' ); ?></h1>
 
 <?php if ( current_user_can( 'create_sites' ) ) : ?>
+<<<<<<< HEAD
 	<a href="<?php echo network_admin_url( 'site-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'site' ); ?></a>
+=======
+	<a href="<?php echo esc_url( network_admin_url( 'site-new.php' ) ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'site' ); ?></a>
+>>>>>>> master
 <?php endif; ?>
 
 <?php
 if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
+<<<<<<< HEAD
 	/* translators: %s: Search query. */
 	printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;' ) . '</span>', esc_html( $s ) );
+=======
+	echo '<span class="subtitle">';
+	printf(
+		/* translators: %s: Search query. */
+		__( 'Search results for: %s' ),
+		'<strong>' . esc_html( $s ) . '</strong>'
+	);
+	echo '</span>';
+>>>>>>> master
 }
 ?>
 

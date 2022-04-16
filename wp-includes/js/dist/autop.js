@@ -82,11 +82,16 @@ this["wp"] = this["wp"] || {}; this["wp"]["autop"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 279);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "zbAn");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 20:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -176,12 +181,16 @@ function _unsupportedIterableToArray(o, minLen) {
 /***/ }),
 
 /***/ 279:
+=======
+/***/ "zbAn":
+>>>>>>> master
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "autop", function() { return autop; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removep", function() { return removep; });
+<<<<<<< HEAD
 /* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 
 
@@ -193,13 +202,27 @@ __webpack_require__.r(__webpack_exports__);
 var htmlSplitRegex = function () {
   /* eslint-disable no-multi-spaces */
   var comments = '!' + // Start of comment, after the <.
+=======
+/**
+ * The regular expression for an HTML element.
+ *
+ * @type {RegExp}
+ */
+const htmlSplitRegex = (() => {
+  /* eslint-disable no-multi-spaces */
+  const comments = '!' + // Start of comment, after the <.
+>>>>>>> master
   '(?:' + // Unroll the loop: Consume everything until --> is found.
   '-(?!->)' + // Dash not followed by end of comment.
   '[^\\-]*' + // Consume non-dashes.
   ')*' + // Loop possessively.
   '(?:-->)?'; // End of comment. If not found, match all input.
 
+<<<<<<< HEAD
   var cdata = '!\\[CDATA\\[' + // Start of comment, after the <.
+=======
+  const cdata = '!\\[CDATA\\[' + // Start of comment, after the <.
+>>>>>>> master
   '[^\\]]*' + // Consume non-].
   '(?:' + // Unroll the loop: Consume everything until ]]> is found.
   '](?!]>)' + // One ] not followed by end of comment.
@@ -207,10 +230,17 @@ var htmlSplitRegex = function () {
   ')*?' + // Loop possessively.
   '(?:]]>)?'; // End of comment. If not found, match all input.
 
+<<<<<<< HEAD
   var escaped = '(?=' + // Is the element escaped?
   '!--' + '|' + '!\\[CDATA\\[' + ')' + '((?=!-)' + // If yes, which type?
   comments + '|' + cdata + ')';
   var regex = '(' + // Capture the entire match.
+=======
+  const escaped = '(?=' + // Is the element escaped?
+  '!--' + '|' + '!\\[CDATA\\[' + ')' + '((?=!-)' + // If yes, which type?
+  comments + '|' + cdata + ')';
+  const regex = '(' + // Capture the entire match.
+>>>>>>> master
   '<' + // Find start of element.
   '(' + // Conditional expression follows.
   escaped + // Find end of escaped element.
@@ -219,16 +249,25 @@ var htmlSplitRegex = function () {
   ')' + ')';
   return new RegExp(regex);
   /* eslint-enable no-multi-spaces */
+<<<<<<< HEAD
 }();
+=======
+})();
+>>>>>>> master
 /**
  * Separate HTML elements and comments from the text.
  *
  * @param  {string} input The text which has to be formatted.
+<<<<<<< HEAD
  * @return {Array}        The formatted text.
+=======
+ * @return {string[]}        The formatted text.
+>>>>>>> master
  */
 
 
 function htmlSplit(input) {
+<<<<<<< HEAD
   var parts = [];
   var workingInput = input;
   var match;
@@ -237,6 +276,23 @@ function htmlSplit(input) {
     parts.push(workingInput.slice(0, match.index));
     parts.push(match[0]);
     workingInput = workingInput.slice(match.index + match[0].length);
+=======
+  const parts = [];
+  let workingInput = input;
+  let match;
+
+  while (match = workingInput.match(htmlSplitRegex)) {
+    // The `match` result, when invoked on a RegExp with the `g` flag (`/foo/g`) will not include `index`.
+    // If the `g` flag is omitted, `index` is included.
+    // `htmlSplitRegex` does not have the `g` flag so we can assert it will have an index number.
+    // Assert `match.index` is a number.
+    const index =
+    /** @type {number} */
+    match.index;
+    parts.push(workingInput.slice(0, index));
+    parts.push(match[0]);
+    workingInput = workingInput.slice(index + match[0].length);
+>>>>>>> master
   }
 
   if (workingInput.length) {
@@ -248,14 +304,21 @@ function htmlSplit(input) {
 /**
  * Replace characters or phrases within HTML elements only.
  *
+<<<<<<< HEAD
  * @param  {string} haystack     The text which has to be formatted.
  * @param  {Object} replacePairs In the form {from: 'to', ...}.
  * @return {string}              The formatted text.
+=======
+ * @param  {string}                haystack     The text which has to be formatted.
+ * @param  {Record<string,string>} replacePairs In the form {from: 'to', …}.
+ * @return {string}                             The formatted text.
+>>>>>>> master
  */
 
 
 function replaceInHtmlTags(haystack, replacePairs) {
   // Find all elements.
+<<<<<<< HEAD
   var textArr = htmlSplit(haystack);
   var changed = false; // Extract all needles.
 
@@ -264,6 +327,16 @@ function replaceInHtmlTags(haystack, replacePairs) {
   for (var i = 1; i < textArr.length; i += 2) {
     for (var j = 0; j < needles.length; j++) {
       var needle = needles[j];
+=======
+  const textArr = htmlSplit(haystack);
+  let changed = false; // Extract all needles.
+
+  const needles = Object.keys(replacePairs); // Loop through delimiters (elements) only.
+
+  for (let i = 1; i < textArr.length; i += 2) {
+    for (let j = 0; j < needles.length; j++) {
+      const needle = needles[j];
+>>>>>>> master
 
       if (-1 !== textArr[i].indexOf(needle)) {
         textArr[i] = textArr[i].replace(new RegExp(needle, 'g'), replacePairs[needle]);
@@ -301,9 +374,14 @@ function replaceInHtmlTags(haystack, replacePairs) {
  */
 
 
+<<<<<<< HEAD
 function autop(text) {
   var br = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   var preTags = [];
+=======
+function autop(text, br = true) {
+  const preTags = [];
+>>>>>>> master
 
   if (text.trim() === '') {
     return '';
@@ -317,6 +395,7 @@ function autop(text) {
    */
 
   if (text.indexOf('<pre') !== -1) {
+<<<<<<< HEAD
     var textParts = text.split('</pre>');
     var lastText = textParts.pop();
     text = '';
@@ -324,13 +403,26 @@ function autop(text) {
     for (var i = 0; i < textParts.length; i++) {
       var textPart = textParts[i];
       var start = textPart.indexOf('<pre'); // Malformed html?
+=======
+    const textParts = text.split('</pre>');
+    const lastText = textParts.pop();
+    text = '';
+
+    for (let i = 0; i < textParts.length; i++) {
+      const textPart = textParts[i];
+      const start = textPart.indexOf('<pre'); // Malformed html?
+>>>>>>> master
 
       if (start === -1) {
         text += textPart;
         continue;
       }
 
+<<<<<<< HEAD
       var name = '<pre wp-pre-tag-' + i + '></pre>';
+=======
+      const name = '<pre wp-pre-tag-' + i + '></pre>';
+>>>>>>> master
       preTags.push([name, textPart.substr(start) + '</pre>']);
       text += textPart.substr(0, start) + name;
     }
@@ -340,7 +432,11 @@ function autop(text) {
 
 
   text = text.replace(/<br\s*\/?>\s*<br\s*\/?>/g, '\n\n');
+<<<<<<< HEAD
   var allBlocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)'; // Add a double line break above block-level opening tags.
+=======
+  const allBlocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)'; // Add a double line break above block-level opening tags.
+>>>>>>> master
 
   text = text.replace(new RegExp('(<' + allBlocks + '[\\s/>])', 'g'), '\n\n$1'); // Add a double line break below block-level closing tags.
 
@@ -388,11 +484,19 @@ function autop(text) {
 
   text = text.replace(/\n\n+/g, '\n\n'); // Split up the contents into an array of strings, separated by double line breaks.
 
+<<<<<<< HEAD
   var texts = text.split(/\n\s*\n/).filter(Boolean); // Reset text prior to rebuilding.
 
   text = ''; // Rebuild the content as a string, wrapping every bit with a <p>.
 
   texts.forEach(function (textPiece) {
+=======
+  const texts = text.split(/\n\s*\n/).filter(Boolean); // Reset text prior to rebuilding.
+
+  text = ''; // Rebuild the content as a string, wrapping every bit with a <p>.
+
+  texts.forEach(textPiece => {
+>>>>>>> master
     text += '<p>' + textPiece.replace(/^\n*|\n*$/g, '') + '</p>\n';
   }); // Under certain strange conditions it could create a P of entirely whitespace.
 
@@ -413,6 +517,7 @@ function autop(text) {
 
   if (br) {
     // Replace newlines that shouldn't be touched with a placeholder.
+<<<<<<< HEAD
     text = text.replace(/<(script|style).*?<\/\\1>/g, function (match) {
       return match[0].replace(/\n/g, '<WPPreserveNewline />');
     }); // Normalize <br>
@@ -422,6 +527,13 @@ function autop(text) {
     text = text.replace(/(<br \/>)?\s*\n/g, function (a, b) {
       return b ? a : '<br />\n';
     }); // Replace newline placeholders with newlines.
+=======
+    text = text.replace(/<(script|style).*?<\/\\1>/g, match => match[0].replace(/\n/g, '<WPPreserveNewline />')); // Normalize <br>
+
+    text = text.replace(/<br>|<br\/>/g, '<br />'); // Replace any new line characters that aren't preceded by a <br /> with a <br />.
+
+    text = text.replace(/(<br \/>)?\s*\n/g, (a, b) => b ? a : '<br />\n'); // Replace newline placeholders with newlines.
+>>>>>>> master
 
     text = text.replace(/<WPPreserveNewline \/>/g, '\n');
   } // If a <br /> tag is after an opening or closing block tag, remove it.
@@ -432,11 +544,16 @@ function autop(text) {
   text = text.replace(/<br \/>(\s*<\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)[^>]*>)/g, '$1');
   text = text.replace(/\n<\/p>$/g, '</p>'); // Replace placeholder <pre> tags with their original content.
 
+<<<<<<< HEAD
   preTags.forEach(function (preTag) {
     var _preTag = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(preTag, 2),
         name = _preTag[0],
         original = _preTag[1];
 
+=======
+  preTags.forEach(preTag => {
+    const [name, original] = preTag;
+>>>>>>> master
     text = text.replace(name, original);
   }); // Restore newlines in all elements.
 
@@ -464,12 +581,23 @@ function autop(text) {
  */
 
 function removep(html) {
+<<<<<<< HEAD
   var blocklist = 'blockquote|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|th|td|h[1-6]|fieldset|figure';
   var blocklist1 = blocklist + '|div|p';
   var blocklist2 = blocklist + '|pre';
   var preserve = [];
   var preserveLinebreaks = false;
   var preserveBr = false;
+=======
+  const blocklist = 'blockquote|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|th|td|h[1-6]|fieldset|figure';
+  const blocklist1 = blocklist + '|div|p';
+  const blocklist2 = blocklist + '|pre';
+  /** @type {string[]} */
+
+  const preserve = [];
+  let preserveLinebreaks = false;
+  let preserveBr = false;
+>>>>>>> master
 
   if (!html) {
     return '';
@@ -477,7 +605,11 @@ function removep(html) {
 
 
   if (html.indexOf('<script') !== -1 || html.indexOf('<style') !== -1) {
+<<<<<<< HEAD
     html = html.replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function (match) {
+=======
+    html = html.replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, match => {
+>>>>>>> master
       preserve.push(match);
       return '<wp-preserve>';
     });
@@ -486,7 +618,11 @@ function removep(html) {
 
   if (html.indexOf('<pre') !== -1) {
     preserveLinebreaks = true;
+<<<<<<< HEAD
     html = html.replace(/<pre[^>]*>[\s\S]+?<\/pre>/g, function (a) {
+=======
+    html = html.replace(/<pre[^>]*>[\s\S]+?<\/pre>/g, a => {
+>>>>>>> master
       a = a.replace(/<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>');
       a = a.replace(/<\/?p( [^>]*)?>(\r\n|\n)?/g, '<wp-line-break>');
       return a.replace(/\r?\n/g, '<wp-line-break>');
@@ -496,7 +632,11 @@ function removep(html) {
 
   if (html.indexOf('[caption') !== -1) {
     preserveBr = true;
+<<<<<<< HEAD
     html = html.replace(/\[caption[\s\S]+?\[\/caption\]/g, function (a) {
+=======
+    html = html.replace(/\[caption[\s\S]+?\[\/caption\]/g, a => {
+>>>>>>> master
       return a.replace(/<br([^>]*)>/g, '<wp-temp-br$1>').replace(/[\r\n\t]+/, '');
     });
   } // Normalize white space characters before and after block tags.
@@ -514,7 +654,11 @@ function removep(html) {
 
   html = html.replace(/\n[\s\u00a0]+\n/g, '\n\n'); // Replace <br> tags with line breaks.
 
+<<<<<<< HEAD
   html = html.replace(/(\s*)<br ?\/?>\s*/gi, function (match, space) {
+=======
+  html = html.replace(/(\s*)<br ?\/?>\s*/gi, (_, space) => {
+>>>>>>> master
     if (space && space.indexOf('\n') !== -1) {
       return '\n\n';
     }
@@ -545,7 +689,11 @@ function removep(html) {
 
 
   if (html.indexOf('<object') !== -1) {
+<<<<<<< HEAD
     html = html.replace(/<object[\s\S]+?<\/object>/g, function (a) {
+=======
+    html = html.replace(/<object[\s\S]+?<\/object>/g, a => {
+>>>>>>> master
       return a.replace(/[\r\n]+/g, '');
     });
   } // Unmark special paragraph closing tags.
@@ -568,8 +716,16 @@ function removep(html) {
 
 
   if (preserve.length) {
+<<<<<<< HEAD
     html = html.replace(/<wp-preserve>/g, function () {
       return preserve.shift();
+=======
+    html = html.replace(/<wp-preserve>/g, () => {
+      return (
+        /** @type {string} */
+        preserve.shift()
+      );
+>>>>>>> master
     });
   }
 
@@ -577,6 +733,7 @@ function removep(html) {
 }
 
 
+<<<<<<< HEAD
 /***/ }),
 
 /***/ 38:
@@ -599,6 +756,8 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+=======
+>>>>>>> master
 /***/ })
 
 /******/ });

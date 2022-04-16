@@ -2,7 +2,11 @@
 /**
  * The Past Latest View.
  *
+<<<<<<< HEAD
  * @since   5.1.0
+=======
+ * @since   5.3.0
+>>>>>>> master
  * @package Tribe\Events\Views\V2\Views
  */
 
@@ -31,15 +35,23 @@ class Latest_Past_View extends View {
 	 *
 	 * @var bool
 	 */
+<<<<<<< HEAD
 	protected static $publicly_visible = true;
 
 	/**
 	 * Whitelist of Templates to display when Latest Past Events is Active.
+=======
+	protected static $publicly_visible = false;
+
+	/**
+	 * Safe list of Templates to display when Latest Past Events is Active.
+>>>>>>> master
 	 *
 	 * @since 5.1.0
 	 *
 	 * @var array
 	 */
+<<<<<<< HEAD
 	protected $whitelist = [
 		// Standard View Components.
 		'components/loader',
@@ -58,11 +70,52 @@ class Latest_Past_View extends View {
 		'components/events-bar/tabs',
 		'components/events-bar/search',
 		'components/events-bar/filters',
+=======
+
+	protected $safelist = [
+		// Common Components.
+		'components/icons/caret-down',
+		'components/icons/caret-left',
+		'components/icons/caret-right',
+		'components/icons/day',
+		'components/icons/dot',
+		'components/icons/error',
+		'components/icons/featured',
+		'components/icons/list',
+		'components/icons/map',
+		'components/icons/messages-not-found',
+		'components/icons/month',
+		'components/icons/photo',
+		'components/icons/recurring',
+		'components/icons/search',
+		'components/icons/virtual',
+		'components/icons/week',
+
+		// Standard View Components.
+		'components/after',
+		'components/before',
+		'components/breadcrumbs',
+		'components/breakpoints',
+		'components/data',
+		'components/events-bar',
+		'components/events-bar/search-button',
+		'components/events-bar/search',
+		'components/events-bar/search/keyword',
+		'components/events-bar/search/submit',
+>>>>>>> master
 		'components/events-bar/views',
 		'components/events-bar/views/list',
 		'components/events-bar/views/list/item',
 		'components/ical-link',
+<<<<<<< HEAD
 		'components/breakpoints',
+=======
+		'components/json-ld-data',
+		'components/loader',
+		'components/messages',
+		'components/top-bar/today',
+		'components/top-bar/actions',
+>>>>>>> master
 
 		// Day View
 		'day',
@@ -122,7 +175,16 @@ class Latest_Past_View extends View {
 		'latest-past/event/description',
 		'latest-past/event/cost',
 		'latest-past/event/date-tag',
+<<<<<<< HEAD
 		'latest-past/event/date/meta',
+=======
+		'latest-past/event/date/featured',
+		'latest-past/event/date/meta',
+		'latest-past/event/featured-image',
+
+		// Add-ons.
+		'components/filter-bar',
+>>>>>>> master
 	];
 
 	/**
@@ -149,31 +211,50 @@ class Latest_Past_View extends View {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Add Filters for Whitelist and Adding View HTML.
+=======
+	 * Add Filters for safe list and Adding View HTML.
+>>>>>>> master
 	 *
 	 * @since 5.1.0
 	 */
 	public function add_view_filters() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 		add_filter( 'tribe_template_html:events/v2/components/messages', [ $this, 'filter_template_done' ] );
 		add_filter( 'tribe_template_html:events/v2/components/ical-link', [ $this, 'add_view' ] );
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Connect Whitelist Filter to Tribe Template Done to Prevent some of the current View's
+=======
+	 * Connect safe list Filter to Tribe Template Done to Prevent some of the current View's
+>>>>>>> master
 	 * Templates from Displaying when the Latest Past Events Displays.
 	 *
 	 * @since 5.1.0
 	 */
 	public function filter_template_done( $html ) {
+<<<<<<< HEAD
 
 		add_filter( 'tribe_template_done', [ $this, 'filter_template_display_by_whitelist' ], 10, 4 );
 
+=======
+		add_filter( 'tribe_template_done', [ $this, 'filter_template_display_by_safelist' ], 10, 4 );
+>>>>>>> master
 		return $html;
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Filter the Template Files and Only Return HTML if in Whitelist.
+=======
+	 * Filter the Template Files and Only Return HTML if in safe list.
+>>>>>>> master
 	 *
 	 * @since 5.1.0
 	 *
@@ -184,9 +265,28 @@ class Latest_Past_View extends View {
 	 *
 	 * @return string
 	 */
+<<<<<<< HEAD
 	public function filter_template_display_by_whitelist( $done, $name, $context, $echo ) {
 
 		if ( in_array( $name, $this->whitelist, true ) ) {
+=======
+	public function filter_template_display_by_safelist( $done, $name, $context, $echo ) {
+		$display = in_array( $name, $this->safelist, true );
+
+		/**
+		 * Filters whether a specific template should show in the context of the Latest Past Events View or not.
+		 *
+		 * @since 5.2.0
+		 *
+		 * @param bool   $display Whether a specified template should display or not.
+		 * @param string $name    The template name.
+		 * @param array  $context The data context for this template inclusion.
+		 * @param bool   $echo    Whether the template inclusion is attempted to then echo to the page, or not.
+		 */
+		$display = apply_filters( 'tribe_events_latest_past_view_display_template', $display, $name, $context, $echo );
+
+		if ( $display ) {
+>>>>>>> master
 			return $done;
 		}
 
@@ -203,7 +303,10 @@ class Latest_Past_View extends View {
 	 * @return string The HTML of the View being Rendered and Latest Past Events HTML
 	 */
 	public function add_view( $html ) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 		return $this->get_html();
 	}
 }

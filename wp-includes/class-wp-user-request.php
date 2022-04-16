@@ -10,6 +10,10 @@ final class WP_User_Request {
 	/**
 	 * Request ID.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var int
 	 */
 	public $ID = 0;
@@ -17,6 +21,10 @@ final class WP_User_Request {
 	/**
 	 * User ID.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var int
 	 */
 	public $user_id = 0;
@@ -24,13 +32,22 @@ final class WP_User_Request {
 	/**
 	 * User email.
 	 *
+<<<<<<< HEAD
 	 * @var int
+=======
+	 * @since 4.9.6
+	 * @var string
+>>>>>>> master
 	 */
 	public $email = '';
 
 	/**
 	 * Action name.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var string
 	 */
 	public $action_name = '';
@@ -38,6 +55,10 @@ final class WP_User_Request {
 	/**
 	 * Current status.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var string
 	 */
 	public $status = '';
@@ -45,6 +66,10 @@ final class WP_User_Request {
 	/**
 	 * Timestamp this request was created.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var int|null
 	 */
 	public $created_timestamp = null;
@@ -52,6 +77,10 @@ final class WP_User_Request {
 	/**
 	 * Timestamp this request was last modified.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var int|null
 	 */
 	public $modified_timestamp = null;
@@ -59,20 +88,34 @@ final class WP_User_Request {
 	/**
 	 * Timestamp this request was confirmed.
 	 *
+<<<<<<< HEAD
 	 * @var int
+=======
+	 * @since 4.9.6
+	 * @var int|null
+>>>>>>> master
 	 */
 	public $confirmed_timestamp = null;
 
 	/**
 	 * Timestamp this request was completed.
 	 *
+<<<<<<< HEAD
 	 * @var int
+=======
+	 * @since 4.9.6
+	 * @var int|null
+>>>>>>> master
 	 */
 	public $completed_timestamp = null;
 
 	/**
 	 * Misc data assigned to this request.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var array
 	 */
 	public $request_data = array();
@@ -80,6 +123,10 @@ final class WP_User_Request {
 	/**
 	 * Key used to confirm this request.
 	 *
+<<<<<<< HEAD
+=======
+	 * @since 4.9.6
+>>>>>>> master
 	 * @var string
 	 */
 	public $confirm_key = '';

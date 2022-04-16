@@ -41,8 +41,13 @@ function wp_latest_comments_draft_or_post_title( $post = 0 ) {
  * @return string Returns the post content with latest comments added.
  */
 function render_block_core_latest_comments( $attributes = array() ) {
+<<<<<<< HEAD
 	// This filter is documented in wp-includes/widgets/class-wp-widget-recent-comments.php.
 	$comments = get_comments(
+=======
+	$comments = get_comments(
+		// This filter is documented in wp-includes/widgets/class-wp-widget-recent-comments.php.
+>>>>>>> master
 		apply_filters(
 			'widget_comments_args',
 			array(
@@ -116,6 +121,7 @@ function render_block_core_latest_comments( $attributes = array() ) {
 		}
 	}
 
+<<<<<<< HEAD
 	$class = 'wp-block-latest-comments';
 	if ( ! empty( $attributes['className'] ) ) {
 		$class .= ' ' . $attributes['className'];
@@ -144,6 +150,30 @@ function render_block_core_latest_comments( $attributes = array() ) {
 	) : sprintf(
 		'<div class="%1$s">%2$s</div>',
 		$classnames,
+=======
+	$classnames = array();
+	if ( $attributes['displayAvatar'] ) {
+		$classnames[] = 'has-avatars';
+	}
+	if ( $attributes['displayDate'] ) {
+		$classnames[] = 'has-dates';
+	}
+	if ( $attributes['displayExcerpt'] ) {
+		$classnames[] = 'has-excerpts';
+	}
+	if ( empty( $comments ) ) {
+		$classnames[] = 'no-comments';
+	}
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => implode( ' ', $classnames ) ) );
+
+	return ! empty( $comments ) ? sprintf(
+		'<ol %1$s>%2$s</ol>',
+		$wrapper_attributes,
+		$list_items_markup
+	) : sprintf(
+		'<div %1$s>%2$s</div>',
+		$wrapper_attributes,
+>>>>>>> master
 		__( 'No comments to show.' )
 	);
 }
@@ -152,6 +182,7 @@ function render_block_core_latest_comments( $attributes = array() ) {
  * Registers the `core/latest-comments` block.
  */
 function register_block_core_latest_comments() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/latest-comments',
 		array(
@@ -188,6 +219,11 @@ function register_block_core_latest_comments() {
 					'default' => true,
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/latest-comments',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_latest_comments',
 		)
 	);

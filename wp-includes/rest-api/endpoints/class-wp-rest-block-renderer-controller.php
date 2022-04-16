@@ -34,6 +34,7 @@ class WP_REST_Block_Renderer_Controller extends WP_REST_Controller {
 	 * @see register_rest_route()
 	 */
 	public function register_routes() {
+<<<<<<< HEAD
 		$block_types = WP_Block_Type_Registry::get_instance()->get_all_registered();
 
 		foreach ( $block_types as $block_type ) {
@@ -75,6 +76,70 @@ class WP_REST_Block_Renderer_Controller extends WP_REST_Controller {
 				)
 			);
 		}
+=======
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<name>[a-z0-9-]+/[a-z0-9-]+)',
+			array(
+				'args'   => array(
+					'name' => array(
+						'description' => __( 'Unique registered name for the block.' ),
+						'type'        => 'string',
+					),
+				),
+				array(
+					'methods'             => array( WP_REST_Server::READABLE, WP_REST_Server::CREATABLE ),
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'get_item_permissions_check' ),
+					'args'                => array(
+						'context'    => $this->get_context_param( array( 'default' => 'view' ) ),
+						'attributes' => array(
+							'description'       => __( 'Attributes for the block.' ),
+							'type'              => 'object',
+							'default'           => array(),
+							'validate_callback' => static function ( $value, $request ) {
+								$block = WP_Block_Type_Registry::get_instance()->get_registered( $request['name'] );
+
+								if ( ! $block ) {
+									// This will get rejected in ::get_item().
+									return true;
+								}
+
+								$schema = array(
+									'type'                 => 'object',
+									'properties'           => $block->get_attributes(),
+									'additionalProperties' => false,
+								);
+
+								return rest_validate_value_from_schema( $value, $schema );
+							},
+							'sanitize_callback' => static function ( $value, $request ) {
+								$block = WP_Block_Type_Registry::get_instance()->get_registered( $request['name'] );
+
+								if ( ! $block ) {
+									// This will get rejected in ::get_item().
+									return true;
+								}
+
+								$schema = array(
+									'type'                 => 'object',
+									'properties'           => $block->get_attributes(),
+									'additionalProperties' => false,
+								);
+
+								return rest_sanitize_value_from_schema( $value, $schema );
+							},
+						),
+						'post_id'    => array(
+							'description' => __( 'ID of the post context.' ),
+							'type'        => 'integer',
+						),
+					),
+				),
+				'schema' => array( $this, 'get_public_item_schema' ),
+			)
+		);
+>>>>>>> master
 	}
 
 	/**
@@ -88,7 +153,11 @@ class WP_REST_Block_Renderer_Controller extends WP_REST_Controller {
 	public function get_item_permissions_check( $request ) {
 		global $post;
 
+<<<<<<< HEAD
 		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+=======
+		$post_id = isset( $request['post_id'] ) ? (int) $request['post_id'] : 0;
+>>>>>>> master
 
 		if ( 0 < $post_id ) {
 			$post = get_post( $post_id );
@@ -128,7 +197,11 @@ class WP_REST_Block_Renderer_Controller extends WP_REST_Controller {
 	public function get_item( $request ) {
 		global $post;
 
+<<<<<<< HEAD
 		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+=======
+		$post_id = isset( $request['post_id'] ) ? (int) $request['post_id'] : 0;
+>>>>>>> master
 
 		if ( 0 < $post_id ) {
 			$post = get_post( $post_id );
@@ -136,9 +209,17 @@ class WP_REST_Block_Renderer_Controller extends WP_REST_Controller {
 			// Set up postdata since this will be needed if post_id was set.
 			setup_postdata( $post );
 		}
+<<<<<<< HEAD
 		$registry = WP_Block_Type_Registry::get_instance();
 
 		if ( null === $registry->get_registered( $request['name'] ) ) {
+=======
+
+		$registry   = WP_Block_Type_Registry::get_instance();
+		$registered = $registry->get_registered( $request['name'] );
+
+		if ( null === $registered || ! $registered->is_dynamic() ) {
+>>>>>>> master
 			return new WP_Error(
 				'block_invalid',
 				__( 'Invalid block.' ),

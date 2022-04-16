@@ -82,11 +82,16 @@ this["wp"] = this["wp"] || {}; this["wp"]["url"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 427);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "lbya");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 2:
 /***/ (function(module, exports) {
 
@@ -891,6 +896,48 @@ module.exports = function (str, opts) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
+=======
+/***/ "YLtl":
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ "lbya":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "isURL", function() { return /* reexport */ isURL; });
+__webpack_require__.d(__webpack_exports__, "isEmail", function() { return /* reexport */ isEmail; });
+__webpack_require__.d(__webpack_exports__, "getProtocol", function() { return /* reexport */ getProtocol; });
+__webpack_require__.d(__webpack_exports__, "isValidProtocol", function() { return /* reexport */ isValidProtocol; });
+__webpack_require__.d(__webpack_exports__, "getAuthority", function() { return /* reexport */ getAuthority; });
+__webpack_require__.d(__webpack_exports__, "isValidAuthority", function() { return /* reexport */ isValidAuthority; });
+__webpack_require__.d(__webpack_exports__, "getPath", function() { return /* reexport */ getPath; });
+__webpack_require__.d(__webpack_exports__, "isValidPath", function() { return /* reexport */ isValidPath; });
+__webpack_require__.d(__webpack_exports__, "getQueryString", function() { return /* reexport */ getQueryString; });
+__webpack_require__.d(__webpack_exports__, "buildQueryString", function() { return /* reexport */ buildQueryString; });
+__webpack_require__.d(__webpack_exports__, "isValidQueryString", function() { return /* reexport */ isValidQueryString; });
+__webpack_require__.d(__webpack_exports__, "getPathAndQueryString", function() { return /* reexport */ getPathAndQueryString; });
+__webpack_require__.d(__webpack_exports__, "getFragment", function() { return /* reexport */ getFragment; });
+__webpack_require__.d(__webpack_exports__, "isValidFragment", function() { return /* reexport */ isValidFragment; });
+__webpack_require__.d(__webpack_exports__, "addQueryArgs", function() { return /* reexport */ addQueryArgs; });
+__webpack_require__.d(__webpack_exports__, "getQueryArg", function() { return /* reexport */ getQueryArg; });
+__webpack_require__.d(__webpack_exports__, "getQueryArgs", function() { return /* reexport */ getQueryArgs; });
+__webpack_require__.d(__webpack_exports__, "hasQueryArg", function() { return /* reexport */ hasQueryArg; });
+__webpack_require__.d(__webpack_exports__, "removeQueryArgs", function() { return /* reexport */ removeQueryArgs; });
+__webpack_require__.d(__webpack_exports__, "prependHTTP", function() { return /* reexport */ prependHTTP; });
+__webpack_require__.d(__webpack_exports__, "safeDecodeURI", function() { return /* reexport */ safeDecodeURI; });
+__webpack_require__.d(__webpack_exports__, "safeDecodeURIComponent", function() { return /* reexport */ safeDecodeURIComponent; });
+__webpack_require__.d(__webpack_exports__, "filterURLForDisplay", function() { return /* reexport */ filterURLForDisplay; });
+__webpack_require__.d(__webpack_exports__, "cleanForSlug", function() { return /* reexport */ cleanForSlug; });
+
+>>>>>>> master
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/is-url.js
 /**
  * Determines whether the given string looks like a URL.
@@ -913,13 +960,21 @@ function isURL(url) {
   try {
     new URL(url);
     return true;
+<<<<<<< HEAD
   } catch (error) {
+=======
+  } catch {
+>>>>>>> master
     return false;
   }
 }
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/is-email.js
+<<<<<<< HEAD
 var EMAIL_REGEXP = /^(mailto:)?[a-z0-9._%+-]+@[a-z0-9][a-z0-9.-]*\.[a-z]{2,63}$/i;
+=======
+const EMAIL_REGEXP = /^(mailto:)?[a-z0-9._%+-]+@[a-z0-9][a-z0-9.-]*\.[a-z]{2,63}$/i;
+>>>>>>> master
 /**
  * Determines whether the given string looks like an email.
  *
@@ -952,7 +1007,11 @@ function isEmail(email) {
  * @return {string|void} The protocol part of the URL.
  */
 function getProtocol(url) {
+<<<<<<< HEAD
   var matches = /^([^\s:]+:)/.exec(url);
+=======
+  const matches = /^([^\s:]+:)/.exec(url);
+>>>>>>> master
 
   if (matches) {
     return matches[1];
@@ -996,7 +1055,11 @@ function isValidProtocol(protocol) {
  * @return {string|void} The authority part of the URL.
  */
 function getAuthority(url) {
+<<<<<<< HEAD
   var matches = /^[^\/\s:]+:(?:\/\/)?\/?([^\/\s#?]+)[\/#?]{0,1}\S*$/.exec(url);
+=======
+  const matches = /^[^\/\s:]+:(?:\/\/)?\/?([^\/\s#?]+)[\/#?]{0,1}\S*$/.exec(url);
+>>>>>>> master
 
   if (matches) {
     return matches[1];
@@ -1040,7 +1103,11 @@ function isValidAuthority(authority) {
  * @return {string|void} The path part of the URL.
  */
 function getPath(url) {
+<<<<<<< HEAD
   var matches = /^[^\/\s:]+:(?:\/\/)?[^\/\s#?]+[\/]([^\s#?]+)[#?]{0,1}\S*$/.exec(url);
+=======
+  const matches = /^[^\/\s:]+:(?:\/\/)?[^\/\s#?]+[\/]([^\s#?]+)[#?]{0,1}\S*$/.exec(url);
+>>>>>>> master
 
   if (matches) {
     return matches[1];
@@ -1077,13 +1144,18 @@ function isValidPath(path) {
  *
  * @example
  * ```js
+<<<<<<< HEAD
  * const queryString1 = getQueryString( 'http://localhost:8080/this/is/a/test?query=true#fragment' ); // 'query=true'
  * const queryString2 = getQueryString( 'https://wordpress.org#fragment?query=false&search=hello' ); // 'query=false&search=hello'
+=======
+ * const queryString = getQueryString( 'http://localhost:8080/this/is/a/test?query=true#fragment' ); // 'query=true'
+>>>>>>> master
  * ```
  *
  * @return {string|void} The query string part of the URL.
  */
 function getQueryString(url) {
+<<<<<<< HEAD
   var matches = /^\S+?\?([^\s#]+)/.exec(url);
 
   if (matches) {
@@ -1091,6 +1163,79 @@ function getQueryString(url) {
   }
 }
 
+=======
+  let query;
+
+  try {
+    query = new URL(url, 'http://example.com').search.substring(1);
+  } catch (error) {}
+
+  if (query) {
+    return query;
+  }
+}
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/build-query-string.js
+/**
+ * Generates URL-encoded query string using input query data.
+ *
+ * It is intended to behave equivalent as PHP's `http_build_query`, configured
+ * with encoding type PHP_QUERY_RFC3986 (spaces as `%20`).
+ *
+ * @example
+ * ```js
+ * const queryString = buildQueryString( {
+ *    simple: 'is ok',
+ *    arrays: [ 'are', 'fine', 'too' ],
+ *    objects: {
+ *       evenNested: {
+ *          ok: 'yes',
+ *       },
+ *    },
+ * } );
+ * // "simple=is%20ok&arrays%5B0%5D=are&arrays%5B1%5D=fine&arrays%5B2%5D=too&objects%5BevenNested%5D%5Bok%5D=yes"
+ * ```
+ *
+ * @param {Record<string,*>} data Data to encode.
+ *
+ * @return {string} Query string.
+ */
+function buildQueryString(data) {
+  let string = '';
+  const stack = Object.entries(data);
+  let pair;
+
+  while (pair = stack.shift()) {
+    let [key, value] = pair; // Support building deeply nested data, from array or object values.
+
+    const hasNestedData = Array.isArray(value) || value && value.constructor === Object;
+
+    if (hasNestedData) {
+      // Push array or object values onto the stack as composed of their
+      // original key and nested index or key, retaining order by a
+      // combination of Array#reverse and Array#unshift onto the stack.
+      const valuePairs = Object.entries(value).reverse();
+
+      for (const [member, memberValue] of valuePairs) {
+        stack.unshift([`${key}[${member}]`, memberValue]);
+      }
+    } else if (value !== undefined) {
+      // Null is treated as special case, equivalent to empty string.
+      if (value === null) {
+        value = '';
+      }
+
+      string += '&' + [key, value].map(encodeURIComponent).join('=');
+    }
+  } // Loop will concatenate with leading `&`, but it's only expected for all
+  // but the first query parameter. This strips the leading `&`, while still
+  // accounting for the case that the string may in-fact be empty.
+
+
+  return string.substr(1);
+}
+
+>>>>>>> master
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/is-valid-query-string.js
 /**
  * Checks for invalid characters within the provided query string.
@@ -1113,6 +1258,37 @@ function isValidQueryString(queryString) {
   return /^[^\s#?\/]+$/.test(queryString);
 }
 
+<<<<<<< HEAD
+=======
+// CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/get-path-and-query-string.js
+/**
+ * Internal dependencies
+ */
+
+/**
+ * Returns the path part and query string part of the URL.
+ *
+ * @param {string} url The full URL.
+ *
+ * @example
+ * ```js
+ * const pathAndQueryString1 = getPathAndQueryString( 'http://localhost:8080/this/is/a/test?query=true' ); // '/this/is/a/test?query=true'
+ * const pathAndQueryString2 = getPathAndQueryString( 'https://wordpress.org/help/faq/' ); // '/help/faq'
+ * ```
+ *
+ * @return {string} The path part and query string part of the URL.
+ */
+
+function getPathAndQueryString(url) {
+  const path = getPath(url);
+  const queryString = getQueryString(url);
+  let value = '/';
+  if (path) value += path;
+  if (queryString) value += `?${queryString}`;
+  return value;
+}
+
+>>>>>>> master
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/get-fragment.js
 /**
  * Returns the fragment part of the URL.
@@ -1128,7 +1304,11 @@ function isValidQueryString(queryString) {
  * @return {string|void} The fragment part of the URL.
  */
 function getFragment(url) {
+<<<<<<< HEAD
   var matches = /^\S+?(#[^\s\?]*)/.exec(url);
+=======
+  const matches = /^\S+?(#[^\s\?]*)/.exec(url);
+>>>>>>> master
 
   if (matches) {
     return matches[1];
@@ -1157,6 +1337,7 @@ function isValidFragment(fragment) {
   return /^#[^\s#?\/]*$/.test(fragment);
 }
 
+<<<<<<< HEAD
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
 var lib = __webpack_require__(92);
 
@@ -1165,6 +1346,101 @@ var lib = __webpack_require__(92);
  * External dependencies
  */
 
+=======
+// CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/get-query-args.js
+/**
+ * Internal dependencies
+ */
+
+/** @typedef {import('./get-query-arg').QueryArgParsed} QueryArgParsed */
+
+/**
+ * @typedef {Record<string,QueryArgParsed>} QueryArgs
+ */
+
+/**
+ * Sets a value in object deeply by a given array of path segments. Mutates the
+ * object reference.
+ *
+ * @param {Record<string,*>} object Object in which to assign.
+ * @param {string[]}         path   Path segment at which to set value.
+ * @param {*}                value  Value to set.
+ */
+
+function setPath(object, path, value) {
+  const length = path.length;
+  const lastIndex = length - 1;
+
+  for (let i = 0; i < length; i++) {
+    let key = path[i];
+
+    if (!key && Array.isArray(object)) {
+      // If key is empty string and next value is array, derive key from
+      // the current length of the array.
+      key = object.length.toString();
+    } // If the next key in the path is numeric (or empty string), it will be
+    // created as an array. Otherwise, it will be created as an object.
+
+
+    const isNextKeyArrayIndex = !isNaN(Number(path[i + 1]));
+    object[key] = i === lastIndex ? // If at end of path, assign the intended value.
+    value : // Otherwise, advance to the next object in the path, creating
+    // it if it does not yet exist.
+    object[key] || (isNextKeyArrayIndex ? [] : {});
+
+    if (Array.isArray(object[key]) && !isNextKeyArrayIndex) {
+      // If we current key is non-numeric, but the next value is an
+      // array, coerce the value to an object.
+      object[key] = { ...object[key]
+      };
+    } // Update working reference object to the next in the path.
+
+
+    object = object[key];
+  }
+}
+/**
+ * Returns an object of query arguments of the given URL. If the given URL is
+ * invalid or has no querystring, an empty object is returned.
+ *
+ * @param {string} url URL.
+ *
+ * @example
+ * ```js
+ * const foo = getQueryArgs( 'https://wordpress.org?foo=bar&bar=baz' );
+ * // { "foo": "bar", "bar": "baz" }
+ * ```
+ *
+ * @return {QueryArgs} Query args object.
+ */
+
+
+function getQueryArgs(url) {
+  return (getQueryString(url) || ''). // Normalize space encoding, accounting for PHP URL encoding
+  // corresponding to `application/x-www-form-urlencoded`.
+  //
+  // See: https://tools.ietf.org/html/rfc1866#section-8.2.1
+  replace(/\+/g, '%20').split('&').reduce((accumulator, keyValue) => {
+    const [key, value = ''] = keyValue.split('=') // Filtering avoids decoding as `undefined` for value, where
+    // default is restored in destructuring assignment.
+    .filter(Boolean).map(decodeURIComponent);
+
+    if (key) {
+      const segments = key.replace(/\]/g, '').split('[');
+      setPath(accumulator, segments, value);
+    }
+
+    return accumulator;
+  }, {});
+}
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/add-query-args.js
+/**
+ * Internal dependencies
+ */
+
+
+>>>>>>> master
 /**
  * Appends arguments as querystring to the provided URL. If the URL already
  * includes query arguments, the arguments are merged with (and take precedent
@@ -1172,7 +1448,11 @@ var lib = __webpack_require__(92);
  *
  * @param {string} [url='']  URL to which arguments should be appended. If omitted,
  *                           only the resulting querystring is returned.
+<<<<<<< HEAD
  * @param {Object} args      Query arguments to apply to URL.
+=======
+ * @param {Object} [args]    Query arguments to apply to URL.
+>>>>>>> master
  *
  * @example
  * ```js
@@ -1182,15 +1462,20 @@ var lib = __webpack_require__(92);
  * @return {string} URL with arguments applied.
  */
 
+<<<<<<< HEAD
 function addQueryArgs() {
   var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var args = arguments.length > 1 ? arguments[1] : undefined;
 
+=======
+function addQueryArgs(url = '', args) {
+>>>>>>> master
   // If no arguments are to be appended, return original URL.
   if (!args || !Object.keys(args).length) {
     return url;
   }
 
+<<<<<<< HEAD
   var baseUrl = url; // Determine whether URL already had query arguments.
 
   var queryStringIndex = url.indexOf('?');
@@ -1198,16 +1483,33 @@ function addQueryArgs() {
   if (queryStringIndex !== -1) {
     // Merge into existing query arguments.
     args = Object.assign(Object(lib["parse"])(url.substr(queryStringIndex + 1)), args); // Change working base URL to omit previous query arguments.
+=======
+  let baseUrl = url; // Determine whether URL already had query arguments.
+
+  const queryStringIndex = url.indexOf('?');
+
+  if (queryStringIndex !== -1) {
+    // Merge into existing query arguments.
+    args = Object.assign(getQueryArgs(url), args); // Change working base URL to omit previous query arguments.
+>>>>>>> master
 
     baseUrl = baseUrl.substr(0, queryStringIndex);
   }
 
+<<<<<<< HEAD
   return baseUrl + '?' + Object(lib["stringify"])(args);
+=======
+  return baseUrl + '?' + buildQueryString(args);
+>>>>>>> master
 }
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/get-query-arg.js
 /**
+<<<<<<< HEAD
  * External dependencies
+=======
+ * Internal dependencies
+>>>>>>> master
  */
 
 /**
@@ -1229,6 +1531,7 @@ function addQueryArgs() {
  * const foo = getQueryArg( 'https://wordpress.org?foo=bar&bar=baz', 'foo' ); // bar
  * ```
  *
+<<<<<<< HEAD
  * @return {QueryArgParsed|undefined} Query arg value.
  */
 
@@ -1236,6 +1539,13 @@ function getQueryArg(url, arg) {
   var queryStringIndex = url.indexOf('?');
   var query = queryStringIndex !== -1 ? Object(lib["parse"])(url.substr(queryStringIndex + 1)) : {};
   return query[arg];
+=======
+ * @return {QueryArgParsed|void} Query arg value.
+ */
+
+function getQueryArg(url, arg) {
+  return getQueryArgs(url)[arg];
+>>>>>>> master
 }
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/has-query-arg.js
@@ -1263,9 +1573,16 @@ function hasQueryArg(url, arg) {
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/remove-query-args.js
 /**
+<<<<<<< HEAD
  * External dependencies
  */
 
+=======
+ * Internal dependencies
+ */
+
+
+>>>>>>> master
 /**
  * Removes arguments from the query string of the url
  *
@@ -1280,6 +1597,7 @@ function hasQueryArg(url, arg) {
  * @return {string} Updated URL.
  */
 
+<<<<<<< HEAD
 function removeQueryArgs(url) {
   var queryStringIndex = url.indexOf('?');
   var query = queryStringIndex !== -1 ? Object(lib["parse"])(url.substr(queryStringIndex + 1)) : {};
@@ -1293,6 +1611,20 @@ function removeQueryArgs(url) {
     return delete query[arg];
   });
   return baseUrl + '?' + Object(lib["stringify"])(query);
+=======
+function removeQueryArgs(url, ...args) {
+  const queryStringIndex = url.indexOf('?');
+
+  if (queryStringIndex === -1) {
+    return url;
+  }
+
+  const query = getQueryArgs(url);
+  const baseURL = url.substr(0, queryStringIndex);
+  args.forEach(arg => delete query[arg]);
+  const queryString = buildQueryString(query);
+  return queryString ? baseURL + '?' + queryString : baseURL;
+>>>>>>> master
 }
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/prepend-http.js
@@ -1300,7 +1632,11 @@ function removeQueryArgs(url) {
  * Internal dependencies
  */
 
+<<<<<<< HEAD
 var USABLE_HREF_REGEXP = /^(?:[a-z]+:|#|\?|\.|\/)/i;
+=======
+const USABLE_HREF_REGEXP = /^(?:[a-z]+:|#|\?|\.|\/)/i;
+>>>>>>> master
 /**
  * Prepends "http://" to a url, if it looks like something that is meant to be a TLD.
  *
@@ -1372,14 +1708,23 @@ function safeDecodeURIComponent(uriComponent) {
  * Returns a URL for display.
  *
  * @param {string} url Original URL.
+<<<<<<< HEAD
+=======
+ * @param {number|null} maxLength URL length.
+>>>>>>> master
  *
  * @example
  * ```js
  * const displayUrl = filterURLForDisplay( 'https://www.wordpress.org/gutenberg/' ); // wordpress.org/gutenberg
+<<<<<<< HEAD
+=======
+ * const imageUrl = filterURLForDisplay( 'https://www.wordpress.org/wp-content/uploads/img.png', 20 ); // …ent/uploads/img.png
+>>>>>>> master
  * ```
  *
  * @return {string} Displayed URL.
  */
+<<<<<<< HEAD
 function filterURLForDisplay(url) {
   // Remove protocol and www prefixes.
   var filteredURL = url.replace(/^(?:https?:)\/\/(?:www\.)?/, ''); // Ends with / and only has that single slash, strip it.
@@ -1393,6 +1738,40 @@ function filterURLForDisplay(url) {
 
 // EXTERNAL MODULE: external {"this":"lodash"}
 var external_this_lodash_ = __webpack_require__(2);
+=======
+function filterURLForDisplay(url, maxLength = null) {
+  // Remove protocol and www prefixes.
+  let filteredURL = url.replace(/^(?:https?:)\/\/(?:www\.)?/, ''); // Ends with / and only has that single slash, strip it.
+
+  if (filteredURL.match(/^[^\/]+\/$/)) {
+    filteredURL = filteredURL.replace('/', '');
+  }
+
+  const mediaRegexp = /([\w|:])*\.(?:jpg|jpeg|gif|png|svg)/;
+
+  if (!maxLength || filteredURL.length <= maxLength || !filteredURL.match(mediaRegexp)) {
+    return filteredURL;
+  } // If the file is not greater than max length, return last portion of URL.
+
+
+  filteredURL = filteredURL.split('?')[0];
+  const urlPieces = filteredURL.split('/');
+  const file = urlPieces[urlPieces.length - 1];
+
+  if (file.length <= maxLength) {
+    return '…' + filteredURL.slice(-maxLength);
+  } // If the file is greater than max length, truncate the file.
+
+
+  const index = file.lastIndexOf('.');
+  const [fileName, extension] = [file.slice(0, index), file.slice(index + 1)];
+  const truncatedFile = fileName.slice(-3) + '.' + extension;
+  return file.slice(0, maxLength - truncatedFile.length - 1) + '…' + truncatedFile;
+}
+
+// EXTERNAL MODULE: external "lodash"
+var external_lodash_ = __webpack_require__("YLtl");
+>>>>>>> master
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/clean-for-slug.js
 /**
@@ -1405,11 +1784,19 @@ var external_this_lodash_ = __webpack_require__(2);
  * This replicates some of what `sanitize_title()` does in WordPress core, but
  * is only designed to approximate what the slug will be.
  *
+<<<<<<< HEAD
  * Converts whitespace, periods, forward slashes and underscores to hyphens.
  * Converts Latin-1 Supplement and Latin Extended-A letters to basic Latin
  * letters. Removes combining diacritical marks. Converts remaining string
  * to lowercase. It does not touch octets, HTML entities, or other encoded
  * characters.
+=======
+ * Converts Latin-1 Supplement and Latin Extended-A letters to basic Latin
+ * letters. Removes combining diacritical marks. Converts whitespace, periods,
+ * and forward slashes to hyphens. Removes any remaining non-word characters
+ * except hyphens. Converts remaining string to lowercase. It does not account
+ * for octets, HTML entities, or other encoded characters.
+>>>>>>> master
  *
  * @param {string} string Title or slug to be processed.
  *
@@ -1421,6 +1808,7 @@ function cleanForSlug(string) {
     return '';
   }
 
+<<<<<<< HEAD
   return Object(external_this_lodash_["toLower"])(Object(external_this_lodash_["deburr"])(Object(external_this_lodash_["trim"])(string.replace(/[\s\./_]+/g, '-'), '-')));
 }
 
@@ -1446,6 +1834,12 @@ function cleanForSlug(string) {
 /* concated harmony reexport safeDecodeURIComponent */__webpack_require__.d(__webpack_exports__, "safeDecodeURIComponent", function() { return safeDecodeURIComponent; });
 /* concated harmony reexport filterURLForDisplay */__webpack_require__.d(__webpack_exports__, "filterURLForDisplay", function() { return filterURLForDisplay; });
 /* concated harmony reexport cleanForSlug */__webpack_require__.d(__webpack_exports__, "cleanForSlug", function() { return cleanForSlug; });
+=======
+  return Object(external_lodash_["trim"])(Object(external_lodash_["deburr"])(string).replace(/[\s\./]+/g, '-').replace(/[^\w-]+/g, '').toLowerCase(), '-');
+}
+
+// CONCATENATED MODULE: ./node_modules/@wordpress/url/build-module/index.js
+>>>>>>> master
 
 
 
@@ -1469,6 +1863,7 @@ function cleanForSlug(string) {
 
 
 
+<<<<<<< HEAD
 /***/ }),
 
 /***/ 92:
@@ -1486,6 +1881,9 @@ module.exports = {
     parse: parse,
     stringify: stringify
 };
+=======
+
+>>>>>>> master
 
 
 /***/ })

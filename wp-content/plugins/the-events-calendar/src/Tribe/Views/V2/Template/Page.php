@@ -316,6 +316,8 @@ class Page {
 	 *
 	 * @todo  Integrate with Template + Context classes
 	 *
+	 * @since [5.11.0] Now running do_shortcode() on content returned, since we are inserting our output in lieu of the_content results
+	 *
 	 * @since  4.9.2
 	 *
 	 * @param  string $content Default content of the page we hijacked
@@ -331,7 +333,7 @@ class Page {
 
 		$this->prevent_page_looping();
 
-		return $html;
+		return do_shortcode( $html );
 	}
 
 	/**
@@ -360,12 +362,16 @@ class Page {
 				$should_hijack = false;
 			}
 
+<<<<<<< HEAD
 			// Dont hijack event based.
+=======
+			// Don't hijack event based.
+>>>>>>> master
 			if ( 'event' === tribe( Template_Bootstrap::class )->get_template_setting() ) {
 				$should_hijack = false;
 			}
 
-			// We dont want the main Query.
+			// We don't want the main Query.
 			if ( ! $query->is_main_query() ) {
 				$should_hijack = false;
 			}

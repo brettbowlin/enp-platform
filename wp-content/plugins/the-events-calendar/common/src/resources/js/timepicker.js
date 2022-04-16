@@ -23,8 +23,8 @@ var tribe_timepickers = tribe_timepickers || {};
 	};
 
 	obj.timezone = {
-		link: _.template( '<a href="#" class="tribe-change-timezone"><%= label %> <%= timezone %></a>' )
-	}
+		link: _.template( '<a href="#" class="tribe-change-timezone"><%= label %> <%= timezone %></a>' ), // eslint-disable-line max-len
+	};
 
 	obj.$ = {};
 
@@ -36,7 +36,10 @@ var tribe_timepickers = tribe_timepickers || {};
 		var $input      = $container.find( obj.selector.timezone ).filter( obj.selector.input );
 
 		// Create the Link
-		var $timezoneLink = $( obj.timezone.link( { label: $input.data( 'timezoneLabel' ), timezone: $input.data( 'timezoneValue' ) } ) );
+		var $timezoneLink = $( obj.timezone.link( {
+			label: $input.data( 'timezoneLabel' ),
+			timezone: $input.data( 'timezoneValue' ),
+		} ) );
 
 		// Toggle Timepickers on All Day change
 		$allDay.on( 'change', function() {
@@ -89,7 +92,7 @@ var tribe_timepickers = tribe_timepickers || {};
 			var round = $item.data( 'round' );
 			if (
 				round &&
-				0 != round &&
+				0 != round && // eslint-disable-line eqeqeq
 				'false' !== round
 			) {
 				opts.forceRoundTime = true;
@@ -104,5 +107,5 @@ var tribe_timepickers = tribe_timepickers || {};
 		} );
 	};
 
-	$( document ).ready( obj.init );
+	$( obj.init );
 } ( jQuery, tribe_timepickers ) );

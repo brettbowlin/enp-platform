@@ -82,12 +82,20 @@ this["wp"] = this["wp"] || {}; this["wp"]["warning"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 419);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = "WyMB");
+>>>>>>> master
 /******/ })
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
 /***/ 105:
+=======
+/***/ "8oxB":
+>>>>>>> master
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -278,7 +286,11 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 419:
+=======
+/***/ "WyMB":
+>>>>>>> master
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -322,7 +334,11 @@ function warning(message) {
   }
 }
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(105)))
+=======
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+>>>>>>> master
 
 /***/ })
 

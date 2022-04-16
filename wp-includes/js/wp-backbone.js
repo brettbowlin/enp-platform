@@ -23,8 +23,13 @@ window.wp = window.wp || {};
 	 *
 	 * @class
 	 *
+<<<<<<< HEAD
 	 * @param  {wp.Backbone.View} view  The main view.
 	 * @param  {Array|Object}     views The subviews for the main view.
+=======
+	 * @param {wp.Backbone.View} view  The main view.
+	 * @param {Array|Object}     views The subviews for the main view.
+>>>>>>> master
 	 */
 	wp.Backbone.Subviews = function( view, views ) {
 		this.view = view;

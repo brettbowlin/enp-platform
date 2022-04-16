@@ -49,7 +49,11 @@ if ( isset( $_POST['post_type'] ) && $post && $post_type !== $_POST['post_type']
 
 if ( isset( $_POST['deletepost'] ) ) {
 	$action = 'delete';
+<<<<<<< HEAD
 } elseif ( isset( $_POST['wp-preview'] ) && 'dopreview' == $_POST['wp-preview'] ) {
+=======
+} elseif ( isset( $_POST['wp-preview'] ) && 'dopreview' === $_POST['wp-preview'] ) {
+>>>>>>> master
 	$action = 'preview';
 }
 
@@ -57,7 +61,11 @@ $sendback = wp_get_referer();
 if ( ! $sendback ||
 	false !== strpos( $sendback, 'post.php' ) ||
 	false !== strpos( $sendback, 'post-new.php' ) ) {
+<<<<<<< HEAD
 	if ( 'attachment' == $post_type ) {
+=======
+	if ( 'attachment' === $post_type ) {
+>>>>>>> master
 		$sendback = admin_url( 'upload.php' );
 	} else {
 		$sendback = admin_url( 'edit.php' );
@@ -111,6 +119,7 @@ switch ( $action ) {
 	case 'postajaxpost':
 	case 'post':
 		check_admin_referer( 'add-' . $post_type );
+<<<<<<< HEAD
 		$post_id = 'postajaxpost' == $action ? edit_post() : write_post();
 		redirect_post( $post_id );
 		exit();
@@ -188,6 +197,85 @@ switch ( $action ) {
 			break;
 		}
 
+=======
+		$post_id = 'postajaxpost' === $action ? edit_post() : write_post();
+		redirect_post( $post_id );
+		exit;
+
+	case 'edit':
+		$editing = true;
+
+		if ( empty( $post_id ) ) {
+			wp_redirect( admin_url( 'post.php' ) );
+			exit;
+		}
+
+		if ( ! $post ) {
+			wp_die( __( 'You attempted to edit an item that doesn&#8217;t exist. Perhaps it was deleted?' ) );
+		}
+
+		if ( ! $post_type_object ) {
+			wp_die( __( 'Invalid post type.' ) );
+		}
+
+		if ( ! in_array( $typenow, get_post_types( array( 'show_ui' => true ) ), true ) ) {
+			wp_die( __( 'Sorry, you are not allowed to edit posts in this post type.' ) );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_die( __( 'Sorry, you are not allowed to edit this item.' ) );
+		}
+
+		if ( 'trash' === $post->post_status ) {
+			wp_die( __( 'You can&#8217;t edit this item because it is in the Trash. Please restore it and try again.' ) );
+		}
+
+		if ( ! empty( $_GET['get-post-lock'] ) ) {
+			check_admin_referer( 'lock-post_' . $post_id );
+			wp_set_post_lock( $post_id );
+			wp_redirect( get_edit_post_link( $post_id, 'url' ) );
+			exit;
+		}
+
+		$post_type = $post->post_type;
+		if ( 'post' === $post_type ) {
+			$parent_file   = 'edit.php';
+			$submenu_file  = 'edit.php';
+			$post_new_file = 'post-new.php';
+		} elseif ( 'attachment' === $post_type ) {
+			$parent_file   = 'upload.php';
+			$submenu_file  = 'upload.php';
+			$post_new_file = 'media-new.php';
+		} else {
+			if ( isset( $post_type_object ) && $post_type_object->show_in_menu && true !== $post_type_object->show_in_menu ) {
+				$parent_file = $post_type_object->show_in_menu;
+			} else {
+				$parent_file = "edit.php?post_type=$post_type";
+			}
+			$submenu_file  = "edit.php?post_type=$post_type";
+			$post_new_file = "post-new.php?post_type=$post_type";
+		}
+
+		$title = $post_type_object->labels->edit_item;
+
+		/**
+		 * Allows replacement of the editor.
+		 *
+		 * @since 4.9.0
+		 *
+		 * @param bool    $replace Whether to replace the editor. Default false.
+		 * @param WP_Post $post    Post object.
+		 */
+		if ( true === apply_filters( 'replace_editor', false, $post ) ) {
+			break;
+		}
+
+		if ( use_block_editor_for_post( $post ) ) {
+			require ABSPATH . 'wp-admin/edit-form-blocks.php';
+			break;
+		}
+
+>>>>>>> master
 		if ( ! wp_check_post_lock( $post->ID ) ) {
 			$active_post_lock = wp_set_post_lock( $post->ID );
 
@@ -233,7 +321,11 @@ switch ( $action ) {
 
 		redirect_post( $post_id ); // Send user on their way while we keep working.
 
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 
 	case 'trash':
 		check_admin_referer( 'trash-post_' . $post_id );
@@ -258,7 +350,11 @@ switch ( $action ) {
 		}
 
 		if ( ! wp_trash_post( $post_id ) ) {
+<<<<<<< HEAD
 			wp_die( __( 'Error in moving to Trash.' ) );
+=======
+			wp_die( __( 'Error in moving the item to Trash.' ) );
+>>>>>>> master
 		}
 
 		wp_redirect(
@@ -270,7 +366,11 @@ switch ( $action ) {
 				$sendback
 			)
 		);
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 
 	case 'untrash':
 		check_admin_referer( 'untrash-post_' . $post_id );
@@ -288,11 +388,26 @@ switch ( $action ) {
 		}
 
 		if ( ! wp_untrash_post( $post_id ) ) {
+<<<<<<< HEAD
 			wp_die( __( 'Error in restoring from Trash.' ) );
 		}
 
 		wp_redirect( add_query_arg( 'untrashed', 1, $sendback ) );
 		exit();
+=======
+			wp_die( __( 'Error in restoring the item from Trash.' ) );
+		}
+
+		$sendback = add_query_arg(
+			array(
+				'untrashed' => 1,
+				'ids'       => $post_id,
+			),
+			$sendback
+		);
+		wp_redirect( $sendback );
+		exit;
+>>>>>>> master
 
 	case 'delete':
 		check_admin_referer( 'delete-post_' . $post_id );
@@ -312,16 +427,28 @@ switch ( $action ) {
 		if ( 'attachment' === $post->post_type ) {
 			$force = ( ! MEDIA_TRASH );
 			if ( ! wp_delete_attachment( $post_id, $force ) ) {
+<<<<<<< HEAD
 				wp_die( __( 'Error in deleting.' ) );
 			}
 		} else {
 			if ( ! wp_delete_post( $post_id, true ) ) {
 				wp_die( __( 'Error in deleting.' ) );
+=======
+				wp_die( __( 'Error in deleting the attachment.' ) );
+			}
+		} else {
+			if ( ! wp_delete_post( $post_id, true ) ) {
+				wp_die( __( 'Error in deleting the item.' ) );
+>>>>>>> master
 			}
 		}
 
 		wp_redirect( add_query_arg( 'deleted', 1, $sendback ) );
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 
 	case 'preview':
 		check_admin_referer( 'update-post_' . $post_id );
@@ -329,10 +456,17 @@ switch ( $action ) {
 		$url = post_preview();
 
 		wp_redirect( $url );
+<<<<<<< HEAD
 		exit();
 
 	case 'toggle-custom-fields':
 		check_admin_referer( 'toggle-custom-fields' );
+=======
+		exit;
+
+	case 'toggle-custom-fields':
+		check_admin_referer( 'toggle-custom-fields', 'toggle-custom-fields-nonce' );
+>>>>>>> master
 
 		$current_user_id = get_current_user_id();
 		if ( $current_user_id ) {
@@ -341,7 +475,11 @@ switch ( $action ) {
 		}
 
 		wp_safe_redirect( wp_get_referer() );
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 
 	default:
 		/**
@@ -356,7 +494,11 @@ switch ( $action ) {
 		do_action( "post_action_{$action}", $post_id );
 
 		wp_redirect( admin_url( 'edit.php' ) );
+<<<<<<< HEAD
 		exit();
+=======
+		exit;
+>>>>>>> master
 } // End switch.
 
 require_once ABSPATH . 'wp-admin/admin-footer.php';

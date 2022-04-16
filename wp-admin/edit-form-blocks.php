@@ -18,23 +18,52 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global WP_Post_Type $post_type_object
  * @global WP_Post      $post             Global post object.
  * @global string       $title
+<<<<<<< HEAD
  * @global array        $editor_styles
  * @global array        $wp_meta_boxes
  */
 global $post_type, $post_type_object, $post, $title, $editor_styles, $wp_meta_boxes;
+=======
+ * @global array        $wp_meta_boxes
+ */
+global $post_type, $post_type_object, $post, $title, $wp_meta_boxes;
+
+$block_editor_context = new WP_Block_Editor_Context( array( 'post' => $post ) );
+>>>>>>> master
 
 // Flag that we're loading the block editor.
 $current_screen = get_current_screen();
 $current_screen->is_block_editor( true );
 
+<<<<<<< HEAD
+=======
+// Default to is-fullscreen-mode to avoid jumps in the UI.
+add_filter(
+	'admin_body_class',
+	function( $classes ) {
+		return "$classes is-fullscreen-mode";
+	}
+);
+
+>>>>>>> master
 /*
  * Emoji replacement is disabled for now, until it plays nicely with React.
  */
 remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
+<<<<<<< HEAD
 wp_enqueue_script( 'heartbeat' );
 wp_enqueue_script( 'wp-edit-post' );
 wp_enqueue_script( 'wp-format-library' );
+=======
+/*
+ * Block editor implements its own Options menu for toggling Document Panels.
+ */
+add_filter( 'screen_options_show_screen', '__return_false' );
+
+wp_enqueue_script( 'heartbeat' );
+wp_enqueue_script( 'wp-edit-post' );
+>>>>>>> master
 
 $rest_base = ! empty( $post_type_object->rest_base ) ? $post_type_object->rest_base : $post_type_object->name;
 
@@ -52,6 +81,7 @@ $preload_paths = array(
 	sprintf( '/wp/v2/%s/%d/autosaves?context=edit', $rest_base, $post->ID ),
 );
 
+<<<<<<< HEAD
 /**
  * Preload common data by specifying an array of REST API paths that will be preloaded.
  *
@@ -85,6 +115,9 @@ wp_add_inline_script(
 	sprintf( 'wp.apiFetch.use( wp.apiFetch.createPreloadingMiddleware( %s ) );', wp_json_encode( $preload_data ) ),
 	'after'
 );
+=======
+block_editor_rest_api_preload( $preload_paths, $block_editor_context );
+>>>>>>> master
 
 wp_add_inline_script(
 	'wp-blocks',
@@ -125,6 +158,7 @@ $meta_box_url = add_query_arg(
 	),
 	$meta_box_url
 );
+<<<<<<< HEAD
 wp_localize_script( 'wp-editor', '_wpMetaBoxUrl', $meta_box_url );
 
 
@@ -148,6 +182,13 @@ $gradient_presets = current( (array) get_theme_support( 'editor-gradient-presets
  * @param WP_Post    $post                The post resource data.
  */
 $allowed_block_types = apply_filters( 'allowed_block_types', true, $post );
+=======
+wp_add_inline_script(
+	'wp-editor',
+	sprintf( 'var _wpMetaBoxUrl = %s;', wp_json_encode( $meta_box_url ) ),
+	'before'
+);
+>>>>>>> master
 
 /*
  * Get all available templates for the post/page attributes meta-box.
@@ -156,7 +197,11 @@ $allowed_block_types = apply_filters( 'allowed_block_types', true, $post );
  * besides the default value.
  */
 $available_templates = wp_get_theme()->get_page_templates( get_post( $post->ID ) );
+<<<<<<< HEAD
 $available_templates = ! empty( $available_templates ) ? array_merge(
+=======
+$available_templates = ! empty( $available_templates ) ? array_replace(
+>>>>>>> master
 	array(
 		/** This filter is documented in wp-admin/includes/meta-boxes.php */
 		'' => apply_filters( 'default_page_template_title', __( 'Default template' ), 'rest-api' ),
@@ -164,6 +209,7 @@ $available_templates = ! empty( $available_templates ) ? array_merge(
 	$available_templates
 ) : $available_templates;
 
+<<<<<<< HEAD
 // Media settings.
 $max_upload_size = wp_max_upload_size();
 if ( ! $max_upload_size ) {
@@ -236,6 +282,8 @@ foreach ( $available_image_sizes as $size ) {
 	}
 }
 
+=======
+>>>>>>> master
 // Lock settings.
 $user_id = wp_check_post_lock( $post->ID );
 if ( $user_id ) {
@@ -276,6 +324,7 @@ if ( $user_id ) {
  * Filters the body placeholder text.
  *
  * @since 5.0.0
+<<<<<<< HEAD
  *
  * @param string  $text Placeholder text. Default 'Start writing or type / to choose a block'.
  * @param WP_Post $post Post object.
@@ -303,10 +352,31 @@ $editor_settings = array(
 	'richEditingEnabled'     => user_can_richedit(),
 	'postLock'               => $lock_details,
 	'postLockUtils'          => array(
+=======
+ * @since 5.8.0 Changed the default placeholder text.
+ *
+ * @param string  $text Placeholder text. Default 'Type / to choose a block'.
+ * @param WP_Post $post Post object.
+ */
+$body_placeholder = apply_filters( 'write_your_story', __( 'Type / to choose a block' ), $post );
+
+$editor_settings = array(
+	'availableTemplates'                   => $available_templates,
+	'disablePostFormats'                   => ! current_theme_supports( 'post-formats' ),
+	/** This filter is documented in wp-admin/edit-form-advanced.php */
+	'titlePlaceholder'                     => apply_filters( 'enter_title_here', __( 'Add title' ), $post ),
+	'bodyPlaceholder'                      => $body_placeholder,
+	'autosaveInterval'                     => AUTOSAVE_INTERVAL,
+	'styles'                               => get_block_editor_theme_styles(),
+	'richEditingEnabled'                   => user_can_richedit(),
+	'postLock'                             => $lock_details,
+	'postLockUtils'                        => array(
+>>>>>>> master
 		'nonce'       => wp_create_nonce( 'lock-post_' . $post->ID ),
 		'unlockNonce' => wp_create_nonce( 'update-post_' . $post->ID ),
 		'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 	),
+<<<<<<< HEAD
 
 	// Whether or not to load the 'postcustom' meta box is stored as a user meta
 	// field so that we're not always loading its assets.
@@ -314,6 +384,19 @@ $editor_settings = array(
 );
 
 $autosave = wp_get_post_autosave( $post_ID );
+=======
+	'supportsLayout'                       => WP_Theme_JSON_Resolver::theme_has_support(),
+	'__experimentalBlockPatterns'          => WP_Block_Patterns_Registry::get_instance()->get_all_registered(),
+	'__experimentalBlockPatternCategories' => WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+	'supportsTemplateMode'                 => current_theme_supports( 'block-templates' ),
+
+	// Whether or not to load the 'postcustom' meta box is stored as a user meta
+	// field so that we're not always loading its assets.
+	'enableCustomFields'                   => (bool) get_user_meta( get_current_user_id(), 'enable_custom_fields', true ),
+);
+
+$autosave = wp_get_post_autosave( $post->ID );
+>>>>>>> master
 if ( $autosave ) {
 	if ( mysql2date( 'U', $autosave->post_modified_gmt, false ) > mysql2date( 'U', $post->post_modified_gmt, false ) ) {
 		$editor_settings['autosave'] = array(
@@ -324,6 +407,7 @@ if ( $autosave ) {
 	}
 }
 
+<<<<<<< HEAD
 if ( false !== $color_palette ) {
 	$editor_settings['colors'] = $color_palette;
 }
@@ -336,6 +420,8 @@ if ( false !== $gradient_presets ) {
 	$editor_settings['gradients'] = $gradient_presets;
 }
 
+=======
+>>>>>>> master
 if ( ! empty( $post_type_object->template ) ) {
 	$editor_settings['template']     = $post_type_object->template;
 	$editor_settings['templateLock'] = ! empty( $post_type_object->template_lock ) ? $post_type_object->template_lock : false;
@@ -364,7 +450,10 @@ wp_enqueue_editor();
  * Styles
  */
 wp_enqueue_style( 'wp-edit-post' );
+<<<<<<< HEAD
 wp_enqueue_style( 'wp-format-library' );
+=======
+>>>>>>> master
 
 /**
  * Fires after block assets have been enqueued for the editing interface.
@@ -388,6 +477,7 @@ if ( ! isset( $core_meta_boxes['postcustom'] ) || ! $core_meta_boxes['postcustom
 	unset( $editor_settings['enableCustomFields'] );
 }
 
+<<<<<<< HEAD
 /**
  * Filters the settings to pass to the block editor.
  *
@@ -397,6 +487,9 @@ if ( ! isset( $core_meta_boxes['postcustom'] ) || ! $core_meta_boxes['postcustom
  * @param WP_Post $post            Post being edited.
  */
 $editor_settings = apply_filters( 'block_editor_settings', $editor_settings, $post );
+=======
+$editor_settings = get_block_editor_settings( $editor_settings, $block_editor_context );
+>>>>>>> master
 
 $init_script = <<<JS
 ( function() {
@@ -417,6 +510,13 @@ $script = sprintf(
 );
 wp_add_inline_script( 'wp-edit-post', $script );
 
+<<<<<<< HEAD
+=======
+if ( (int) get_option( 'page_for_posts' ) === $post->ID ) {
+	add_action( 'admin_enqueue_scripts', '_wp_block_editor_posts_page_notice' );
+}
+
+>>>>>>> master
 require_once ABSPATH . 'wp-admin/admin-header.php';
 ?>
 

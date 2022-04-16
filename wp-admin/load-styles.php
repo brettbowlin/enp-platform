@@ -13,13 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'WPINC', 'wp-includes' );
+define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 
 require ABSPATH . 'wp-admin/includes/noop.php';
+<<<<<<< HEAD
+=======
+require ABSPATH . WPINC . '/theme.php';
+require ABSPATH . WPINC . '/class-wp-theme-json-resolver.php';
+>>>>>>> master
 require ABSPATH . WPINC . '/script-loader.php';
 require ABSPATH . WPINC . '/version.php';
 
 $protocol = $_SERVER['SERVER_PROTOCOL'];
+<<<<<<< HEAD
 if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ) ) ) {
+=======
+if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ), true ) ) {
+>>>>>>> master
 	$protocol = 'HTTP/1.0';
 }
 
@@ -37,7 +47,11 @@ if ( empty( $load ) ) {
 	exit;
 }
 
+<<<<<<< HEAD
 $rtl            = ( isset( $_GET['dir'] ) && 'rtl' == $_GET['dir'] );
+=======
+$rtl            = ( isset( $_GET['dir'] ) && 'rtl' === $_GET['dir'] );
+>>>>>>> master
 $expires_offset = 31536000; // 1 year.
 $out            = '';
 
@@ -46,7 +60,7 @@ wp_default_styles( $wp_styles );
 
 if ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) && stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) === $wp_version ) {
 	header( "$protocol 304 Not Modified" );
-	exit();
+	exit;
 }
 
 foreach ( $load as $handle ) {

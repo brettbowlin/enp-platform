@@ -18,17 +18,28 @@ global $post_type, $post_type_object, $post;
 
 if ( ! isset( $_GET['post_type'] ) ) {
 	$post_type = 'post';
+<<<<<<< HEAD
 } elseif ( in_array( $_GET['post_type'], get_post_types( array( 'show_ui' => true ) ) ) ) {
+=======
+} elseif ( in_array( $_GET['post_type'], get_post_types( array( 'show_ui' => true ) ), true ) ) {
+>>>>>>> master
 	$post_type = $_GET['post_type'];
 } else {
 	wp_die( __( 'Invalid post type.' ) );
 }
 $post_type_object = get_post_type_object( $post_type );
 
+<<<<<<< HEAD
 if ( 'post' == $post_type ) {
 	$parent_file  = 'edit.php';
 	$submenu_file = 'post-new.php';
 } elseif ( 'attachment' == $post_type ) {
+=======
+if ( 'post' === $post_type ) {
+	$parent_file  = 'edit.php';
+	$submenu_file = 'post-new.php';
+} elseif ( 'attachment' === $post_type ) {
+>>>>>>> master
 	if ( wp_redirect( admin_url( 'media-new.php' ) ) ) {
 		exit;
 	}

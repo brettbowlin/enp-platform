@@ -55,7 +55,15 @@ function render_block_core_rss( $attributes ) {
 			$author = $item->get_author();
 			if ( is_object( $author ) ) {
 				$author = $author->get_name();
+<<<<<<< HEAD
 				$author = '<span class="wp-block-rss__item-author">' . __( 'by' ) . ' ' . esc_html( strip_tags( $author ) ) . '</span>';
+=======
+				$author = '<span class="wp-block-rss__item-author">' . sprintf(
+					/* translators: %s: the author. */
+					__( 'by %s' ),
+					esc_html( strip_tags( $author ) )
+				) . '</span>';
+>>>>>>> master
 			}
 		}
 
@@ -75,6 +83,7 @@ function render_block_core_rss( $attributes ) {
 		$list_items .= "<li class='wp-block-rss__item'>{$title}{$date}{$author}{$excerpt}</li>";
 	}
 
+<<<<<<< HEAD
 	$class = 'wp-block-rss';
 	if ( isset( $attributes['align'] ) ) {
 		$class .= ' align' . $attributes['align'];
@@ -93,12 +102,26 @@ function render_block_core_rss( $attributes ) {
 	}
 
 	return sprintf( "<ul class='%s'>%s</ul>", esc_attr( $class ), $list_items );
+=======
+	$classnames = array();
+	if ( isset( $attributes['blockLayout'] ) && 'grid' === $attributes['blockLayout'] ) {
+		$classnames[] = 'is-grid';
+	}
+
+	if ( isset( $attributes['columns'] ) && 'grid' === $attributes['blockLayout'] ) {
+		$classnames[] = 'columns-' . $attributes['columns'];
+	}
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => implode( ' ', $classnames ) ) );
+
+	return sprintf( '<ul %s>%s</ul>', $wrapper_attributes, $list_items );
+>>>>>>> master
 }
 
 /**
  * Registers the `core/rss` block on server.
  */
 function register_block_core_rss() {
+<<<<<<< HEAD
 	register_block_type(
 		'core/rss',
 		array(
@@ -143,6 +166,11 @@ function register_block_core_rss() {
 					'default' => 55,
 				),
 			),
+=======
+	register_block_type_from_metadata(
+		__DIR__ . '/rss',
+		array(
+>>>>>>> master
 			'render_callback' => 'render_block_core_rss',
 		)
 	);

@@ -35,7 +35,11 @@
 		 *
 		 * @return {void}
 		 */
+<<<<<<< HEAD
 		$('#choose-from-library-link').click( function( event ) {
+=======
+		$('#choose-from-library-link').on( 'click', function( event ) {
+>>>>>>> master
 			var $el = $(this);
 			event.preventDefault();
 

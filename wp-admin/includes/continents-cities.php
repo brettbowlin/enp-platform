@@ -98,18 +98,27 @@ __( 'Blanc-Sablon', 'continents-cities' );
 __( 'Boa Vista', 'continents-cities' );
 __( 'Bogota', 'continents-cities' );
 __( 'Boise', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Buenos Aires', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Cambridge Bay', 'continents-cities' );
 __( 'Campo Grande', 'continents-cities' );
 __( 'Cancun', 'continents-cities' );
 __( 'Caracas', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Catamarca', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Cayenne', 'continents-cities' );
 __( 'Cayman', 'continents-cities' );
 __( 'Chicago', 'continents-cities' );
 __( 'Chihuahua', 'continents-cities' );
 __( 'Coral Harbour', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Cordoba', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Costa Rica', 'continents-cities' );
 __( 'Creston', 'continents-cities' );
 __( 'Cuiaba', 'continents-cities' );
@@ -148,11 +157,17 @@ __( 'Tell City', 'continents-cities' );
 __( 'Vevay', 'continents-cities' );
 __( 'Vincennes', 'continents-cities' );
 __( 'Winamac', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Indianapolis', 'continents-cities' );
 __( 'Inuvik', 'continents-cities' );
 __( 'Iqaluit', 'continents-cities' );
 __( 'Jamaica', 'continents-cities' );
 __( 'Jujuy', 'continents-cities' );
+=======
+__( 'Inuvik', 'continents-cities' );
+__( 'Iqaluit', 'continents-cities' );
+__( 'Jamaica', 'continents-cities' );
+>>>>>>> master
 __( 'Juneau', 'continents-cities' );
 __( 'Kentucky', 'continents-cities' );
 __( 'Louisville', 'continents-cities' );
@@ -162,7 +177,10 @@ __( 'Kralendijk', 'continents-cities' );
 __( 'La Paz', 'continents-cities' );
 __( 'Lima', 'continents-cities' );
 __( 'Los Angeles', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Louisville', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Lower Princes', 'continents-cities' );
 __( 'Maceio', 'continents-cities' );
 __( 'Managua', 'continents-cities' );
@@ -171,7 +189,10 @@ __( 'Marigot', 'continents-cities' );
 __( 'Martinique', 'continents-cities' );
 __( 'Matamoros', 'continents-cities' );
 __( 'Mazatlan', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Mendoza', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Menominee', 'continents-cities' );
 __( 'Merida', 'continents-cities' );
 __( 'Metlakatla', 'continents-cities' );
@@ -191,13 +212,22 @@ __( 'North Dakota', 'continents-cities' );
 __( 'Beulah', 'continents-cities' );
 __( 'Center', 'continents-cities' );
 __( 'New Salem', 'continents-cities' );
+<<<<<<< HEAD
+=======
+__( 'Nuuk', 'continents-cities' );
+>>>>>>> master
 __( 'Ojinaga', 'continents-cities' );
 __( 'Panama', 'continents-cities' );
 __( 'Pangnirtung', 'continents-cities' );
 __( 'Paramaribo', 'continents-cities' );
 __( 'Phoenix', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Port of Spain', 'continents-cities' );
 __( 'Port-au-Prince', 'continents-cities' );
+=======
+__( 'Port-au-Prince', 'continents-cities' );
+__( 'Port of Spain', 'continents-cities' );
+>>>>>>> master
 __( 'Porto Acre', 'continents-cities' );
 __( 'Porto Velho', 'continents-cities' );
 __( 'Puerto Rico', 'continents-cities' );
@@ -292,7 +322,10 @@ __( 'Ho Chi Minh', 'continents-cities' );
 __( 'Hong Kong', 'continents-cities' );
 __( 'Hovd', 'continents-cities' );
 __( 'Irkutsk', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Istanbul', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Jakarta', 'continents-cities' );
 __( 'Jayapura', 'continents-cities' );
 __( 'Jerusalem', 'continents-cities' );
@@ -323,6 +356,10 @@ __( 'Phnom Penh', 'continents-cities' );
 __( 'Pontianak', 'continents-cities' );
 __( 'Pyongyang', 'continents-cities' );
 __( 'Qatar', 'continents-cities' );
+<<<<<<< HEAD
+=======
+__( 'Qostanay', 'continents-cities' );
+>>>>>>> master
 __( 'Qyzylorda', 'continents-cities' );
 __( 'Rangoon', 'continents-cities' );
 __( 'Riyadh', 'continents-cities' );
@@ -465,7 +502,10 @@ __( 'Mariehamn', 'continents-cities' );
 __( 'Minsk', 'continents-cities' );
 __( 'Monaco', 'continents-cities' );
 __( 'Moscow', 'continents-cities' );
+<<<<<<< HEAD
 __( 'Nicosia', 'continents-cities' );
+=======
+>>>>>>> master
 __( 'Oslo', 'continents-cities' );
 __( 'Paris', 'continents-cities' );
 __( 'Podgorica', 'continents-cities' );

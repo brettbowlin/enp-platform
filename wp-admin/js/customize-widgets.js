@@ -98,7 +98,7 @@
 			match = new RegExp( '^(?=.*' + term + ').+', 'i' );
 
 			this.each( function ( data ) {
-				haystack = [ data.get( 'name' ), data.get( 'id' ), data.get( 'description' ) ].join( ' ' );
+				haystack = [ data.get( 'name' ), data.get( 'description' ) ].join( ' ' );
 				data.set( 'search_matched', match.test( haystack ) );
 			} );
 		}
@@ -193,10 +193,16 @@
 				}
 			} );
 
+<<<<<<< HEAD
 			// Clear the search results and trigger a new search.
 			this.$clearResults.on( 'click', function() {
 				self.$search.val( '' ).focus();
 				self.collection.doSearch( '' );
+=======
+			// Clear the search results and trigger an `input` event to fire a new search.
+			this.$clearResults.on( 'click', function() {
+				self.$search.val( '' ).trigger( 'focus' ).trigger( 'input' );
+>>>>>>> master
 			} );
 
 			// Close the panel if the URL in the preview changes.
@@ -366,7 +372,7 @@
 			this.collection.doSearch( '' );
 
 			if ( ! api.settings.browser.mobile ) {
-				this.$search.focus();
+				this.$search.trigger( 'focus' );
 			}
 		},
 
@@ -385,7 +391,7 @@
 
 			$( 'body' ).removeClass( 'adding-widget' );
 
-			this.$search.val( '' );
+			this.$search.val( '' ).trigger( 'input' );
 		},
 
 		/**
@@ -422,9 +428,9 @@
 				this.select( selected );
 
 				if ( selected ) {
-					selected.focus();
+					selected.trigger( 'focus' );
 				} else {
-					this.$search.focus();
+					this.$search.trigger( 'focus' );
 				}
 
 				return;
@@ -460,7 +466,7 @@
 		/**
 		 * @param {jQuery.Event} e
 		 * @param {jQuery} widget
-		 * @param {String} newForm
+		 * @param {string} newForm
 		 */
 		rss: function( e, widget, newForm ) {
 			var oldWidgetError = widget.find( '.widget-error:first' ),
@@ -819,7 +825,7 @@
 				if ( event.type === 'keypress' && ( event.which !== 13 && event.which !== 32 ) ) {
 					return;
 				}
-				$( this ).focus();
+				$( this ).trigger( 'focus' );
 
 				if ( $( this ).is( '.move-widget' ) ) {
 					self.toggleWidgetMoveArea();
@@ -840,7 +846,11 @@
 						wp.a11y.speak( l10n.widgetMovedDown );
 					}
 
+<<<<<<< HEAD
 					$( this ).focus(); // Re-focus after the container was moved.
+=======
+					$( this ).trigger( 'focus' ); // Re-focus after the container was moved.
+>>>>>>> master
 				}
 			} );
 
@@ -969,7 +979,7 @@
 		 *
 		 * @since 4.1.0
 		 *
-		 * @param {Boolean}   active
+		 * @param {boolean}   active
 		 * @param {Object}    args
 		 * @param {function}  args.completeCallback
 		 */
@@ -1076,7 +1086,11 @@
 		 * Get the state for an input depending on its type.
 		 *
 		 * @param {jQuery|Element} input
+<<<<<<< HEAD
 		 * @return {string|boolean|array|*}
+=======
+		 * @return {string|boolean|Array|*}
+>>>>>>> master
 		 * @private
 		 */
 		_getInputState: function( input ) {
@@ -1096,7 +1110,7 @@
 		 * Update an input's state based on its type.
 		 *
 		 * @param {jQuery|Element} input
-		 * @param {string|boolean|array|*} state
+		 * @param {string|boolean|Array|*} state
 		 * @private
 		 */
 		_setInputState: function ( input, state ) {
@@ -1104,7 +1118,7 @@
 			if ( input.is( ':radio, :checkbox' ) ) {
 				input.prop( 'checked', state );
 			} else if ( input.is( 'select[multiple]' ) ) {
-				if ( ! $.isArray( state ) ) {
+				if ( ! Array.isArray( state ) ) {
 					state = [];
 				} else {
 					// Make sure all state items are strings since the DOM value is a string.
@@ -1144,10 +1158,10 @@
 		 * Submit the widget form via Ajax and get back the updated instance,
 		 * along with the new widget control form to render.
 		 *
-		 * @param {object} [args]
+		 * @param {Object} [args]
 		 * @param {Object|null} [args.instance=null]  When the model changes, the instance is sent here; otherwise, the inputs from the form are used
 		 * @param {Function|null} [args.complete=null]  Function which is called when the request finishes. Context is bound to the control. First argument is any error. Following arguments are for success.
-		 * @param {Boolean} [args.ignoreActiveElement=false] Whether or not updating a field will be deferred if focus is still on the element.
+		 * @param {boolean} [args.ignoreActiveElement=false] Whether or not updating a field will be deferred if focus is still on the element.
 		 */
 		updateWidget: function( args ) {
 			var self = this, instanceOverride, completeCallback, $widgetRoot, $widgetContent,
@@ -1399,7 +1413,7 @@
 		/**
 		 * Respond to change in the expanded state.
 		 *
-		 * @param {Boolean} expanded
+		 * @param {boolean} expanded
 		 * @param {Object} args  merged on top of this.defaultActiveArguments
 		 */
 		onChangeExpanded: function ( expanded, args ) {
@@ -1499,7 +1513,11 @@
 		/**
 		 * Get the position (index) of the widget in the containing sidebar
 		 *
+<<<<<<< HEAD
 		 * @return {Number}
+=======
+		 * @return {number}
+>>>>>>> master
 		 */
 		getWidgetSidebarPosition: function() {
 			var sidebarWidgetIds, position;
@@ -1531,7 +1549,7 @@
 		/**
 		 * @private
 		 *
-		 * @param {Number} offset 1|-1
+		 * @param {number} offset 1|-1
 		 */
 		_moveWidgetByOne: function( offset ) {
 			var i, sidebarWidgetsSetting, sidebarWidgetIds,	adjacentWidgetId;
@@ -1550,7 +1568,7 @@
 		/**
 		 * Toggle visibility of the widget move area
 		 *
-		 * @param {Boolean} [showOrHide]
+		 * @param {boolean} [showOrHide]
 		 */
 		toggleWidgetMoveArea: function( showOrHide ) {
 			var self = this, $moveWidgetArea;
@@ -2008,7 +2026,7 @@
 		/**
 		 * Enable/disable the reordering UI
 		 *
-		 * @param {Boolean} showOrHide to enable/disable reordering
+		 * @param {boolean} showOrHide to enable/disable reordering
 		 *
 		 * @todo We should have a reordering state instead and rename this to onChangeReordering
 		 */
@@ -2066,7 +2084,11 @@
 
 		/**
 		 * @param {string} widgetId or an id_base for adding a previously non-existing widget.
+<<<<<<< HEAD
 		 * @return {object|false} widget_form control instance, or false on error.
+=======
+		 * @return {Object|false} widget_form control instance, or false on error.
+>>>>>>> master
 		 */
 		addWidget: function( widgetId ) {
 			var self = this, controlHtml, $widget, controlType = 'widget_form', controlContainer, controlConstructor,
@@ -2090,7 +2112,7 @@
 				widgetNumber = widget.get( 'multi_number' );
 			}
 
-			controlHtml = $.trim( $( '#widget-tpl-' + widget.get( 'id' ) ).html() );
+			controlHtml = $( '#widget-tpl-' + widget.get( 'id' ) ).html().trim();
 			if ( widget.get( 'is_multi' ) ) {
 				controlHtml = controlHtml.replace( /<[^<>]+>/g, function( m ) {
 					return m.replace( /__i__|%i%/g, widgetNumber );
@@ -2247,7 +2269,7 @@
 	/**
 	 * Given a widget control, find the sidebar widgets control that contains it.
 	 * @param {string} widgetId
-	 * @return {object|null}
+	 * @return {Object|null}
 	 */
 	api.Widgets.getSidebarWidgetControlContainingWidget = function( widgetId ) {
 		var foundControl = null;
@@ -2266,7 +2288,7 @@
 	 * Given a widget ID for a widget appearing in the preview, get the widget form control associated with it.
 	 *
 	 * @param {string} widgetId
-	 * @return {object|null}
+	 * @return {Object|null}
 	 */
 	api.Widgets.getWidgetFormControlForWidget = function( widgetId ) {
 		var foundControl = null;
@@ -2334,7 +2356,11 @@
 	}
 
 	/**
+<<<<<<< HEAD
 	 * @param {String} widgetId
+=======
+	 * @param {string} widgetId
+>>>>>>> master
 	 * @return {Object}
 	 */
 	function parseWidgetId( widgetId ) {
@@ -2356,8 +2382,13 @@
 	}
 
 	/**
+<<<<<<< HEAD
 	 * @param {String} widgetId
 	 * @return {String} settingId
+=======
+	 * @param {string} widgetId
+	 * @return {string} settingId
+>>>>>>> master
 	 */
 	function widgetIdToSettingId( widgetId ) {
 		var parsed = parseWidgetId( widgetId ), settingId;

@@ -11,13 +11,19 @@
 if ( ! class_exists( 'POMO_Reader', false ) ) :
 	class POMO_Reader {
 
+<<<<<<< HEAD
 		var $endian = 'little';
 		var $_post  = '';
+=======
+		public $endian = 'little';
+		public $_post  = '';
+>>>>>>> master
 
 		/**
 		 * PHP5 constructor.
 		 */
 		function __construct() {
+<<<<<<< HEAD
 			$this->is_overloaded = ( ( ini_get( 'mbstring.func_overload' ) & 2 ) != 0 ) && function_exists( 'mb_substr' );
 			$this->_pos          = 0;
 		}
@@ -76,6 +82,73 @@ if ( ! class_exists( 'POMO_Reader', false ) ) :
 		}
 
 		/**
+=======
+			if ( function_exists( 'mb_substr' )
+				&& ( (int) ini_get( 'mbstring.func_overload' ) & 2 ) // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated
+			) {
+				$this->is_overloaded = true;
+			} else {
+				$this->is_overloaded = false;
+			}
+
+			$this->_pos = 0;
+		}
+
+		/**
+		 * PHP4 constructor.
+		 *
+		 * @deprecated 5.4.0 Use __construct() instead.
+		 *
+		 * @see POMO_Reader::__construct()
+		 */
+		public function POMO_Reader() {
+			_deprecated_constructor( self::class, '5.4.0', static::class );
+			self::__construct();
+		}
+
+		/**
+		 * Sets the endianness of the file.
+		 *
+		 * @param string $endian Set the endianness of the file. Accepts 'big', or 'little'.
+		 */
+		function setEndian( $endian ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+			$this->endian = $endian;
+		}
+
+		/**
+		 * Reads a 32bit Integer from the Stream
+		 *
+		 * @return mixed The integer, corresponding to the next 32 bits from
+		 *  the stream of false if there are not enough bytes or on error
+		 */
+		function readint32() {
+			$bytes = $this->read( 4 );
+			if ( 4 != $this->strlen( $bytes ) ) {
+				return false;
+			}
+			$endian_letter = ( 'big' === $this->endian ) ? 'N' : 'V';
+			$int           = unpack( $endian_letter, $bytes );
+			return reset( $int );
+		}
+
+		/**
+		 * Reads an array of 32-bit Integers from the Stream
+		 *
+		 * @param int $count How many elements should be read
+		 * @return mixed Array of integers or false if there isn't
+		 *  enough data or on error
+		 */
+		function readint32array( $count ) {
+			$bytes = $this->read( 4 * $count );
+			if ( 4 * $count != $this->strlen( $bytes ) ) {
+				return false;
+			}
+			$endian_letter = ( 'big' === $this->endian ) ? 'N' : 'V';
+			return unpack( $endian_letter . $count, $bytes );
+		}
+
+		/**
+>>>>>>> master
 		 * @param string $string
 		 * @param int    $start
 		 * @param int    $length
@@ -175,7 +248,11 @@ if ( ! class_exists( 'POMO_FileReader', false ) ) :
 
 		/**
 		 * @param int $pos
+<<<<<<< HEAD
 		 * @return boolean
+=======
+		 * @return bool
+>>>>>>> master
 		 */
 		function seekto( $pos ) {
 			if ( -1 == fseek( $this->_f, $pos, SEEK_SET ) ) {
@@ -226,7 +303,11 @@ if ( ! class_exists( 'POMO_StringReader', false ) ) :
 	 */
 	class POMO_StringReader extends POMO_Reader {
 
+<<<<<<< HEAD
 		var $_str = '';
+=======
+		public $_str = '';
+>>>>>>> master
 
 		/**
 		 * PHP5 constructor.

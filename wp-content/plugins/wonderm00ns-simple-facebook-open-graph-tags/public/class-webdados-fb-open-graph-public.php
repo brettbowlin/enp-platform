@@ -429,7 +429,8 @@ class Webdados_FB_Public {
 							$fb_url_temp   = YoastSEO()->meta->for_current_page()->canonical;
 							$fb_desc_temp  = YoastSEO()->meta->for_current_page()->description;
 							//If we don't get it, we try the old way
-							if (
+							//NO WE DON'T -> https://wordpress.org/support/topic/error-class-wpseo_frontend-not-found-after-updating-yoast-seo-to-17-8/
+							/*if (
 								(
 									trim( $fb_title_temp ) == ''
 									||
@@ -444,7 +445,7 @@ class Webdados_FB_Public {
 								if ( trim( $fb_title_temp ) == '' ) $fb_title_temp = @$wpseo->title( false );
 								if ( trim( $fb_url_temp ) == '' )   $fb_url_temp   = @$wpseo->canonical( false );
 								if ( trim( $fb_desc_temp ) == '' )  $fb_desc_temp  = @$wpseo->metadesc( false );
-							}
+							}*/
 						} else {
 							$wpseo         = WPSEO_Frontend::get_instance();
 							$fb_title_temp = $wpseo->title( false );
@@ -618,7 +619,7 @@ class Webdados_FB_Public {
 						$fb_image = $temp_fb_image_overlay['fb_image'];
 						//We know the exact size now. We better just show it, right?
 						$this->options['fb_image_size_show'] = 1;
-						$fb_image_size = array( WEBDADOS_FB_W, WEBDADOS_FB_H );
+						$fb_image_size = array( $webdados_fb->img_w, $webdados_fb->img_h );
 					}
 					//Additional
 					if ( isset($fb_image_additional) && is_array($fb_image_additional) && count($fb_image_additional)>0 ) {
@@ -1019,7 +1020,7 @@ class Webdados_FB_Public {
 		if ( $fb_image_parsed['host'] == $_SERVER['HTTP_HOST'] ) {
 			//Params
 			$params['img'] = urlencode( $fb_image );
-			$fb_image = plugins_url( '/wonderm00ns-simple-facebook-open-graph-tags/fbimg.php' ).'?'.http_build_query($params);
+			$fb_image = apply_filters( 'fb_og_image_overlay_url', plugins_url( '/wonderm00ns-simple-facebook-open-graph-tags/fbimg.php' ).'?'.http_build_query( $params ), http_build_query( $params ) );
 			return array(
 				'overlay'	=> true,
 				'fb_image'	=> $fb_image,

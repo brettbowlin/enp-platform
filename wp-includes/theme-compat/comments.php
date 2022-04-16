@@ -16,7 +16,11 @@ _deprecated_file(
 );
 
 // Do not delete these lines.
+<<<<<<< HEAD
 if ( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && 'comments.php' == basename( $_SERVER['SCRIPT_FILENAME'] ) ) {
+=======
+if ( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && 'comments.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) {
+>>>>>>> master
 	die( 'Please do not load this page directly. Thanks!' );
 }
 

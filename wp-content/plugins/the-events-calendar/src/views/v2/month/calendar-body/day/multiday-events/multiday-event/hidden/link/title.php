@@ -7,7 +7,11 @@
  *
  * See more documentation about our views templating system.
  *
+<<<<<<< HEAD
  * @link {INSERT_ARTCILE_LINK_HERE}
+=======
+ * @link http://evnt.is/1aiy
+>>>>>>> master
  *
  * @since 5.1.1
  *
@@ -21,4 +25,8 @@
 ?>
 <h3 class="tribe-events-calendar-month__multiday-event-hidden-title tribe-common-h8">
 	<?php echo $event->title; // phpcs:ignore  ?>
+<<<<<<< HEAD
 </h3>
+=======
+</h3>
+>>>>>>> master

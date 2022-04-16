@@ -132,7 +132,11 @@ if ( ! class_exists( 'Tribe__Plugins' ) ) {
 		}
 
 		/**
+<<<<<<< HEAD
 		 * Checks if given plugin is active. Usually a Modern Tribe plugin.
+=======
+		 * Checks if given plugin is active. Usually a The Events Calendar plugin.
+>>>>>>> master
 		 *
 		 * @param string $plugin_name The name of the plugin. Each plugin defines their name upon hooking on the filter.
 		 *
@@ -145,7 +149,11 @@ if ( ! class_exists( 'Tribe__Plugins' ) ) {
 				_doing_it_wrong(
 					__METHOD__,
 					__( 'Using this function before "plugins_loaded" action has fired can return unreliable results.', 'tribe-common' ),
+<<<<<<< HEAD
 					'TBD'
+=======
+					'4.12.6'
+>>>>>>> master
 				);
 			}
 

@@ -207,6 +207,10 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @return string
      * @throws SodiumException
      * @throws TypeError
+<<<<<<< HEAD
+=======
+     * @psalm-suppress PossiblyInvalidArgument
+>>>>>>> master
      */
     public static function sign_detached($message, $sk)
     {
@@ -224,8 +228,13 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
         # crypto_hash_sha512_update(&hs, m, mlen);
         # crypto_hash_sha512_final(&hs, nonce);
         $hs = hash_init('sha512');
+<<<<<<< HEAD
         hash_update($hs, self::substr($az, 32, 32));
         hash_update($hs, $message);
+=======
+        self::hash_update($hs, self::substr($az, 32, 32));
+        self::hash_update($hs, $message);
+>>>>>>> master
         $nonceHash = hash_final($hs, true);
 
         # memmove(sig + 32, sk + 32, 32);
@@ -244,9 +253,15 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
         # crypto_hash_sha512_update(&hs, m, mlen);
         # crypto_hash_sha512_final(&hs, hram);
         $hs = hash_init('sha512');
+<<<<<<< HEAD
         hash_update($hs, self::substr($sig, 0, 32));
         hash_update($hs, self::substr($pk, 0, 32));
         hash_update($hs, $message);
+=======
+        self::hash_update($hs, self::substr($sig, 0, 32));
+        self::hash_update($hs, self::substr($pk, 0, 32));
+        self::hash_update($hs, $message);
+>>>>>>> master
         $hramHash = hash_final($hs, true);
 
         # sc_reduce(hram);
@@ -378,7 +393,11 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      */
     public static function small_order($R)
     {
+<<<<<<< HEAD
         static $blacklist = array(
+=======
+        static $blocklist = array(
+>>>>>>> master
             /* 0 (order 4) */
             array(
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -464,6 +483,7 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
                 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
             )
         );
+<<<<<<< HEAD
         /** @var array<int, array<int, int>> $blacklist */
         $countBlacklist = count($blacklist);
 
@@ -471,6 +491,15 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
             $c = 0;
             for ($j = 0; $j < 32; ++$j) {
                 $c |= self::chrToInt($R[$j]) ^ $blacklist[$i][$j];
+=======
+        /** @var array<int, array<int, int>> $blocklist */
+        $countBlocklist = count($blocklist);
+
+        for ($i = 0; $i < $countBlocklist; ++$i) {
+            $c = 0;
+            for ($j = 0; $j < 32; ++$j) {
+                $c |= self::chrToInt($R[$j]) ^ $blocklist[$i][$j];
+>>>>>>> master
             }
             if ($c === 0) {
                 return true;

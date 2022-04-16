@@ -7,7 +7,7 @@
  *
  * See more documentation about our views templating system.
  *
- * @link {INSERT_ARTCILE_LINK_HERE}
+ * @link http://evnt.is/1aiy
  *
  * @version 4.9.11
  *
@@ -22,17 +22,27 @@ if ( ! $event->venues->count() ) {
 
 $separator            = esc_html_x( ', ', 'Address separator', 'the-events-calendar' );
 $venue                = $event->venues[0];
-$append_after_address = array_filter( array_map( 'trim', [ $venue->city, $venue->state_province, $venue->state, $venue->province ] ) );
-$address              = $venue->address . ( $venue->address && $append_after_address ? $separator : '' );
+$append_after_address = array_filter( array_map( 'trim', [ $venue->state_province, $venue->state, $venue->province ] ) );
+$address              = $venue->address . ( $venue->address && ( $append_after_address || $venue->city ) ? $separator : '' );
 ?>
 <address class="tribe-events-calendar-list__event-venue tribe-common-b2">
 	<span class="tribe-events-calendar-list__event-venue-title tribe-common-b2--bold">
 		<?php echo wp_kses_post( $venue->post_title ); ?>
 	</span>
 	<span class="tribe-events-calendar-list__event-venue-address">
-		<?php echo esc_html( $address ); ?>
-		<?php if ( $append_after_address ) : ?>
-			<?php echo esc_html( reset( $append_after_address ) ); ?>
-		<?php endif; ?>
+		<?php 
+		echo esc_html( $address ); 
+
+		if ( ! empty( $venue->city ) ) : 
+			echo esc_html( $venue->city );
+			if ( $append_after_address ) :
+				echo $separator;
+			endif;
+		endif;
+
+		if ( $append_after_address ) : 
+			echo esc_html( reset( $append_after_address ) ); 
+		endif; 
+		?>
 	</span>
 </address>
